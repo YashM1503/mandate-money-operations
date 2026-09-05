@@ -12,7 +12,7 @@ Primary sources: `mandate/money_operations/engine.py`, `ingest.py`, `integer.py`
 Method: static review plus `tests/test_money_operations_adversarial.py` (engine + API fixtures from `test_mvp` / `test_money_operations_api`). Command:
 
 ```text
-/opt/anaconda3/bin/python3.13 -m pytest tests/test_money_operations_adversarial.py -q --tb=short
+python3.12 -m pytest tests/test_money_operations_adversarial.py -q --tb=short
 ```
 
 Result: **28 collected, 24 passed, 4 failed**, 1 Starlette/httpx deprecation warning.
@@ -130,7 +130,7 @@ Do not expand scope. Apply only:
 After those four tests pass, re-run:
 
 ```text
-/opt/anaconda3/bin/python3.13 -m pytest tests/test_money_operations_adversarial.py -q --tb=short
+python3.12 -m pytest tests/test_money_operations_adversarial.py -q --tb=short
 ```
 
 Do not treat the tree as live-PRISM, live-model, or GIDE-complete until M1–M3 are closed. M4 is a latent crash and should still be fixed before suggested context is stored on the analysis document.

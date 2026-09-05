@@ -29,7 +29,7 @@ SETUP = """PRISM Money Operations demo — credentials not configured.
 3. Export PRISMTRACE_PROJECT_ID.
 4. Optionally export PRISMTRACE_HOST=https://prism.blockconvey.com
 5. Export MANDATE_ALLOW_SYNTHETIC_EGRESS=1 to permit synthetic narrative traces.
-6. Re-run: /opt/anaconda3/bin/python3.13 scripts/run_prism_money_ops_demo.py
+6. Re-run: python3.12 scripts/run_prism_money_ops_demo.py
 
 A handshake is not live_connected. Only a received Money Operations application
 trace ID in this worker can set live_connected.

@@ -1,0 +1,40 @@
+Mandate Money Operations — product half (45 seconds)
+Record after the Megan deck. Speak slightly faster than the slides. Do not claim live PRISM, a live model, or finished GIDE.
+
+0:00  Observe.
+      First close is thin: revenue increased 18 percent. Megan has the number, not the why.
+
+0:08  Improve.
+      Mandate reruns the ledger—compares January to February, ranks the material moves, and recomputes every driver.
+
+0:16  Prove.
+      Improved readout: revenue up 18 percent, enterprise up 32 percent, three customers 64 percent of the increase.
+
+0:24  Provenance.
+      Click a claim. The source file, row, and calculation digest open. Other Opex still ties numerically and stays unexplained.
+
+0:32  Human in the loop.
+      Confirm NovaERP for this close. Megan approves the memo. What the data cannot prove stays open.
+
+0:40  Decision support.
+      Review-ready memo. $675,000 explained, $57,000 still on Megan’s desk. Observe, improve, prove.
+
+CFO sentences (pick two; do not stack all of them)
+- Hours of driver proof to a 45-second, signable memo — about $270 of analyst time, call it $3,200 a year on this step.
+- We explained $675,000 of growth. $432,000 of it sits in three customers. That is a concentration call, not a vanity percent.
+- $57,000 of Other Opex reconciles and stays unexplained. We will not invent a cause to look finished.
+- PRISM scored the lazy 18% story 25 and the corrected 18 / 32 / 64 story 45. The last click stays human.
+
+What the clip already shows (~70%)
+- Cycle, 18 / 32 / 64, provenance click, Other Opex open, confirm, approve, memo.
+What you must say if asked (~30%)
+- 196 tests, 4.8 ms engine, PRISM trace IDs, ~$270 / $3,200 labor math, GIDE rate limit.
+
+On-screen beats
+- 0:00  Enter synthetic close
+- 0:03  Ask Mandate · “Revenue increased 18%.”
+- 0:08  Overview · Run analysis
+- 0:16  Headline · 18 / 32 / 64 · click VAR-REV
+- 0:24  Variance explorer · revenue then Other Opex
+- 0:32  Review · keep cause open · confirm · approve
+- 0:38  Executive memo hold

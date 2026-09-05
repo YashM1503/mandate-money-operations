@@ -16,7 +16,7 @@ Primary sources: `mandate/money_operations_service.py`, `mandate/money_operation
 Method: new tests in `tests/test_money_operations_extensions.py` plus the required builder suites. Command:
 
 ```text
-/opt/anaconda3/bin/python3.13 -m pytest tests/test_money_operations_extensions.py tests/test_money_operations_engine.py tests/test_money_operations_api.py tests/test_money_operations_adversarial.py tests/test_money_operations_integrations.py -q
+python3.12 -m pytest tests/test_money_operations_extensions.py tests/test_money_operations_engine.py tests/test_money_operations_api.py tests/test_money_operations_adversarial.py tests/test_money_operations_integrations.py -q
 ```
 
 Result: **97 passed**, 1 Starlette/httpx deprecation warning. No GIDE session. PRISM is **not** `live_connected` in this environment; no real Money Operations application trace was received.

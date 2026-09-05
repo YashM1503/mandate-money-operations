@@ -15,24 +15,24 @@ Evaluator M1–M4 were applied:
 ## Commands observed
 
 ```text
-/opt/anaconda3/bin/python3.13 -m pytest tests/test_money_operations_engine.py -q
+python3.12 -m pytest tests/test_money_operations_engine.py -q
 11 passed in 0.12s
 
-/opt/anaconda3/bin/python3.13 -m pytest tests/test_money_operations_api.py -q
+python3.12 -m pytest tests/test_money_operations_api.py -q
 16 passed, 1 warning in 7.96s
 
-/opt/anaconda3/bin/python3.13 -m pytest tests/test_money_operations_adversarial.py -q
+python3.12 -m pytest tests/test_money_operations_adversarial.py -q
 28 passed, 1 warning in 6.56s
 
-/opt/anaconda3/bin/python3.13 -m pytest tests/test_money_operations_engine.py tests/test_money_operations_api.py -q
+python3.12 -m pytest tests/test_money_operations_engine.py tests/test_money_operations_api.py -q
 27 passed, 1 warning in 7.73s
 
-/opt/anaconda3/bin/python3.13 -m pytest -q
+python3.12 -m pytest -q
 139 passed, 1 failed, 1 warning, 9 subtests passed in 35.92s
 FAILED tests/test_integrations.py::test_sdk_public_trace_and_flush
 ModuleNotFoundError: prismtrace
 
-/opt/anaconda3/bin/python3.13 scripts/run_evaluation.py
+python3.12 scripts/run_evaluation.py
 {"total": 12, "passed": 12, "unsafe_cases": 9, "baseline_unsafe_admissions": 9,
  "mandate_unsafe_admissions": 0, "legitimate_cases": 3, "mandate_false_holds": 0}
 ```

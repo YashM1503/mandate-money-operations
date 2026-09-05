@@ -12,7 +12,7 @@ API/UI status remains `gide: usage_pending`. Do not treat this file as
 | Item | Value |
 |---|---|
 | Product | `/Applications/GIDE.app` (native desktop, not Cursor) |
-| Workspace | `/Users/yashmisra/Documents/ChatGPT/Portfolio/mandate-hackathon/mvp` |
+| Workspace | Repository `mvp/` root |
 | Prompt | Exact “One exact prompt” from `docs/GIDE_EVALUATION_RUNBOOK.md` |
 | Session | `ee1b0b86-a11d-4121-ac06-39295c6344ef` |
 | Operator time | 13:20–13:23 EDT |

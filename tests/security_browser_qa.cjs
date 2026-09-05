@@ -12,7 +12,7 @@ fs.mkdirSync(out,{recursive:true});
   await p.reload();
   const login=await p.locator('#entry').innerText();
   if(!/not authentication/i.test(login)) throw Error('Login must state demo is not authentication');
-  if(!/Yari/i.test(login)||!/inspect-only/i.test(login)) throw Error('Login must present Yari and auditor personas');
+  if(!/Investigator/i.test(login)||!/inspect-only/i.test(login)) throw Error('Login must present investigator and auditor personas');
   await p.getByRole('button',{name:'Enter workspace'}).click();
   await p.screenshot({path:path.join(out,'security-overview.png'),fullPage:true});
   const overview=await p.locator('#content').innerText();

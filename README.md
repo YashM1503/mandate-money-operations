@@ -83,12 +83,11 @@ The deterministic evaluation has 12 authored cases; it does not measure real-wor
 
 ## Read in this order
 
-1. docs/QUALIFICATION_AND_DEMO.md — differentiation, new Discord requirements, demo sequence and four-hour scope.
-2. docs/TECHNICAL_SPEC.md and docs/openapi.json — architecture, exact API, data, security and acceptance.
-3. docs/SPONSOR_SETUP.md — mandatory SDK, real PRISM proof and substantive GIDE use.
-4. docs/PARALLEL_BUILD_PROMPTS.md — separate ChatGPT, Claude, Cursor and GIDE work segments.
-5. docs/DEPLOYMENT.md — local, Docker and cloud prerequisites.
-6. docs/INDUSTRY_AND_PERSONA_REVIEW.md — persona gaps, JPMorgan/Mastercard/Visa sources and applicability.
-7. docs/QA_REPORT.md — completed checks, artifacts and unresolved gates.
+1. docs/JUDGING_METRICS.md — five official buckets, measured numbers, labor estimates.
+2. docs/DEMO.md — 45-second product clip and what is on camera.
+3. docs/PRISM_LIVE_EVIDENCE.md and docs/GIDE_ATTEMPT_EVIDENCE.md — sponsor results only.
+4. docs/DEPLOYMENT.md — local, Docker and cloud prerequisites.
+5. docs/MONEY_OPERATIONS_BACKEND.md — engine, claims, Other Opex boundary.
+6. docs/QA_REPORT.md — completed checks and unresolved gates.
 
 The four Resolve modules under mandate/core are pinned and attributed in THIRD_PARTY_NOTICES.md. The finance adaptation lives in Mandate's surrounding modules and UI. Disclose pre-event work and Resolve reuse to organizers. Confirm mixed-editor eligibility, team-size contradiction and prebuild rules before claiming qualification.

@@ -7,7 +7,7 @@ const path = require('path');
 
 const root = path.resolve(__dirname, '..');
 const out = path.resolve(root, 'qa-evidence/money-operations-connected');
-const python = process.env.PYTHON || '/opt/anaconda3/bin/python3.13';
+const python = process.env.PYTHON || 'python3';
 fs.mkdirSync(out, { recursive: true });
 
 function wait(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }

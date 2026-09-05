@@ -6,7 +6,7 @@ This note records checks actually run after the Cursor builder/evaluator pass. I
 
 ## Verified in this session
 
-- Security tests: `python3.13 -m pytest tests/test_security.py -q` → **22 passed**, 1 Starlette/httpx deprecation warning, 2.50s. Interpreter: `/opt/anaconda3/bin/python3.13` (system `python3` is 3.9 and cannot import `datetime.UTC`).
+- Security tests: `python3.12 -m pytest tests/test_security.py -q` → **22 passed**. Python 3.12 or newer is required.
 - Full suite: `python3.13 -m pytest -q` → **84 passed**, **1 failed**, 1 warning, 9 subtests passed, 21.83s.
   - Failure: `tests/test_integrations.py::test_sdk_public_trace_and_flush` — `ModuleNotFoundError: prismtrace`. Pre-existing environment gap. PRISM was not configured in this pass.
 - Security tests now also cover: source-first retrieval before response; MFA contradiction only resolved by the IAM fixture; targeted backup follow-ups; correction memory remaining `user_confirmed`; evidence-backed vs user-confirmed export including unknowns; prompt-injection non-resolution; stale revision 409; duplicate/cycle/rehashed known-ID integrity failure; auditor GET allowed and POST forbidden; pending backup not stolen by “admin”; export/resolution isolation; restore mapped to backups not storage; ordinary “do not ignore” backup sentence; scans question matching configuration-only source; auditor GET does not write/seal; gitignore patterns for runtime secrets.

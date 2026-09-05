@@ -63,7 +63,7 @@ trace unless an operator ran a live send and the HTTP path returned an id.
 From `mvp/`:
 
 ```text
-/opt/anaconda3/bin/python3.13 scripts/run_prism_money_ops_demo.py
+python3.12 scripts/run_prism_money_ops_demo.py
 ```
 
 1. Weak narrative invents an unsupported Other Opex cause (`$12,400`

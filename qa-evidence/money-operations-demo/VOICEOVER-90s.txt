@@ -1,0 +1,34 @@
+Mandate Money Operations — 90-second pitch + product
+First 45 seconds: slide flips. Second 45 seconds: faster product. Do not claim live PRISM, live model, or finished GIDE.
+
+SLIDES
+0:00  Slide 1   “This is Megan.”
+0:03  Slide 2   “Not M3GAN—and not Megan Fox. Apparently, AI already has a Megan branding problem.”
+0:09  Slide 3   “Our Megan runs a $47 million tech retailer with a five-person finance team.”
+0:15  Slide 4   “Every close delivers the numbers before it delivers the explanation.”
+0:20  Slide 5   “Her team sees the variance, but proving the underlying drivers still takes hours.”
+0:26  Slide 6   “MANDATE becomes her financial change analyst—comparing periods, ranking changes, and tracing every driver.”
+0:33  Slide 7   “Here, it finds that revenue grew 18%, largely because of three customers.”
+0:38  Slide 8   “It reconciles the drivers and flags anything still needing review.”
+0:42  Slide 9   “Every explanation keeps its calculation and source trail.”
+0:45  Slide 10  “Megan keeps final approval. Now, let’s see MANDATE do it.”
+
+PRODUCT — speak faster
+0:48  Enter the close. First pass is thin: revenue increased 18 percent.
+0:54  Run analysis. Mandate recomputes from the ledger. Observe, then improve.
+1:00  Improved readout: 18 percent revenue, 32 percent enterprise, 64 percent from three customers.
+1:06  Click a claim. Provenance: source file, row, calculation digest.
+1:12  Other Opex still reconciles and stays unexplained. Human in the loop.
+1:18  Confirm NovaERP. Approve the memo. Megan keeps the last click.
+1:25  Review-ready memo. The cycle worked: observe, improve, prove—with one residual left open.
+
+On-screen beats
+- 0:00–0:45  Deck slides 1–10
+- 0:48  Synthetic replay
+- 0:52  Weak 18% headline
+- 0:56  Run analysis
+- 1:00  Improved 18 / 32 / 64
+- 1:06  Citation / variance evidence
+- 1:12  Other Opex + review
+- 1:18  Confirm + approve memo
+- 1:25  Hold memo

@@ -1,0 +1,26 @@
+Mandate Money Operations — 45-second synthetic demo
+Talking script. Speak at a calm demo pace. Do not claim a live model, live PRISM, or finished GIDE.
+
+0:00–0:06  Entry
+Mandate is an evidence-backed money operations agent. This is a synthetic January-to-February close for Yari Tech Retail.
+
+0:06–0:16  Overview
+Revenue increased 18 percent, or 675 thousand dollars. Enterprise accounts rose 32 percent. Three customers account for 64 percent of the increase.
+
+0:16–0:24  Variance explorer
+Every figure comes from transaction rows, not a guessed story. Open Other Opex: 57 thousand dollars reconciles, and the business cause stays unexplained.
+
+0:24–0:34  Ask Mandate / context
+Ask Mandate only phrases cited claims. Confirm the NovaERP renewal for this run. Prior-close memory never overwrites the calculated amounts.
+
+0:34–0:45  Memo
+The memo is the close: 18, 32, and 64, with one residual left open for a human. That is Explain the Change — what moved, why it moved, and what is still unproven.
+
+On-screen beats
+- 0:00  Synthetic replay selected
+- 0:04  Enter the close
+- 0:06  Overview cards and agent path
+- 0:16  Variance explorer, revenue then Other Opex
+- 0:24  Headline prompt and NovaERP confirm
+- 0:34  Executive memo
+- 0:41  Return to overview
