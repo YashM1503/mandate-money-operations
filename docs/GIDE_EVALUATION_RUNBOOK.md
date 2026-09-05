@@ -2,7 +2,7 @@
 
 This file is a **later** native-GIDE handoff. Work already done in Cursor is **not** GIDE use and must not be described as GIDE evidence.
 
-Current repository status (5 September 2026): `gide: usage_pending`. No GIDE JSONL/session is checked in. PRISM is **not** `live_connected` in the Cursor review environment.
+Current repository status (5 September 2026): `gide: usage_pending`. Native GIDE was opened and given the prompt below; the product rate-limited the run and never wrote `docs/GIDE_EVALUATION.md`. See `docs/GIDE_ATTEMPT_EVIDENCE.md`. No completed GIDE JSONL is checked in. PRISM dashboard traces are recorded separately in `docs/PRISM_LIVE_EVIDENCE.md`.
 
 ## Working directory
 
