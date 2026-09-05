@@ -1,5 +1,8 @@
 # Local and cloud deployment
 
+Judges who only need the synthetic close should open `demo.html`. That path
+does not use localhost.
+
 ## Tested local path
 
 Python 3.12 or newer is required. From the repository root:

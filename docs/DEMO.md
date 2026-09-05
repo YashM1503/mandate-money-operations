@@ -29,6 +29,12 @@ the browser speech engine. Connected mode uses ElevenLabs when
 
 ## Run locally
 
+Open `demo.html` in a browser. No Python. Click **Open Megan’s close**, then
+walk Overview → explorer → Ask Mandate → review → memo. That is the
+synthetic proof of concept.
+
+Optional live API:
+
 ```sh
 python3.12 -m venv .venv
 . .venv/bin/activate
@@ -37,7 +43,8 @@ python scripts/bootstrap.py
 uvicorn mandate.api:create_app --factory --host 127.0.0.1 --port 8000 --workers 1 --no-proxy-headers
 ```
 
-Open http://127.0.0.1:8000/money-operations. Use `data/demo-credentials.txt` for Connected API. Never commit `data/`.
+Open http://127.0.0.1:8000/demo.html. Use `data/demo-credentials.txt` for
+Connected API. Never commit `data/`.
 
 ```sh
 docker compose up --build

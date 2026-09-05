@@ -21,6 +21,8 @@ curl -fsS "http://127.0.0.1:${PORT}/healthz"
 echo
 code=$(curl -fsS -o /dev/null -w '%{http_code}' "http://127.0.0.1:${PORT}/money-operations")
 [ "$code" = "200" ]
+demo=$(curl -fsS -o /dev/null -w '%{http_code}' "http://127.0.0.1:${PORT}/demo.html")
+[ "$demo" = "200" ]
 docker exec "$NAME" test -f /app/sample-data/money-operations/monthly_account_summaries.csv
 docker exec "$NAME" test -f /data/config.json
 echo "image smoke ok"

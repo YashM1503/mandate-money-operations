@@ -1,6 +1,6 @@
 import os
 
-from mandate.api import allowed_hosts
+from mandate.api import ROOT, allowed_hosts
 from mandate.env import masked
 from mandate.money_operations_narrative import try_model_compose
 
@@ -45,3 +45,14 @@ def test_try_model_compose_stays_off_without_egress(monkeypatch):
     monkeypatch.setenv('MANDATE_MODEL_KEY', 'not-a-real-key')
     monkeypatch.setenv('MANDATE_MODEL_NAME', 'demo')
     assert try_model_compose({'claims': []}) is None
+
+
+def test_standalone_demo_html_matches_workspace():
+    workspace = ROOT / 'static' / 'money-operations.html'
+    demo = ROOT / 'demo.html'
+    assert demo.is_file()
+    assert demo.read_bytes() == workspace.read_bytes()
+    text = demo.read_text()
+    assert 'STANDALONE' in text
+    assert 'Open Megan’s close' in text
+    assert 'file:' in text

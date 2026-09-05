@@ -130,6 +130,8 @@ def test_csp_allows_hashed_scripts_without_unsafe_inline(setup):
     script_policy = policy.split('script-src ', 1)[1].split(';', 1)[0]
     assert "'sha256-" in script_policy
     assert "'unsafe-inline'" not in script_policy
+    demo = setup[0].get('/demo.html')
+    assert demo.headers['content-security-policy'] == policy
 
 
 def test_narrative_does_not_use_expense_driver_as_revenue_offset():

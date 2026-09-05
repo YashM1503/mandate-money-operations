@@ -34,7 +34,16 @@ claims. They cannot approve, edit, or release.
 
 ## Run Megan’s close
 
-Python 3.12 or newer.
+**No server.** Open `demo.html` in a browser (double-click it, or
+File → Open). That file is the synthetic February close. Click through
+Overview, the explorer, Ask Mandate, review, and the memo. Approve, then
+**Listen to briefing** for the local readout.
+
+The same page also lives at `static/money-operations.html`. Both work over
+`file://`. Nothing calls localhost unless you choose **Connected API** on a
+running app.
+
+Optional live API (only if you want credentials and packaged CSV ingest):
 
 ```sh
 python3.12 -m venv .venv
@@ -44,8 +53,8 @@ python scripts/bootstrap.py
 uvicorn mandate.api:create_app --factory --host 127.0.0.1 --port 8000 --workers 1 --no-proxy-headers
 ```
 
-Open http://127.0.0.1:8000/money-operations. Use **Synthetic replay** for the
-45-second path, or **Connected API** with `data/demo-credentials.txt`.
+Then open http://127.0.0.1:8000/demo.html or `/money-operations`. Use
+`data/demo-credentials.txt` for Connected API.
 
 ```sh
 docker compose up --build

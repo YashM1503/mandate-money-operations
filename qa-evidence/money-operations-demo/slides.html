@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Mandate deck</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #111; overflow: hidden; }
+    #stage { width: 100vw; height: 100vh; display: grid; place-items: center; }
+    #stage img { width: 100vw; height: 100vh; object-fit: contain; background: #111; }
+  </style>
+</head>
+<body>
+  <div id="stage"><img id="slide" alt="Mandate slide"></div>
+  <script>
+    const slides = Array.from({ length: 10 }, (_, i) => `slides/slide-${String(i + 1).padStart(2, '0')}.png`);
+    window.showSlide = function (n) {
+      const img = document.getElementById('slide');
+      img.src = slides[Math.max(0, Math.min(slides.length, n) - 1)];
+    };
+    window.showSlide(1);
+  </script>
+</body>
+</html>

@@ -15,9 +15,11 @@ fs.mkdirSync(out, { recursive: true });
   const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
-  await page.goto(pathToFileURL(path.resolve(__dirname, '../static/money-operations.html')).href);
+  await page.goto(pathToFileURL(path.resolve(__dirname, '../demo.html')).href);
 
-  await page.getByRole('button', { name: 'Enter the close' }).click();
+  if (!await page.evaluate(() => window.STANDALONE === true)) throw Error('file:// demo must run standalone');
+  await page.locator('#enter').click();
+  if (!await page.locator('#content').innerText().then(text => /Standalone synthetic proof of concept/i.test(text))) throw Error('Standalone banner is missing');
   await page.screenshot({ path: path.join(out, 'overview.png'), fullPage: true });
   const overview = await page.locator('#content').innerText();
   if (!overview.includes('+$675k') || !overview.includes('64.0%')) throw Error('Reference metrics are missing');

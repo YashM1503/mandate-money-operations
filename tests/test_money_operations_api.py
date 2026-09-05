@@ -150,6 +150,9 @@ def test_money_operations_page_is_served(setup):
     assert page.status_code == 200
     assert 'text/html' in page.headers.get('content-type', '')
     assert b'Connected API' in page.content
+    demo = client.get('/demo.html')
+    assert demo.status_code == 200
+    assert demo.content == page.content
     assert client.get('/').status_code == 200
     assert client.get('/security').status_code == 200
 

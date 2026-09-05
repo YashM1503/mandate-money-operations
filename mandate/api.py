@@ -80,6 +80,7 @@ def create_app(store=None,users=None):
     page_script_csp={
         '/':_script_csp(ROOT/'static/index.html'),
         '/money-operations':_script_csp(ROOT/'static/money-operations.html'),
+        '/demo.html':_script_csp(ROOT/'static/money-operations.html'),
     }
     app.add_middleware(TrustedHostMiddleware,allowed_hosts=allowed_hosts())
     @app.middleware('http')
@@ -101,7 +102,7 @@ def create_app(store=None,users=None):
         if int(request.headers.get('content-length','0') or 0)>max_body: return JSONResponse({'detail':'Request too large'},413)
         response=await call_next(request)
         response.headers.update({'X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Referrer-Policy':'no-referrer','Cache-Control':'no-store','Permissions-Policy':'camera=(), microphone=(), geolocation=()'})
-        if request.url.path in ('/','/money-operations'):
+        if request.url.path in ('/','/money-operations','/demo.html'):
             response.headers['Content-Security-Policy']=f"default-src 'none'; script-src {page_script_csp[request.url.path]}; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; media-src 'self' blob:; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
         return response
     security=HTTPBearer(auto_error=False)
@@ -142,6 +143,8 @@ def create_app(store=None,users=None):
     def index(): return FileResponse(ROOT/'static/index.html')
     @app.get('/money-operations')
     def money_operations_index(): return FileResponse(ROOT/'static/money-operations.html')
+    @app.get('/demo.html')
+    def money_operations_demo(): return FileResponse(ROOT/'static/money-operations.html')
     @app.post('/api/login')
     def login(body:Login,request:Request):
         client=request.client.host if request.client else 'unknown'
