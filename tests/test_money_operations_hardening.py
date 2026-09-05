@@ -135,7 +135,7 @@ def test_csp_allows_hashed_scripts_without_unsafe_inline(setup):
 def test_narrative_does_not_use_expense_driver_as_revenue_offset():
     result = analyze(FIXTURE, '2026-01', '2026-02')
     narrative = deterministic_template(result['claims'])
-    enterprise = next(item for item in narrative['why'] if 'Enterprise customers' in item['text'])
+    enterprise = next(item for item in narrative['why'] if 'Enterprise' in item['text'])
     assert 'Recurring subscription' not in enterprise['text']
     assert enterprise['claim_ids']
     assert all('6200' not in claim_id for claim_id in enterprise['claim_ids'])
