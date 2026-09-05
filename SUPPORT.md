@@ -7,6 +7,10 @@ product and does not move funds.
 
 Open `demo.html` in a browser. No server is required.
 
+If an app is already running, use http://127.0.0.1:8000/demo.html. The
+same page is at `/money-operations`. A JSON `Not Found` on `/demo.html`
+means restart uvicorn from this checkout.
+
 ## Docs
 
 - Product story and run path: `README.md`

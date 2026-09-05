@@ -53,8 +53,12 @@ python scripts/bootstrap.py
 uvicorn mandate.api:create_app --factory --host 127.0.0.1 --port 8000 --workers 1 --no-proxy-headers
 ```
 
-Then open http://127.0.0.1:8000/demo.html or `/money-operations`. Use
-`data/demo-credentials.txt` for Connected API.
+Then open **http://127.0.0.1:8000/demo.html**. `/money-operations` is the
+same page. Use `data/demo-credentials.txt` for Connected API.
+
+If the tab shows `{"detail":"Not Found"}`, the process predates this route.
+Stop it and start uvicorn again from this checkout. `GET /healthz` should
+already be 200 on a live app.
 
 ```sh
 docker compose up --build

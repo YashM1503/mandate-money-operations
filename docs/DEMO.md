@@ -43,8 +43,13 @@ python scripts/bootstrap.py
 uvicorn mandate.api:create_app --factory --host 127.0.0.1 --port 8000 --workers 1 --no-proxy-headers
 ```
 
-Open http://127.0.0.1:8000/demo.html. Use `data/demo-credentials.txt` for
-Connected API. Never commit `data/`.
+Open **http://127.0.0.1:8000/demo.html**. `/money-operations` serves the
+same file. Use `data/demo-credentials.txt` for Connected API. Never commit
+`data/`.
+
+A JSON `{"detail":"Not Found"}` on `/demo.html` means an older uvicorn is
+still bound to port 8000. Restart from this checkout. Do not treat that 404
+as a missing product page.
 
 ```sh
 docker compose up --build

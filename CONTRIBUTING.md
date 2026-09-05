@@ -23,6 +23,9 @@ python scripts/bootstrap.py
 uvicorn mandate.api:create_app --factory --host 127.0.0.1 --port 8000 --workers 1 --no-proxy-headers
 ```
 
+Then open http://127.0.0.1:8000/demo.html. Restart that process after
+pulling if `/demo.html` returns JSON `Not Found`.
+
 ## What to keep true
 
 - Canonical amounts are integer minor units. Do not calculate in the model,

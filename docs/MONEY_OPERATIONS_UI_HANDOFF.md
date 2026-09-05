@@ -1,6 +1,8 @@
 # Money Operations UI handoff
 
-`static/money-operations.html` is a standalone interactive prototype for the Maximor Money Operations reference case. It does not change the existing payment or security pages.
+`demo.html` is the standalone synthetic close. It is a copy of
+`static/money-operations.html`. Open the file in a browser when no server
+is running. It does not change the existing payment or security pages.
 
 ## Implemented in the browser prototype
 
@@ -32,9 +34,12 @@ The UI expects these concepts from the backend:
 - controller review bound to the current analysis and narrative revision
 - honest integration states for PRISM, GIDE, and ElevenLabs
 
-## Required route addition during integration
+## Served routes
 
-Serve `static/money-operations.html` from `/money-operations` with the same security headers as the other unified pages. Update the content-security-policy path handling if the current middleware applies it only to `/`.
+`create_app` serves the same HTML from `GET /demo.html` and
+`GET /money-operations`, with the same CSP hash as the other unified pages.
+A JSON 404 on `/demo.html` means the running process is older than this
+route. Restart uvicorn from the current checkout.
 
 ## Honesty boundary
 

@@ -21,7 +21,7 @@ Honest target: 80 / 100.
 | `analyze` p50 / p95 (n=25) | 4.8 ms / 5.8 ms |
 | `compose` | 1.6 ms |
 | Pytest | 196 passed + 9 subtests in 62 s |
-| Image smoke | `/healthz` ok, `/money-operations` 200 |
+| Image smoke | `/healthz` ok, `/demo.html` 200, `/money-operations` 200 |
 
 ## PRISM Observe → Improve
 

@@ -16,7 +16,14 @@ python -m pytest -q
 uvicorn mandate.api:create_app --factory --host 127.0.0.1 --port 8000 --workers 1 --no-proxy-headers
 ```
 
-Open http://127.0.0.1:8000. Read `data/demo-credentials.txt` privately for the analyst, controller and auditor passwords. Credentials are generated, never hardcoded. Bootstrap refuses to overwrite existing configuration. The database is seeded on first startup with fresh dates. Secrets, sessions and SQLite data must not enter Git or the package archive.
+Open http://127.0.0.1:8000/demo.html for Megan’s close (same page as
+`/money-operations`). Open http://127.0.0.1:8000 for the separate supplier
+payment demo. If `/demo.html` returns `{"detail":"Not Found"}`, restart
+uvicorn from this checkout. Read `data/demo-credentials.txt` privately for
+the analyst, controller and auditor passwords. Credentials are generated,
+never hardcoded. Bootstrap refuses to overwrite existing configuration. The
+database is seeded on first startup with fresh dates. Secrets, sessions and
+SQLite data must not enter Git or the package archive.
 
 Use a new `MANDATE_DATA_DIR` to start a fresh demo; never reset a database while the service is running. The test suite uses isolated temporary databases. Cash snapshots older than 24 hours and changed-beneficiary attestations older than 24 hours stop authorization intentionally. This MVP has no cash-import endpoint; a fresh synthetic dataset is the demo reset procedure.
 
@@ -27,13 +34,14 @@ The image copies `mandate/`, `static/`, `scripts/`, and `sample-data/` (required
 ```sh
 docker compose up --build
 curl -fsS http://127.0.0.1:8000/healthz
+curl -fsS -o /dev/null -w '%{http_code}\n' http://127.0.0.1:8000/demo.html
 curl -fsS -o /dev/null -w '%{http_code}\n' http://127.0.0.1:8000/money-operations
 docker compose exec mandate cat /data/demo-credentials.txt
 ```
 
 Retrieve credentials only through an authorized container shell. Never paste them into a public README, screenshot or CI log. Check health, login, held Atlas, independent verification, separate approval, release, restart persistence and idempotent retry. The service runs as UID 10001 with a read-only root filesystem, writable data volume, no Linux capabilities and one worker.
 
-CI builds the image and runs `scripts/smoke_image.sh` (health, `/money-operations`, packaged fixtures, bootstrap config). Do not describe a *hosted* cloud URL as verified until a named platform deploy passes the checklist below.
+CI builds the image and runs `scripts/smoke_image.sh` (health, `/demo.html`, `/money-operations`, packaged fixtures, bootstrap config). Do not describe a *hosted* cloud URL as verified until a named platform deploy passes the checklist below.
 
 ## Cloud API and web service
 
