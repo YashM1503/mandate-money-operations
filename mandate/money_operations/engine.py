@@ -13,7 +13,6 @@ from .integer import minor_to_usd, percentage_variance_bps, share_bps
 CALCULATION_VERSION = 'mo-calc-1.0'
 
 _SLUG_RE = re.compile(r'[^A-Za-z0-9]+')
-TOP3_CUSTOMERS = ('C001', 'C002', 'C003')
 FAVORABILITY = {
     'revenue': {'increase': 'favorable', 'decrease': 'unfavorable', 'flat': 'neutral'},
     'contra_revenue': {'increase': 'unfavorable', 'decrease': 'favorable', 'flat': 'neutral'},
@@ -42,6 +41,16 @@ def analyze(path: str | Path, prior_period: str, current_period: str,
         raise DatasetValidationError(
             f'periods {prior_period!r} and {current_period!r} must exist in monthly summaries',
             [_period_finding(dataset, prior_period, current_period)],
+        )
+    if prior_period >= current_period:
+        raise DatasetValidationError(
+            'prior_period must be earlier than current_period',
+            [{
+                'code': 'invalid_period_order',
+                'severity': 'error',
+                'message': 'prior_period must be earlier than current_period',
+                'details': {'prior_period': prior_period, 'current_period': current_period},
+            }],
         )
 
     accounts: dict[str, dict] = {}
@@ -613,18 +622,25 @@ def _build_claims(dataset: LoadedDataset, account_cfg: dict, variance: dict, pri
     if code == '4000':
         customer_dim = next((block for block in [primary, *alternatives] if block['dimension'] == 'customer_id'), None)
         if customer_dim:
-            chosen = [row for row in customer_dim['members'] if row['member'] in TOP3_CUSTOMERS]
+            chosen = sorted(
+                (
+                    row for row in customer_dim['members']
+                    if row['member'] != UNCLASSIFIED and row['delta_minor'] > 0
+                ),
+                key=lambda item: (-item['delta_minor'], item['member']),
+            )[:3]
             delta = sum(row['delta_minor'] for row in chosen)
+            customer_ids = [row['member'] for row in chosen]
             claims.append(_claim(
                 'claim-4000-top3-customers', code, 'driver_group', variance_status,
                 {
-                    'customer_ids': list(TOP3_CUSTOMERS),
-                    'member_labels': [row['member_label'] for row in sorted(chosen, key=lambda item: item['member'])],
+                    'customer_ids': customer_ids,
+                    'member_labels': [row['member_label'] for row in chosen],
                     'delta_minor': delta,
                     'delta_usd': minor_to_usd(delta),
                     'share_bps': share_bps(delta, variance['absolute_variance_minor']),
                 },
-                'top3_delta = sum(driver_delta for customer_id in C001,C002,C003); share_bps = top3_delta * 10000 / revenue_absolute_variance',
+                'top3_delta = sum(three largest positive customer deltas); share_bps = top3_delta * 10000 / revenue_absolute_variance',
                 txn_sources,
                 sorted((row for member in chosen for row in member['source_rows']),
                        key=lambda item: (item['period'], item['transaction_id'])),

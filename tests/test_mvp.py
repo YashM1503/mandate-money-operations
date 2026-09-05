@@ -58,6 +58,8 @@ def test_login_bad_credentials_and_throttle(setup):
     c,_,_=setup
     for i in range(10):assert c.post('/api/login',json={'username':'nobody','password':'wrong'}).status_code==401
     assert c.post('/api/login',json={'username':'nobody','password':'wrong'}).status_code==429
+    # One username cannot lock every user sharing the same client address.
+    assert c.post('/api/login',json={'username':'analyst','password':'test-only-password'}).status_code==200
 
 def test_northstar_execution_exact_and_retry(setup):
     approve(setup)

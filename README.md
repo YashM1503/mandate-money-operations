@@ -8,10 +8,11 @@ gross revenue increased $675,000 (18.0%), enterprise contributed $576,000
 Prior-close context requires current-run confirmation, and Other Opex remains
 visibly reconciled but causally unexplained pending human review.
 
-The offline visual replay is `static/money-operations.html`. PRISM observes the
-validated narrative boundary, GIDE usage requires a separate native evaluation,
-and ElevenLabs briefing is optional and restricted to an approved memo. All
-included financial records are fictional.
+The offline visual replay is `static/money-operations.html`. PRISM live traces
+for the rejected and corrected narratives were verified in the sponsor
+dashboard; see `docs/PRISM_LIVE_EVIDENCE.md`. GIDE usage requires a separate
+native evaluation, and ElevenLabs briefing is optional and restricted to an
+approved memo. All included financial records are fictional.
 
 ## Run the Money Operations demo
 
@@ -28,7 +29,7 @@ the `data/` directory.
 
 ### Security analyst demo
 
-The Regodit security questionnaire workflow is now the primary demonstration. Open `static/security.html` directly for an offline synthetic replay, or start the API using the commands below and visit `/security` for authenticated server mode. `/` retains the earlier payment MVP.
+The Regodit security questionnaire workflow remains an additional reference demonstration. Open `static/security.html` directly for an offline synthetic replay, or start the API using the commands below and visit `/security` for authenticated server mode. `/` retains the earlier payment MVP.
 
 Try: MFA conflict → Complete backups → yes → daily → yes → Actually backups are weekly → load new synthetic IAM evidence → export questionnaire → decision memo.
 
