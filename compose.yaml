@@ -16,5 +16,6 @@ services:
     cap_drop:
       - ALL
     restart: unless-stopped
+    # First start writes config.json into the volume when signing-key env is unset.
 volumes:
   mandate_data:

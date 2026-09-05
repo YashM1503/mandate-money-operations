@@ -16,7 +16,14 @@ from .money_operations_audio import (
     cached_audio,
     narrative_digest,
 )
-from .money_operations_narrative import ACCOUNT_NAMES, claim_amount_minor, claim_bps, claim_value
+from .money_operations_narrative import (
+    ACCOUNT_NAMES,
+    claim_amount_minor,
+    claim_bps,
+    claim_value,
+    display_pct,
+    display_usd,
+)
 from .money_operations_prism import prism_status
 from .money_operations_service import (
     MoneyOpsError,
@@ -549,6 +556,40 @@ def _wants_mutation(question: str) -> bool:
     return any(term in lowered for term in MUTATION_TERMS)
 
 
+def _claim_by_id(claims: list[dict], *suffixes: str) -> dict | None:
+    for claim in claims:
+        cid = str(claim.get('id') or '')
+        if any(cid == suffix or cid.endswith(suffix) for suffix in suffixes):
+            return claim
+    return None
+
+
+def _maximor_revenue_sentence(claims: list[dict]) -> str | None:
+    """Phrase the 18 / 32 / 64 close from stored claims only."""
+    revenue = _claim_by_id(claims, 'claim-4000-absolute-variance', 'VAR-REV')
+    revenue_pct = _claim_by_id(claims, 'claim-4000-percentage-variance')
+    enterprise = _claim_by_id(claims, 'claim-4000-driver-segment-Enterprise', 'DRV-ENT')
+    top3 = _claim_by_id(claims, 'claim-4000-top3-customers', 'DRV-TOP3')
+    if not (revenue and enterprise and top3):
+        return None
+    rev_amt = display_usd(abs(claim_amount_minor(revenue) or 0))
+    rev_pct = display_pct(claim_bps(revenue_pct or revenue))
+    ent_amt = display_usd(abs(claim_amount_minor(enterprise) or 0))
+    ent_pct = display_pct(claim_bps(enterprise))
+    top_amt = display_usd(abs(claim_amount_minor(top3) or 0))
+    top_bps = claim_value(top3).get('share_bps')
+    if not isinstance(top_bps, int):
+        top_bps = claim_bps(top3)
+    top_share = display_pct(top_bps)
+    if not (rev_pct and ent_pct and top_share):
+        return None
+    return (
+        f'Gross revenue increased {rev_pct}, or {rev_amt}, primarily driven by a {ent_pct} '
+        f'increase in enterprise accounts ({ent_amt}), with three customers accounting for '
+        f'{top_share} of the increase ({top_amt}).'
+    )
+
+
 def answer_chat(row, body: dict, question: str) -> dict:
     claims = [claim for claim in body.get('claims') or [] if isinstance(claim, dict)]
     if _wants_mutation(question):
@@ -568,6 +609,7 @@ def answer_chat(row, body: dict, question: str) -> dict:
         }
     lowered = question.lower()
     selected = []
+    maximor = _maximor_revenue_sentence(claims)
     if 'other opex' in lowered or '6900' in lowered or 'unexplain' in lowered:
         selected = [c for c in claims if _is_other_opex(_claim_account(c)) or str(c.get('status', '')).lower() == 'unexplained']
         answer = (
@@ -579,13 +621,22 @@ def answer_chat(row, body: dict, question: str) -> dict:
         limits = ['No source row establishes a business cause for Other Opex.']
     elif 'enterprise' in lowered:
         selected = [c for c in claims if 'enterprise' in ' '.join(str(x).lower() for x in (c.get('entities') or []) + [claim_value(c).get('member') or ''])]
-        answer = 'Enterprise is a selected revenue driver. Figures come from cited claims only.'
+        if not selected:
+            selected = [c for c in claims if str(c.get('id', '')).endswith('driver-segment-Enterprise')]
+        answer = maximor or 'Enterprise is a selected revenue driver. Figures come from cited claims only.'
+        if maximor:
+            selected = [c for c in (
+                _claim_by_id(claims, 'claim-4000-absolute-variance'),
+                _claim_by_id(claims, 'claim-4000-percentage-variance'),
+                _claim_by_id(claims, 'claim-4000-driver-segment-Enterprise'),
+                _claim_by_id(claims, 'claim-4000-top3-customers'),
+            ) if c]
         follow = 'Ask how concentrated the increase was among named customers.'
         escalate = None
         limits = ['Chat does not recompute driver shares.']
     elif 'c001' in lowered or 'northstar' in lowered or 'top' in lowered or 'concentrat' in lowered:
         selected = [c for c in claims if str(c.get('id', '')).endswith('top3-customers') or 'top3' in str(c.get('id', '')).lower()]
-        answer = 'Three named customers contributed a documented share of total growth. IDs stay on the claims.'
+        answer = maximor or 'Three named customers contributed a documented share of total growth. IDs stay on the claims.'
         follow = 'Ask whether any offset reduced the net account variance.'
         escalate = None
         limits = ['Customer names in prose are claim-backed labels, not a new calculation.']
@@ -595,15 +646,22 @@ def answer_chat(row, body: dict, question: str) -> dict:
         follow = 'Ask which context entries remain unconfirmed.'
         escalate = 'Confirm suggested software context before treating it as current-run evidence.'
         limits = ['Prior-run notes do not change calculated amounts.']
-    elif 'revenue' in lowered or '4000' in lowered or 'gross' in lowered:
-        selected = [c for c in claims if _same_account(str(c.get('account_code') or ''), '4000') and str(c.get('claim_type', '')).lower() in ('variance', 'absolute_variance', 'percentage_variance', '')]
-        answer = 'Gross revenue changed between the selected periods. Amounts and percentages are claim-backed.'
+    elif 'revenue' in lowered or '4000' in lowered or 'gross' in lowered or 'headline' in lowered or 'draft' in lowered:
+        selected = [c for c in claims if _same_account(str(c.get('account_code') or ''), '4000') and str(c.get('claim_type', '')).lower() in ('variance', 'absolute_variance', 'percentage_variance', 'driver_delta', 'driver_group', '')]
+        answer = maximor or 'Gross revenue changed between the selected periods. Amounts and percentages are claim-backed.'
+        if maximor:
+            selected = [c for c in (
+                _claim_by_id(claims, 'claim-4000-absolute-variance'),
+                _claim_by_id(claims, 'claim-4000-percentage-variance'),
+                _claim_by_id(claims, 'claim-4000-driver-segment-Enterprise'),
+                _claim_by_id(claims, 'claim-4000-top3-customers'),
+            ) if c]
         follow = 'Ask which segment contributed the increase.'
         escalate = None
         limits = ['Chat reports stored claims; it does not recalculate the engine.']
     else:
         selected = [c for c in claims if str(c.get('claim_type', '')).lower() in ('absolute_variance', 'variance')][:3]
-        answer = (
+        answer = maximor or (
             body.get('narrative') or {}
         ).get('headline') or 'Ask about a specific account, driver, or unexplained item.'
         follow = 'Ask about Gross revenue, Enterprise, the top customers, or Other Opex.'

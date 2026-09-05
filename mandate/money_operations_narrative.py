@@ -250,16 +250,22 @@ def deterministic_template(claims: list[dict]) -> dict:
         else:
             headline = f'Gross revenue changed {amount}.'
             add(revenue, f'Gross revenue changed {amount}.', [revenue_pct] if revenue_pct else [])
+    enterprise_account = str((enterprise or {}).get('account_code') or '4000')
     offsets = [
         claim for claim in claims
         if str(claim_value(claim).get('classification') or claim.get('classification') or '').lower() == 'offset'
-        and str(claim.get('account_code') or '') == '4000'
+        and str(claim.get('account_code') or '') == enterprise_account
         and 'driver-segment-' in str(claim.get('id') or '')
     ]
     if enterprise is not None:
         ent_share = claim_value(enterprise).get('share_bps')
         ent_amt = display_usd(abs(claim_amount_minor(enterprise) or 0))
-        if offsets or (isinstance(ent_share, int) and abs(ent_share) > 10_000):
+        ent_pct = display_pct(claim_bps(enterprise))
+        ent_state = str(claim_value(enterprise).get('percentage_state') or enterprise.get('percentage_state') or '')
+        over_share = isinstance(ent_share, int) and abs(ent_share) > 10_000
+        if ent_pct and ent_state != 'new_activity' and not over_share and not offsets:
+            add(enterprise, f'Enterprise accounts increased {ent_pct} ({ent_amt}).')
+        elif offsets or over_share:
             add(enterprise, f'Enterprise customers contributed {ent_amt} of the net account variance.')
         else:
             add(enterprise, f'Enterprise customers contributed {ent_amt} of the increase.')
@@ -288,6 +294,13 @@ def deterministic_template(claims: list[dict]) -> dict:
             add(top3, f'{who} contributed {contrib}, equal to {share} of total growth.')
         else:
             add(top3, f'{who} contributed {contrib} of total growth.')
+        rev_pct = display_pct(claim_bps(revenue_pct or revenue)) if revenue is not None else None
+        ent_pct_h = display_pct(claim_bps(enterprise)) if enterprise is not None else None
+        if rev_pct and ent_pct_h and share and not offsets:
+            headline = (
+                f'Gross revenue increased {rev_pct}, primarily driven by a {ent_pct_h} increase '
+                f'in enterprise accounts, with three customers accounting for {share} of the increase.'
+            )
     if software is not None:
         add(software, f'Software expense changed {display_usd(abs(claim_amount_minor(software) or 0))}. Prior approved ERP context may apply after current-run confirmation.')
     if opex is not None:
@@ -330,7 +343,11 @@ def deterministic_template(claims: list[dict]) -> dict:
 
 
 def try_model_compose(package: dict) -> dict | None:
-    """Optional hook for a thin composer. Default: do not call a model."""
+    """Optional hook for a thin composer. Default: do not call a model.
+
+    When a provider is wired, follow `.cursor/skills/mandate-money-operations/SKILL.md`.
+    Failed validation must fall back to the deterministic template.
+    """
     return None
 
 

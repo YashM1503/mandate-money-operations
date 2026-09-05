@@ -16,14 +16,28 @@ approved memo. All included financial records are fictional.
 
 ## Run the Money Operations demo
 
+Python 3.12 or newer is required.
+
 ```sh
-/opt/anaconda3/bin/python3.13 scripts/bootstrap.py
-MANDATE_DATA_DIR=./data /opt/anaconda3/bin/python3.13 -m uvicorn mandate.api:create_app --factory --host 127.0.0.1 --port 8000 --workers 1 --no-proxy-headers
+python3.12 -m venv .venv
+. .venv/bin/activate
+pip install -r requirements-dev.txt
+python scripts/bootstrap.py
+uvicorn mandate.api:create_app --factory --host 127.0.0.1 --port 8000 --workers 1 --no-proxy-headers
 ```
 
 Open <http://127.0.0.1:8000/money-operations>, choose **Connected API**, and use
 the locally generated credentials in `data/demo-credentials.txt`. Never commit
 the `data/` directory.
+
+Or, after Docker is available:
+
+```sh
+docker compose up --build
+```
+
+The first container start bootstraps `/data`. Read credentials from the volume,
+not from Git. See `docs/DEPLOYMENT.md`.
 
 ## Additional reference workflows
 

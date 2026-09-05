@@ -17,21 +17,24 @@ Open http://127.0.0.1:8000. Read `data/demo-credentials.txt` privately for the a
 
 Use a new `MANDATE_DATA_DIR` to start a fresh demo; never reset a database while the service is running. The test suite uses isolated temporary databases. Cash snapshots older than 24 hours and changed-beneficiary attestations older than 24 hours stop authorization intentionally. This MVP has no cash-import endpoint; a fresh synthetic dataset is the demo reset procedure.
 
-## Container path prepared for verification
+## Container path
 
-A Dockerfile, localhost-bound Compose service and CI container-build step are included. The local machine had a Docker client but no running engine; the image was not built here. Do not describe container deployment as tested until these commands pass:
+The image copies `mandate/`, `static/`, `scripts/`, and `sample-data/` (required for the connected Money Operations reference package). First start runs `scripts/bootstrap.py` when `/data/config.json` is missing and `MANDATE_SIGNING_KEY` is unset. Credentials stay on the persistent volume.
 
 ```sh
-docker compose build
-docker compose run --rm mandate python scripts/bootstrap.py
-docker compose up -d
+docker compose up --build
+curl -fsS http://127.0.0.1:8000/healthz
+curl -fsS -o /dev/null -w '%{http_code}\n' http://127.0.0.1:8000/money-operations
+docker compose exec mandate cat /data/demo-credentials.txt
 ```
 
-The bootstrap command creates credentials in the persistent volume. Retrieve the credentials privately through an authorized container shell. Never paste them into a public README, screenshot or CI log. Check health, login, held Atlas, independent verification, separate approval, release, restart persistence and idempotent retry. The service runs as UID 10001 with a read-only root filesystem, writable data volume, no Linux capabilities and one worker.
+Retrieve credentials only through an authorized container shell. Never paste them into a public README, screenshot or CI log. Check health, login, held Atlas, independent verification, separate approval, release, restart persistence and idempotent retry. The service runs as UID 10001 with a read-only root filesystem, writable data volume, no Linux capabilities and one worker.
+
+CI builds the image and runs `scripts/smoke_image.sh` (health, `/money-operations`, packaged fixtures, bootstrap config). Do not describe a *hosted* cloud URL as verified until a named platform deploy passes the checklist below.
 
 ## Cloud API and web service
 
-Use a platform supporting a Docker web service and a persistent disk. Mount `/data` writable by UID 10001. Set `PORT` to the platform port and `MANDATE_ALLOWED_HOSTS` to the exact deployment hostname plus `127.0.0.1` for health checks. Use HTTPS ingress and platform access restrictions for a private synthetic demo. Keep one instance and one worker. Do not use a sleeping ephemeral function or horizontally scaled replicas with local SQLite.
+Use a platform supporting a Docker web service and a persistent disk. Mount `/data` writable by UID 10001. Set `PORT` to the platform port. `127.0.0.1` and `localhost` are always allowed for health checks. Also set `MANDATE_ALLOWED_HOSTS` to the public hostname, or rely on `RENDER_EXTERNAL_HOSTNAME`, `RAILWAY_PUBLIC_DOMAIN`, `WEBSITE_HOSTNAME`, or `FLY_APP_NAME` when the platform injects them. Use `*` only for a private demo. Use HTTPS ingress and platform access restrictions. Keep one instance and one worker. Do not use a sleeping ephemeral function or horizontally scaled replicas with local SQLite.
 
 Provision secrets with the platform secret manager. Either persist bootstrap's configuration securely on the volume or supply `MANDATE_SIGNING_KEY` and `MANDATE_USERS_JSON`; the latter is the salted PBKDF2 user map from generated config, not plaintext passwords. No default credentials exist. Set the model and PRISM variables only when ready to allow synthetic outbound metadata. Start command is `scripts/entrypoint.sh`.
 

@@ -6,7 +6,9 @@ RUN pip install --no-cache-dir -r requirements.lock && useradd --uid 10001 --cre
 COPY --chown=mandate:mandate mandate ./mandate
 COPY --chown=mandate:mandate static ./static
 COPY --chown=mandate:mandate scripts ./scripts
+COPY --chown=mandate:mandate sample-data ./sample-data
+RUN chmod +x /app/scripts/entrypoint.sh /app/scripts/bootstrap.py
 USER 10001:10001
 EXPOSE 8000
-HEALTHCHECK --interval=30s --timeout=3s CMD python -c "import urllib.request,os; urllib.request.urlopen('http://127.0.0.1:'+os.getenv('PORT','8000')+'/healthz',timeout=2)"
+HEALTHCHECK --interval=30s --timeout=3s --start-period=20s --retries=5 CMD python -c "import urllib.request,os; urllib.request.urlopen('http://127.0.0.1:'+os.getenv('PORT','8000')+'/healthz',timeout=2)"
 CMD ["/app/scripts/entrypoint.sh"]

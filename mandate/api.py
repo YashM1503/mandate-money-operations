@@ -54,6 +54,22 @@ def load_config():
     if set(users)!={'analyst','controller','auditor'} or any(set(u)!={'role','salt','hash'} or u['role']!=name for name,u in users.items()): raise RuntimeError('Invalid user configuration')
     return data,key.encode(),users
 
+def allowed_hosts():
+    raw=os.getenv('MANDATE_ALLOWED_HOSTS','localhost,127.0.0.1,testserver')
+    hosts=[h.strip() for h in raw.split(',') if h.strip()]
+    if '*' in hosts:
+        return ['*']
+    extras=[]
+    for key in ('RENDER_EXTERNAL_HOSTNAME','RAILWAY_PUBLIC_DOMAIN','WEBSITE_HOSTNAME'):
+        value=os.getenv(key,'').strip()
+        if value: extras.append(value)
+    fly=os.getenv('FLY_APP_NAME','').strip()
+    if fly: extras.append(f'{fly}.fly.dev')
+    for loop in ('127.0.0.1','localhost'):
+        if loop not in hosts:
+            hosts.append(loop)
+    return list(dict.fromkeys(hosts+extras))
+
 def create_app(store=None,users=None):
     if store is None:
         data,key,users=load_config(); store=Store(data/'mandate.sqlite3',key)
@@ -63,8 +79,7 @@ def create_app(store=None,users=None):
         '/':_script_csp(ROOT/'static/index.html'),
         '/money-operations':_script_csp(ROOT/'static/money-operations.html'),
     }
-    allowed=os.getenv('MANDATE_ALLOWED_HOSTS','localhost,127.0.0.1,testserver').split(',')
-    app.add_middleware(TrustedHostMiddleware,allowed_hosts=allowed)
+    app.add_middleware(TrustedHostMiddleware,allowed_hosts=allowed_hosts())
     @app.middleware('http')
     async def headers(request,call_next):
         # Incremental ASGI body cap prevents unbounded JSON even without Content-Length.

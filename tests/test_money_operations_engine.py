@@ -18,6 +18,7 @@ from mandate.money_operations import (
     validate_dataset,
 )
 from mandate.money_operations.integer import percentage_variance_bps, round_half_away_from_zero
+from mandate.money_operations_narrative import compose
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / 'sample-data' / 'money-operations'
@@ -143,6 +144,21 @@ def test_oracle_revenue_enterprise_and_top3():
     assert top3['value_json']['delta_minor'] == 432_000 * 100
     assert top3['value_json']['share_bps'] == 6400
     assert top3['value_json']['customer_ids'] == ['C001', 'C002', 'C003']
+
+
+def test_reference_narrative_uses_maximor_sentence_and_ignores_other_account_offsets():
+    analysis = analyze(FIXTURE, PRIOR, CURRENT)
+    narrative = compose({'claims': analysis['claims'], 'prior_period': PRIOR, 'current_period': CURRENT})
+    prose = f"{narrative.get('headline', '')} {narrative.get('text', '')}"
+    lowered = prose.lower()
+    assert '18.0%' in prose
+    assert '32.0%' in prose
+    assert '64.0%' in prose
+    assert 'primarily driven' in lowered
+    assert 'enterprise' in lowered
+    assert 'recurring subscription' not in lowered
+    assert 'software' in lowered
+    assert 'unexplained' in lowered
 
 
 def test_oracle_other_opex_reconciled_but_unexplained():

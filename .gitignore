@@ -15,3 +15,5 @@ artifacts/
 .DS_Store
 *.log
 node_modules/
+qa-evidence/**/*.mp4
+qa-evidence/**/*.webm

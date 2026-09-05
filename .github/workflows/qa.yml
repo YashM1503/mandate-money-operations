@@ -14,3 +14,4 @@ jobs:
       - run: python -m pytest -q --junitxml=artifacts/tests.xml
       - run: pip-audit -r requirements.lock
       - run: docker build -t mandate-ci .
+      - run: chmod +x scripts/smoke_image.sh && scripts/smoke_image.sh mandate-ci
