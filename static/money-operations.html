@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Mandate · Financial change intelligence</title>
+<style>
+:root{
+  --ink:#142a27;--ink2:#2d4440;--muted:#71807b;--paper:#f4f3ed;--card:#fffefa;
+  --line:#dce2dc;--forest:#113b33;--forest2:#1b5145;--mint:#bfe6cd;--lime:#dce9b8;
+  --gold:#d3aa65;--gold-soft:#f5ead5;--red:#a94b42;--red-soft:#f7e8e4;--blue:#6f8f91;
+  --shadow:0 16px 54px rgba(19,45,39,.08);--sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif
+}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--paper);color:var(--ink);font:14px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #9bc7b0;outline-offset:3px}
+h1,h2,h3,p{margin:0}a{color:inherit}[hidden]{display:none!important}.serif{font-family:var(--serif)}.mono{font:11px ui-monospace,SFMono-Regular,Menlo,monospace}.muted{color:var(--muted)}.fine{font-size:10px;color:var(--muted);line-height:1.65}.eyebrow{font-size:9px;text-transform:uppercase;letter-spacing:.18em;font-weight:750;color:#72817b}.number{font-variant-numeric:tabular-nums}.row{display:flex;align-items:center}.spread{justify-content:space-between}.gap{gap:10px}
+.wordmark{display:flex;align-items:center;gap:10px;font-weight:780;letter-spacing:.2em;font-size:16px}.brandmark{position:relative;width:22px;height:22px;display:inline-block}.brandmark:before,.brandmark:after{content:"";position:absolute;width:7px;height:22px;background:currentColor;transform:skew(-19deg);left:3px}.brandmark:after{left:13px;height:15px;top:0}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 9px;font-size:9px;font-weight:700;letter-spacing:.035em;white-space:nowrap;background:#edf0ea;color:#536b61}.pill:before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor}.pill.good{background:#e4f3eb;color:#15725e}.pill.warn{background:var(--gold-soft);color:#95651a}.pill.bad{background:var(--red-soft);color:var(--red)}.pill.dark{background:#244e44;color:#d6eedc}.pill.neutral{background:#eef0ed;color:#68736e}
+.btn{border:1px solid #cfd7d0;background:#fffefa;border-radius:7px;padding:9px 13px;font-size:11px;font-weight:650;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.18s ease}.btn:hover:not(:disabled){transform:translateY(-1px);background:#f0f4ee}.btn.primary{background:var(--forest);border-color:var(--forest);color:#f4f7ed}.btn.primary:hover:not(:disabled){background:var(--forest2)}.btn.soft{background:#e6efda;border-color:#e6efda}.btn.ghost{background:transparent;border-color:transparent}.btn.small{padding:7px 10px;font-size:10px}.iconbtn{width:34px;height:34px;border:1px solid var(--line);background:var(--card);border-radius:7px;display:grid;place-items:center}
+/* Entry */
+.entry{min-height:100svh;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(420px,.8fr);background:#fbfbf7}.entry-story{position:relative;overflow:hidden;background:#0e302a;color:#eef4e6;padding:44px 52px;display:flex;flex-direction:column;min-height:760px}.entry-story:before{content:"";position:absolute;inset:-20%;background:radial-gradient(circle at 24% 25%,rgba(177,221,178,.12),transparent 28%),radial-gradient(circle at 72% 63%,rgba(222,186,110,.1),transparent 26%),linear-gradient(130deg,transparent 28%,rgba(255,255,255,.025) 50%,transparent 72%);animation:drift 13s ease-in-out infinite alternate}.entry-story:after{content:"";position:absolute;inset:0;opacity:.1;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}.entry-story>*{position:relative;z-index:2}.entry-copy{margin-top:80px;max-width:620px}.entry-copy .eyebrow{color:#a4bea7}.entry-copy h1{font:normal clamp(47px,5.2vw,76px)/1.01 var(--serif);letter-spacing:-.048em;margin:22px 0}.entry-copy h1 em{font-weight:normal;color:#d5e4b9}.entry-copy>p:last-child{color:#b7c9bc;max-width:500px;font-size:15px;line-height:1.8}.entry-viz{height:230px;margin:28px 0 12px;position:relative}.entry-viz canvas{width:100%;height:100%;position:absolute;inset:0}.entry-viz-label{position:absolute;background:#173d34dd;border:1px solid #779c7b66;padding:7px 9px;border-radius:6px;color:#bfd3bd;font-size:9px;box-shadow:0 10px 35px #00140f50}.ev1{left:5%;top:22%}.ev2{left:35%;top:63%}.ev3{right:8%;top:16%}.entry-foot{margin-top:auto;padding-top:20px;border-top:1px solid #bdd4b324;display:flex;justify-content:space-between;color:#91a79a;font-size:9px}.entry-form{display:flex;align-items:center;justify-content:center;padding:48px;background:#fbfbf7}.entry-card{max-width:390px;width:100%}.entry-card h2{font:normal 39px/1.12 var(--serif);letter-spacing:-.035em;margin:15px 0}.entry-card>p{font-size:12px;line-height:1.8;color:var(--muted)}.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:25px 0 18px}.mode-card{border:1px solid var(--line);background:var(--card);border-radius:9px;padding:15px;text-align:left}.mode-card.active{border-color:#2b6354;box-shadow:inset 0 0 0 1px #2b6354;background:#f0f5ee}.mode-card strong{display:block;font-size:11px}.mode-card span{display:block;color:var(--muted);font-size:9px;margin-top:5px;line-height:1.5}.field{display:grid;gap:6px;margin:13px 0}.field label{font-size:10px;font-weight:700}.field input,.field select,.composer input{width:100%;border:1px solid #cfd8d0;border-radius:7px;background:#fffefa;padding:11px 12px}.enter{width:100%;padding:12px;margin-top:18px}.entry-note{margin-top:18px;padding-top:17px;border-top:1px solid var(--line);font-size:9px;color:#84908a;line-height:1.7}
+/* Shell */
+.shell{display:grid;grid-template-columns:214px minmax(0,1fr);min-height:100svh}.sidebar{height:100svh;position:sticky;top:0;background:#12382f;color:#bcd0c0;padding:28px 18px;display:flex;flex-direction:column;z-index:10}.sidebar .wordmark{color:#edf3e6;margin:0 8px 31px}.workspace{display:flex;align-items:center;gap:10px;padding:17px 8px;border-top:1px solid #ffffff18;border-bottom:1px solid #ffffff18;margin-bottom:26px}.workspace-avatar{height:31px;width:31px;border-radius:8px;background:#ffffff12;display:grid;place-items:center;color:#d6e4c6;font:15px var(--serif)}.workspace b{display:block;color:#f0f5e9;font-size:11px}.workspace small{display:block;color:#83a18f;font-size:8px;margin-top:2px}.nav-label{font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:#789887;padding:0 10px;margin-bottom:9px}.nav{display:grid;gap:5px}.nav button{border:0;background:transparent;color:#afc4b4;padding:11px 10px;border-radius:7px;text-align:left;display:flex;align-items:center;gap:11px;font-size:11px}.nav button:hover{background:#ffffff08}.nav button.active{background:#dfeac51a;color:#f1f4e7}.nav button.active:after{content:"";width:4px;height:4px;border-radius:50%;background:#d5dfa5;margin-left:auto}.nav .glyph{width:17px;text-align:center;color:#91b09a}.side-insight{margin-top:auto;border:1px solid #d1dfbb20;border-radius:9px;padding:15px 13px}.side-insight .eyebrow{font-size:7px;color:#8fab92}.side-insight p{font:18px/1.25 var(--serif);color:#e2ead5;margin:8px 0}.side-insight small{font-size:8px;line-height:1.6;color:#85a08d}.side-foot{padding:18px 5px 0;display:flex;justify-content:space-between;color:#72927f;font-size:8px}
+.appmain{min-width:0}.topbar{height:70px;border-bottom:1px solid #d9dfda;background:#f9f8f3;padding:0 31px;display:flex;align-items:center;justify-content:space-between;gap:18px;position:sticky;top:0;z-index:8}.crumb{display:flex;align-items:center;gap:9px;color:#8c9690;font-size:10px}.crumb strong{color:#3f5951}.top-actions{display:flex;align-items:center;gap:10px}.periods{display:flex;align-items:center;gap:7px;padding:4px;border:1px solid var(--line);background:#fffefa;border-radius:7px}.periods select{border:0;background:transparent;padding:4px 19px 4px 6px;font-size:9px}.actor{display:flex;align-items:center;gap:8px;margin-left:7px}.actor-avatar{height:30px;width:30px;border-radius:50%;background:#dde7d5;display:grid;place-items:center;font:15px var(--serif)}.actor b{font-size:10px;display:block}.actor small{font-size:8px;color:var(--muted);display:block}.content{padding:28px 32px 20px;max-width:1650px;margin:auto}.pagehead{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:23px}.pagehead h1{font:normal 37px/1.08 var(--serif);letter-spacing:-.04em;margin:7px 0 6px}.pagehead p{font-size:10px;color:var(--muted)}.head-actions{display:flex;gap:8px;align-items:center}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:10px;background:var(--card);overflow:hidden;margin-bottom:20px}.metric{padding:18px 20px;border-right:1px solid var(--line);position:relative}.metric:last-child{border:0}.metric label{font-size:9px;color:#7a8880;display:block}.metric strong{font-size:25px;letter-spacing:-.045em;font-weight:540;display:block;margin-top:4px}.metric small{font-size:8px;color:#96a099}.spark{position:absolute;right:16px;bottom:20px;height:22px;display:flex;gap:3px;align-items:flex-end}.spark i{display:block;width:3px;border-radius:2px;background:#a8c4a8}
+.grid-main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px}.panel{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:0 8px 26px rgba(24,54,47,.025)}.panel-head{padding:16px 19px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}.panel-head h2{font-size:11px;font-weight:720}.panel-head p{font-size:8px;color:var(--muted);margin-top:3px}.panel-body{padding:19px}.flow{background:#102f29;color:#dce9d5;border:0;position:relative}.flow .panel-head{border-color:#ffffff13}.flow .panel-head p{color:#83a491}.flow canvas{display:block;width:100%;height:355px}.flow-labels{position:absolute;left:0;right:0;top:55px;height:355px;pointer-events:none}.flow-node{position:absolute;transform:translate(-50%,-50%);display:grid;justify-items:center;gap:6px;width:88px;text-align:center}.flow-node i{width:37px;height:37px;border-radius:12px;background:#1c4439;border:1px solid #72947a70;display:grid;place-items:center;font-style:normal;color:#bcd5ad;box-shadow:0 0 0 5px #82a76d0c}.flow-node strong{font-size:9px;font-weight:620}.flow-node small{font-size:7px;color:#769786}.flow-node.active i{border-color:#d4e8a8;color:#e9f5c5;box-shadow:0 0 32px #c4df9332}.flow-node.review i{background:#4b3d29;border-color:#d0aa67;color:#f0d59b}.flow-note{position:absolute;bottom:12px;left:18px;color:#789c84;font-size:8px;letter-spacing:.06em}.flow-legend{position:absolute;bottom:12px;right:18px;display:flex;gap:11px;color:#789c84;font-size:7px}.flow-legend span:before{content:"";display:inline-block;width:4px;height:4px;border-radius:50%;background:#bad892;margin-right:5px}.flow-legend span:last-child:before{background:#d3aa65}
+.decision-card{display:flex;flex-direction:column}.decision-top{padding:20px;border-bottom:1px solid var(--line)}.decision-top h2{font:23px/1.17 var(--serif);letter-spacing:-.025em;margin:12px 0 9px}.decision-top p{font-size:10px;color:var(--muted);line-height:1.75}.decision-amount{padding:16px 20px}.kv{display:flex;justify-content:space-between;gap:12px;padding:7px 0;font-size:9px;color:#78847e}.kv b{color:#334f47;font-weight:650}.decision-callout{margin:4px 20px 16px;padding:13px 0;border-top:1px solid var(--line);font-size:10px;line-height:1.65}.decision-callout strong{color:#93641b}.decision-actions{padding:0 20px 18px;display:grid;gap:8px}.decision-actions .btn{width:100%}
+.lower{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;margin-top:18px}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;text-align:left}th{font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:#88958e;background:#fafaf5;padding:11px 16px;font-weight:680}td{padding:13px 16px;border-top:1px solid #e8ebe5;font-size:10px}td small{display:block;color:#8c9992;font-size:8px;margin-top:3px}.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}.variance-row{cursor:pointer}.variance-row:hover,.variance-row.selected{background:#f0f4ed}.variance-row button{background:transparent;border:0;padding:0;text-align:left;font-weight:650}.feed{padding:17px 19px}.feed-item{border-left:1px solid #dbe3da;padding:0 0 17px 15px;position:relative}.feed-item:last-child{padding-bottom:0}.feed-item:before{content:"";position:absolute;left:-3px;top:4px;width:5px;height:5px;border-radius:50%;background:#87aa83}.feed-item p{font-size:9px;line-height:1.55}.feed-item small{display:block;font-size:7px;color:#97a29b;margin-top:4px}
+/* Detail and chat */
+.detail-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);gap:18px}.hero-card{padding:25px}.hero-card h2{font:30px var(--serif);letter-spacing:-.035em;margin:10px 0}.delta{display:flex;align-items:baseline;gap:11px}.delta strong{font-size:39px;letter-spacing:-.055em;font-weight:520}.delta span{font-size:12px;color:#26715e}.barline{height:9px;border-radius:9px;background:#edf0eb;overflow:hidden;margin:20px 0 8px}.barline i{display:block;height:100%;width:64%;background:linear-gradient(90deg,#0d806d,#6cbca8);border-radius:9px}.driver-list{display:grid;gap:10px;margin-top:20px}.driver{display:grid;grid-template-columns:minmax(130px,1fr) 2fr 70px;gap:12px;align-items:center;font-size:10px}.driver-track{height:6px;background:#edf0eb;border-radius:8px;overflow:hidden}.driver-track i{display:block;height:100%;background:#239783;border-radius:8px}.driver b{text-align:right}.evidence-card{padding:21px}.evidence-card h3{font-size:11px;margin-bottom:12px}.evidence-item{padding:12px 0;border-bottom:1px solid var(--line)}.evidence-item:last-child{border:0}.evidence-item b{font-size:9px;display:block}.evidence-item span{font-size:8px;color:var(--muted);display:block;margin-top:4px}.claimbox{margin-top:18px;padding:13px;background:#f2f5ef;border-radius:7px;font-size:9px;line-height:1.7}.tabs{display:flex;border-bottom:1px solid var(--line);padding:0 18px}.tabs button{border:0;background:transparent;padding:13px 12px;font-size:9px;color:#7b8881;border-bottom:2px solid transparent}.tabs button.active{color:#2d564b;border-color:#2d6e5e}.chat-layout{display:grid;grid-template-columns:minmax(0,1.35fr) 330px;gap:18px}.chatbox{display:flex;flex-direction:column;min-height:570px}.chatlog{padding:20px;flex:1;overflow:auto;max-height:490px}.bubble{max-width:88%;padding:13px 15px;border-radius:11px;background:#eef2ec;font-size:10px;line-height:1.75;margin:10px 0}.bubble.user{margin-left:auto;background:#16453b;color:#eef4e7}.bubble small{font-size:7px;display:block;opacity:.7;margin-bottom:5px}.citations{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}.citation{border:1px solid #cad7cf;border-radius:5px;background:#fffefa;padding:4px 6px;font-size:7px;color:#5d756b}.composer{border-top:1px solid var(--line);padding:14px;display:flex;gap:8px}.composer input{flex:1}.suggestions{display:flex;gap:7px;flex-wrap:wrap;padding:0 18px 12px}.context-list{padding:18px}.context-item{padding:14px 0;border-bottom:1px solid var(--line)}.context-item:first-child{padding-top:0}.context-item h3{font-size:10px;margin:7px 0}.context-item p{font-size:9px;color:var(--muted);line-height:1.65}.context-item .row{margin-top:10px}
+/* Review */
+.review-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px}.review-queue{display:grid}.review-ticket{padding:20px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr auto;gap:15px}.review-ticket:last-child{border:0}.review-ticket h2{font:22px var(--serif);margin:10px 0 6px}.review-ticket p{font-size:10px;color:var(--muted);line-height:1.7;max-width:690px}.review-ticket .amount{font-size:22px;text-align:right}.review-ticket .actions{grid-column:1/-1;display:flex;gap:8px;align-items:center}.control-panel{padding:20px}.control-panel h2{font:24px var(--serif);margin:11px 0}.control-panel p{font-size:10px;color:var(--muted);line-height:1.7}.control-list{margin-top:15px}.control-row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-top:1px solid var(--line);font-size:9px}.control-row b{font-weight:650}
+/* Memo and assurance */
+.memo-toolbar{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:18px}.memo-sheet{max-width:860px;margin:auto;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);padding:45px 54px;color:#263c35}.letterhead{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #234d40;padding-bottom:18px;margin-bottom:22px}.letterhead address{text-align:right;font-style:normal;font-size:9px;line-height:1.7;color:#6f7c76}.memo-class{font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:#8a958e}.memo-sheet>h1{font:32px/1.15 var(--serif);letter-spacing:-.025em;margin:14px 0 20px}.memo-meta{display:grid;grid-template-columns:1fr 1fr;gap:9px 25px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:13px 0;margin:18px 0}.memo-meta div{display:flex;gap:12px;font-size:9px}.memo-meta label{color:#87938d;width:60px}.memo-sheet section{margin:22px 0}.memo-sheet h2{font-size:10px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}.memo-sheet p,.memo-sheet li{font-size:10px;line-height:1.85;color:#52635c}.memo-sheet ul{padding-left:17px}.decision-box{border-left:3px solid var(--gold);background:#f7f3e9;padding:12px 15px;margin-top:20px;font-size:10px}.signoff{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:15px;margin-top:28px;font-size:8px;color:#8a958e}.assurance-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}.assurance-card{padding:22px}.assurance-card h2{font:23px var(--serif);margin:11px 0}.assurance-card p{font-size:10px;color:var(--muted);line-height:1.75}.status-list{margin-top:15px}.status-row{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding:11px 0;font-size:9px}.contract{margin-top:18px;padding:18px}.contract pre{background:#122f29;color:#bcd4c6;border-radius:8px;padding:16px;overflow:auto;font-size:9px;line-height:1.6;max-height:300px}.footer{padding:22px 0 4px;display:flex;justify-content:space-between;gap:14px;font-size:8px;color:#929d97}.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#163d34;color:#eef4e8;padding:11px 15px;border-radius:7px;box-shadow:0 12px 40px #09231b55;z-index:30;font-size:10px}.toast.error{background:#87483e}.banner{margin:0 0 16px;padding:11px 14px;border-radius:8px;font-size:10px;line-height:1.65;border:1px solid var(--line);background:#f3f6f0;color:#3f5951}.banner.error{background:var(--red-soft);border-color:#e4c7c2;color:var(--red)}.banner.warn{background:var(--gold-soft);color:#7a5414}.reauth{position:fixed;inset:0;background:#10282073;z-index:40;display:grid;place-items:center;padding:20px}.reauth-card{width:min(420px,92vw);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;box-shadow:var(--shadow)}.reauth-card h2{font:26px var(--serif);margin:8px 0 8px}.reauth-card p{font-size:10px;color:var(--muted);line-height:1.7}.briefing-audio{width:100%;margin-top:12px}
+.banner{margin:0 0 16px;padding:11px 14px;border-radius:8px;font-size:10px;line-height:1.65;border:1px solid var(--line);background:#f3f6f0;color:#3f5951}.banner.error{background:var(--red-soft);border-color:#e4c7c2;color:var(--red)}.banner.warn{background:var(--gold-soft);color:#7a5414}
+.reauth{position:fixed;inset:0;background:#10282073;z-index:40;display:grid;place-items:center;padding:20px}.reauth-card{width:min(420px,92vw);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;box-shadow:var(--shadow)}.reauth-card h2{font:26px var(--serif);margin:8px 0 8px}.reauth-card p{font-size:10px;color:var(--muted);line-height:1.7}.briefing-audio{width:100%;margin-top:12px}
+@keyframes drift{from{transform:translate3d(-2%,-1%,0) scale(1)}to{transform:translate3d(3%,2%,0) scale(1.06)}}
+@media(max-width:1050px){.metrics{grid-template-columns:1fr 1fr}.metric:nth-child(2){border-right:0}.metric:nth-child(-n+2){border-bottom:1px solid var(--line)}.grid-main,.lower,.detail-layout,.chat-layout,.review-grid{grid-template-columns:1fr}.assurance-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:790px){.entry{grid-template-columns:1fr}.entry-story{min-height:650px}.shell{display:block}.sidebar{height:auto;position:relative;padding:15px}.sidebar .wordmark,.workspace,.nav-label,.side-insight,.side-foot{display:none}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap}.topbar{padding:0 16px}.periods{display:none}.content{padding:22px 16px}.pagehead{align-items:flex-start;flex-direction:column}.assurance-grid{grid-template-columns:1fr}.entry-form{padding:36px 22px}.entry-story{padding:36px 28px}.entry-foot{gap:15px}.memo-sheet{padding:30px 24px}}
+@media(max-width:520px){.metrics{grid-template-columns:1fr}.metric{border-right:0;border-bottom:1px solid var(--line)!important}.metric:last-child{border-bottom:0!important}.top-actions .pill{display:none}.review-ticket{grid-template-columns:1fr}.review-ticket .amount{text-align:left}.driver{grid-template-columns:1fr 90px}.driver-track{grid-row:2}.memo-meta{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+@media print{.sidebar,.topbar,.pagehead,.memo-toolbar,.footer,.toast{display:none!important}.shell{display:block}.content{padding:0}.memo-sheet{box-shadow:none;border:0;max-width:none;padding:10mm}@page{size:A4;margin:10mm}}
+</style>
+</head>
+<body>
+<section id="entry" class="entry">
+  <div class="entry-story">
+    <div class="wordmark"><span class="brandmark"></span>MANDATE</div>
+    <div class="entry-copy">
+      <p class="eyebrow">Financial change intelligence</p>
+      <h1>The number moved.<br><em>Now prove why.</em></h1>
+      <p>Mandate turns monthly summaries and transaction rows into controller-ready explanations—with every driver reconciled, every claim traceable, and every unknown left honest.</p>
+    </div>
+    <div class="entry-viz"><canvas id="entryCanvas"></canvas><span class="entry-viz-label ev1">Two periods</span><span class="entry-viz-label ev2">392 source rows</span><span class="entry-viz-label ev3">One decision trail</span></div>
+    <div class="entry-foot"><span>Maximor · Money Operations</span><span>Synthetic finance data · Human approval required</span></div>
+  </div>
+  <div class="entry-form">
+    <div class="entry-card">
+      <p class="eyebrow">Variance review workspace</p>
+      <h2>Welcome back, Yari.</h2>
+      <p>Explore the reference close or connect this interface to the authenticated Money Operations API.</p>
+      <div class="mode-grid">
+        <button class="mode-card active" data-mode="demo"><strong>Synthetic replay</strong><span>Complete interactive reference case</span></button>
+        <button class="mode-card" data-mode="api"><strong>Connected API</strong><span>Provisioned credentials · packaged dataset</span></button>
+      </div>
+      <div id="credentials" hidden>
+        <div class="field"><label for="username">Username</label><input id="username" autocomplete="username" placeholder="analyst / controller / auditor"></div>
+        <div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" placeholder="Provisioned password"></div>
+      </div>
+      <button id="enter" class="btn primary enter">Enter the close →</button>
+      <p id="entryError" class="fine" role="alert"></p>
+      <div class="entry-note">Synthetic replay runs entirely in this page. Connected API signs in, loads the packaged reference dataset, and maps live contracts into this workspace. Failures stay visible; they do not fall back to demo figures.</div>
+    </div>
+  </div>
+</section>
+
+<div id="app" class="shell" hidden>
+  <aside class="sidebar">
+    <div class="wordmark"><span class="brandmark"></span>MANDATE</div>
+    <div class="workspace"><span class="workspace-avatar">Y</span><span><b>Yari Tech Retail</b><small>February close · USD</small></span></div>
+    <p class="nav-label">Workspace</p>
+    <nav class="nav">
+      <button class="active" data-view="overview"><span class="glyph">◫</span>Overview</button>
+      <button data-view="variances"><span class="glyph">↗</span>Variance explorer</button>
+      <button data-view="analyst"><span class="glyph">◎</span>Ask Mandate</button>
+      <button data-view="review"><span class="glyph">◇</span>Review queue</button>
+      <button data-view="memo"><span class="glyph">▤</span>Executive memo</button>
+      <button data-view="assurance"><span class="glyph">⌁</span>Assurance</button>
+    </nav>
+    <div class="side-insight"><p class="eyebrow">This close</p><p>64% of growth came from three customers.</p><small>Computed from transaction deltas, not generated by the narrative model.</small></div>
+    <div class="side-foot"><span>v0.2 UI prototype</span><button id="logout" class="btn ghost small">Exit</button></div>
+  </aside>
+  <main class="appmain">
+    <header class="topbar">
+      <div class="crumb"><span>Finance</span><span>/</span><strong id="crumb">Close overview</strong></div>
+      <div class="top-actions">
+        <div class="periods"><select aria-label="Prior period"><option>Jan 2026</option></select><span>→</span><select aria-label="Current period"><option>Feb 2026</option></select></div>
+        <span id="modePill" class="pill neutral">Synthetic replay</span>
+        <div class="actor"><span class="actor-avatar">Y</span><span><b>Yari Misra</b><small>Finance lead</small></span></div>
+      </div>
+    </header>
+    <div id="content" class="content"></div>
+  </main>
+</div>
+<div id="toast" class="toast" hidden role="status"></div>
+<div id="reauth" class="reauth" hidden>
+  <div class="reauth-card">
+    <p class="eyebrow">Controller authority</p>
+    <h2>Switch to a controller session</h2>
+    <p>Approval is recorded only by the review API. Passwords and tokens stay in memory for this tab.</p>
+    <div class="field"><label for="reauthUser">Username</label><input id="reauthUser" autocomplete="username"></div>
+    <div class="field"><label for="reauthPass">Password</label><input id="reauthPass" type="password" autocomplete="current-password"></div>
+    <p id="reauthError" class="fine" role="alert"></p>
+    <div class="row gap" style="margin-top:14px">
+      <button id="reauthSubmit" class="btn primary">Authenticate controller</button>
+      <button id="reauthCancel" class="btn">Cancel</button>
+    </div>
+  </div>
+</div>
+<audio id="briefingAudio" class="briefing-audio" hidden controls></audio>
+
+<script>
+const $=id=>document.getElementById(id), esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(n);
+const pct=n=>new Intl.NumberFormat('en-US',{style:'percent',maximumFractionDigits:1}).format(n);
+const API_ROUTES={login:'/api/login',logout:'/api/logout',datasets:'/api/money-operations/datasets',analyses:'/api/money-operations/analyses',analysis:id=>`/api/money-operations/analyses/${id}`,overview:id=>`/api/money-operations/analyses/${id}/overview`,graph:id=>`/api/money-operations/analyses/${id}/graph`,accountVariances:id=>`/api/money-operations/analyses/${id}/account-variances`,accountVariance:(id,code)=>`/api/money-operations/analyses/${id}/account-variances/${code}`,variances:id=>`/api/money-operations/analyses/${id}/variances`,variance:(id,code)=>`/api/money-operations/analyses/${id}/variances/${code}`,evidence:id=>`/api/money-operations/claims/${id}/evidence`,context:'/api/money-operations/context',confirm:id=>`/api/money-operations/context/${id}/confirm`,review:id=>`/api/money-operations/analyses/${id}/review`,chat:id=>`/api/money-operations/analyses/${id}/chat`,memo:id=>`/api/money-operations/analyses/${id}/memo`,memoHtml:id=>`/api/money-operations/analyses/${id}/memo.html`,escalations:id=>`/api/money-operations/analyses/${id}/escalations`,lineage:id=>`/api/money-operations/analyses/${id}/lineage`,integrations:id=>`/api/money-operations/analyses/${id}/integration-status`,briefing:id=>`/api/money-operations/analyses/${id}/briefing`,briefingAudio:id=>`/api/money-operations/analyses/${id}/briefing/audio`,exportJson:id=>`/api/money-operations/analyses/${id}/export.json`,exportCsv:id=>`/api/money-operations/analyses/${id}/export.csv`};
+const UI_CODE={4000:'gross_revenue',4100:'refunds',5000:'cogs',6200:'software_expense',6300:'logistics_expense',6400:'payroll_expense',6500:'marketing_expense',6900:'other_opex',gross_revenue:'gross_revenue',refunds:'refunds',software_expense:'software_expense',logistics_expense:'logistics_expense',payroll_expense:'payroll_expense',other_opex:'other_opex'};
+function dollars(minor){return typeof minor==='number'?minor/100:null}
+function usdK(n,signed=false){const sign=n<0?'-':(signed&&n>0?'+':'');const abs=Math.abs(n);if(abs>=1000&&abs%1000===0)return sign+'$'+(abs/1000)+'k';return sign+money(abs)}
+function signedPct(ratio){const sign=ratio>0?'+':ratio<0?'-':'';return sign+(Math.abs(ratio)*100).toFixed(1)+'%'}
+function sharePct(ratio){return (Math.abs(ratio)*100).toFixed(1)+'%'}
+function uiCode(code){return UI_CODE[code]||UI_CODE[String(code||'').toLowerCase()]||String(code||'').toLowerCase()}
+function connected(){return state.mode==='api'&&state.connected===true}
+
+const BackendAdapter={
+  token:null,role:null,username:null,analysisId:null,datasetId:null,bundle:null,
+  async request(path,options={}){
+    const headers={...(options.body&&!options.raw?{'Content-Type':'application/json'}:{}),...(this.token?{Authorization:`Bearer ${this.token}`}:{}),...options.headers};
+    let res;
+    try{res=await fetch(path,{...options,headers})}
+    catch{const err=Error('Network error. Connected API could not be reached.');err.status=0;err.code='network';throw err}
+    if(options.blob){
+      if(!res.ok){let body={};try{body=await res.json()}catch{} const err=Error(body.detail||body.error?.message||`Request failed (${res.status})`);err.status=res.status;err.body=body;throw err}
+      return res.blob();
+    }
+    if(options.text){
+      const text=await res.text();
+      if(!res.ok){const err=Error(text||`Request failed (${res.status})`);err.status=res.status;throw err}
+      return text;
+    }
+    let body;try{body=await res.json()}catch{body={}}
+    if(!res.ok){
+      const err=Error(typeof body.detail==='string'?body.detail:(body.error?.message||`Request failed (${res.status})`));
+      err.status=res.status;err.code=body.error?.code;err.details=body.error?.details;err.body=body;throw err;
+    }
+    return body;
+  },
+  async signIn(username,password){
+    const login=await this.request(API_ROUTES.login,{method:'POST',body:JSON.stringify({username,password})});
+    this.token=login.token;this.role=login.user?.role||null;this.username=login.user?.username||username;
+    return login.user;
+  },
+  async connectedBootstrap(username,password){
+    await this.signIn(username,password);
+    const dataset=await this.request(API_ROUTES.datasets,{method:'POST',body:JSON.stringify({fixture:'reference'})});
+    this.datasetId=dataset.dataset_id;
+    const analysis=await this.request(API_ROUTES.analyses,{method:'POST',body:JSON.stringify({dataset_id:dataset.dataset_id,entity_id:'yari-retail-us',prior_period:'2026-01',current_period:'2026-02',...(dataset.revision?{expected_revision:dataset.revision}:{})})});
+    this.analysisId=analysis.analysis_id;
+    await this.refreshContracts(analysis);
+    state.connected=true;
+    applySessionChrome();
+  },
+  async refreshContracts(seed){
+    const id=this.analysisId;
+    const [overview,graph,variances,context,memo,escalations,lineage,integrations,analysis]=await Promise.all([
+      this.request(API_ROUTES.overview(id)),
+      this.request(API_ROUTES.graph(id)),
+      this.request(API_ROUTES.accountVariances(id)),
+      this.request(API_ROUTES.context),
+      this.request(API_ROUTES.memo(id)),
+      this.request(API_ROUTES.escalations(id)),
+      this.request(API_ROUTES.lineage(id)),
+      this.request(API_ROUTES.integrations(id)),
+      seed||this.request(API_ROUTES.analysis(id))
+    ]);
+    this.bundle={overview,graph,variances,context,memo,escalations,lineage,integrations,analysis};
+    applyLive(this.normalizeLiveAnalysis(this.bundle));
+    return this.bundle;
+  },
+  normalizeLiveAnalysis(payload){
+    const analysis=payload.analysis||{};
+    const overview=payload.overview||{};
+    const graph=payload.graph||{};
+    const items=(payload.variances&&payload.variances.items)||[];
+    const contextEntries=(payload.context&&payload.context.entries)||[];
+    const memo=payload.memo||{};
+    const escalations=(payload.escalations&&payload.escalations.escalations)||[];
+    const lineage=payload.lineage||{};
+    const integrations=payload.integrations||{};
+    const claims=analysis.claims||[];
+    const findClaim=pred=>claims.find(pred);
+    const rev=findClaim(c=>c.id==='claim-4000-absolute'||(uiCode(c.account_code)==='gross_revenue'&&/variance/i.test(c.claim_type||'variance')));
+    const ent=findClaim(c=>c.id==='claim-4000-driver-segment-Enterprise'||/Enterprise/i.test(JSON.stringify(c.value_json||c.entities||'')));
+    const top=findClaim(c=>c.id==='claim-4000-top3-customers'||/top3/i.test(c.id||''));
+    const revenue=items.find(i=>uiCode(i.account_code)==='gross_revenue')||{};
+    const opex=items.find(i=>uiCode(i.account_code)==='other_opex')||{};
+    const software=items.find(i=>uiCode(i.account_code)==='software_expense')||{};
+    const minor=c=>{const v=c&&(c.value_json||c);return dollars(v&&(v.delta_minor||v.amount_minor||v.absolute_variance_minor))};
+    const bps=c=>{const v=c&&(c.value_json||c);return typeof (v&&(v.percentage_variance_bps||v.share_bps||v.percentage_bps))==='number'?(v.percentage_variance_bps||v.percentage_bps||v.share_bps)/10000:null};
+    const grossChange=dollars(revenue.amount_minor)??minor(rev)??null;
+    const grossPct=typeof revenue.percentage_bps==='number'?revenue.percentage_bps/10000:(bps(rev));
+    const enterpriseChange=minor(ent);
+    const enterprisePct=ent&&ent.value_json&&typeof ent.value_json.percentage_variance_bps==='number'?ent.value_json.percentage_variance_bps/10000:null;
+    const topThree=minor(top);
+    const topShare=top&&top.value_json&&typeof top.value_json.share_bps==='number'?top.value_json.share_bps/10000:null;
+    const analysisId=analysis.analysis_id||overview.analysis_id||this.analysisId;
+    const liveContext=contextEntries.filter(e=>e&&e.active!==false&&!e.tombstoned);
+    const novaSoft=e=>/nova/i.test(e.statement||'')||uiCode(e.account_code)==='software_expense';
+    const nova=liveContext.find(e=>e.status==='user_confirmed'&&e.analysis_id===analysisId&&novaSoft(e))
+      ||liveContext.find(e=>e.status==='context_suggested'&&e.analysis_id===analysisId&&novaSoft(e))
+      ||liveContext.find(e=>e.status==='context_suggested'&&e.analysis_id&&novaSoft(e));
+    const confirmed=!!(nova&&nova.status==='user_confirmed');
+    const suggestedActive=!!(nova&&nova.status==='context_suggested');
+    const reviewStatus=overview.approval_state?.review_status||analysis.review_status||'draft';
+    const prismState=overview.prism?.state||integrations.prism||'not_configured';
+    const audioState=overview.audio?.state||'audio_unavailable';
+    const variances=items.map(item=>{
+      const code=uiCode(item.account_code);
+      const change=dollars(item.amount_minor);
+      const changePct=typeof item.percentage_bps==='number'?item.percentage_bps/10000:0;
+      const prior=dollars(item.prior_minor);
+      const current=dollars(item.current_minor);
+      let status='reconciled';
+      if(item.unexplained_cause||code==='other_opex') status='unexplained';
+      else if((item.suggested_context||[]).some(c=>c.status==='context_suggested')) status='context';
+      const claim=(item.evidence_statuses&&item.evidence_statuses[0]&&item.evidence_statuses[0].claim_id)||item.account_code;
+      const story=item.unexplained_cause||item.next_action||item.account_name||'';
+      return {code,name:item.account_name||code,prior:prior??0,current:current??0,change:change??0,changePct,favorable:code==='gross_revenue',status,story,claim,raw:item};
+    }).filter(v=>v.change!==0||v.code==='other_opex');
+    const drivers=(revenue.selected_drivers||revenue.contribution_shares||[]).map(d=>({name:d.member_label||d.member||d.dimension||'Driver',change:dollars(d.delta_minor)||0,share:typeof d.share_bps==='number'?d.share_bps/10000:0}));
+    const evidence=[];
+    for(const src of lineage.sources||[]) evidence.push({id:src.file_name||src.sha256,file:src.file_name||'source',detail:`${src.row_count||0} rows · ${src.schema_version||'v1'}`,status:'Source hash verified'});
+    if(top) evidence.push({id:top.id,file:'Calculated claim',detail:'C001 + C002 + C003 change / total revenue change',status:'Reconciled · 64.0%'});
+    const gidePending=integrations.gide==='usage_pending'||!integrations.gide||integrations.gide==='pending';
+    return {
+      company:analysis.entity_name||'Yari Tech Retail',
+      prior:'January 2026',current:'February 2026',currency:overview.currency||'USD',
+      calculationDigest:overview.calculation_digest||analysis.calculation_digest||'',
+      narrativeDigest:memo.narrative_digest||analysis.narrative_digest||'',
+      revision:overview.analysis_revision||analysis.revision||1,
+      contextRevision:payload.context?.revision||analysis.context_revision||1,
+      analysisId:analysis.analysis_id||overview.analysis_id,
+      opexChange:dollars(opex.amount_minor)??57000,
+      reconciledLabel:`${overview.reconciled_count??0} / ${Math.max(overview.reconciled_count||0,(overview.material_variances||[]).length)}`,
+      causalCount:(overview.causally_unexplained||[]).length,
+      summary:{
+        grossRevenueChange:grossChange??0,
+        grossRevenuePct:grossPct??0,
+        enterpriseChange:enterpriseChange??0,
+        enterprisePct:enterprisePct??0,
+        topThree:topThree??0,
+        topThreeShare:topShare??0
+      },
+      variances:(()=>{if(!variances.length)throw Error('Connected account-variances returned no movements. Demo figures were not substituted.');return variances})(),
+      drivers,
+      evidence,
+      integrations:{
+        prism:{state:prismState,label:prismState==='live_connected'?'Live application trace':prismState==='live_trace_pending'?'Awaiting live trace':prismState==='credential_ok'||prismState==='credential_configured'?'Credential configured':'Not configured',detail:overview.prism?.note||'Handshake is not a Money Operations application trace.'},
+        gide:{state:gidePending?'pending':integrations.gide,label:gidePending?'Evaluation pending':String(integrations.gide),detail:'Native GIDE run and JSONL evidence required'},
+        elevenlabs:{state:audioState,label:audioState==='audio_ready'?'Audio ready':audioState==='configured_unverified'?'Optional · configured':'Optional · disabled',detail:'Generate only from an approved memo'}
+      },
+      activity:[
+        [stamp(),'Reference dataset ingested','Packaged fixture loaded through the API'],
+        [stamp(),'Variance engine completed','Digest '+(overview.calculation_digest||'').slice(0,16)+'…'],
+        [stamp(),'Material movements ranked',`${(overview.material_variances||[]).length} material variances`],
+        [stamp(),suggestedActive?'Context suggested':confirmed?'Context confirmed':'Context retrieved',suggestedActive?'NovaERP renewal retained as a suggestion':confirmed?'NovaERP confirmed for this analysis':'No software context on this run'],
+        [stamp(),'One cause deferred','Other Opex routed to finance review']
+      ],
+      memo,escalations,graph,
+      contextItem:nova||null,
+      softwareChange:dollars(software.amount_minor)??0,
+      reviewStatus,
+      novaConfirmed:confirmed,
+      novaSuggested:suggestedActive||confirmed
+    };
+  }
+};
+function stamp(){return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}
+function applyLive(live){
+  Object.assign(DATA,live);
+  state.contextConfirmed=!!live.novaConfirmed;
+  state.reviewed=live.reviewStatus==='approved';
+  state.banner=null;
+}
+function applySessionChrome(){
+  const actor=document.querySelector('.actor b');
+  const role=document.querySelector('.actor small');
+  if(actor) actor.textContent=BackendAdapter.username||'Yari';
+  if(role) role.textContent=BackendAdapter.role||'Finance lead';
+}
+function resetDemoData(){Object.assign(DATA,JSON.parse(DEMO_JSON));state.connected=false;state.reviewed=false;state.contextConfirmed=false;state.messages=[{role:'assistant',text:'Revenue increased $675,000, or 18.0%. Enterprise accounts contributed $576,000. Three customers generated exactly 64.0% of total growth.',sources:['VAR-REV','DRV-ENT','DRV-TOP3']}];state.banner=null;BackendAdapter.token=null;BackendAdapter.role=null;BackendAdapter.username=null;BackendAdapter.analysisId=null}
+
+const DATA={
+  company:'Yari Tech Retail',prior:'January 2026',current:'February 2026',currency:'USD',calculationDigest:'6a807a7ced1135a6…',revision:3,opexChange:57000,softwareChange:82000,reconciledLabel:'6 / 6',causalCount:1,contextRevision:1,narrativeDigest:'',analysisId:'MO-2026-02-001',
+  summary:{grossRevenuePrior:3750000,grossRevenueCurrent:4425000,grossRevenueChange:675000,grossRevenuePct:.18,enterpriseChange:576000,enterprisePct:.32,topThree:432000,topThreeShare:.64},
+  variances:[
+    {code:'gross_revenue',name:'Gross revenue',prior:3750000,current:4425000,change:675000,changePct:.18,favorable:true,status:'reconciled',story:'Enterprise accounts generated most of the increase.',claim:'VAR-REV'},
+    {code:'payroll_expense',name:'Payroll',prior:920000,current:1040000,change:120000,changePct:.1304,favorable:false,status:'reconciled',story:'Performance bonuses increased while headcount remained 118.',claim:'VAR-PAY'},
+    {code:'logistics_expense',name:'Logistics',prior:310000,current:403000,change:93000,changePct:.30,favorable:false,status:'reconciled',story:'Higher standard volume and expedited shipping explain the movement.',claim:'VAR-LOG'},
+    {code:'software_expense',name:'Software',prior:180000,current:262000,change:82000,changePct:.4556,favorable:false,status:'context',story:'NovaERP annual renewal matches approved prior-close context.',claim:'VAR-SW'},
+    {code:'other_opex',name:'Other Opex',prior:150000,current:207000,change:57000,changePct:.38,favorable:false,status:'unexplained',story:'An unmapped clearing batch reconciles the amount; its business cause is unsupported.',claim:'VAR-UNK'},
+    {code:'refunds',name:'Refunds',prior:80000,current:128000,change:48000,changePct:.60,favorable:false,status:'reconciled',story:'SmartHub Pro accounted for $42,000, or 87.5%, of the increase.',claim:'VAR-REF'}
+  ],
+  drivers:[
+    {name:'Northstar Commerce',change:160000,share:.237},{name:'Atlas Industrial',change:145000,share:.215},{name:'Forma Retail Group',change:127000,share:.188},{name:'Other enterprise',change:144000,share:.213},{name:'Other segments',change:99000,share:.147}
+  ],
+  evidence:[
+    {id:'src-monthly-account-summaries',file:'monthly_account_summaries.csv',detail:'Rows 5–6 · January and February gross revenue',status:'Source hash verified'},
+    {id:'src-revenue-transactions',file:'revenue_transactions.csv',detail:'300 synthetic transaction rows · sales and refunds',status:'Source hash verified'},
+    {id:'DRV-TOP3',file:'Calculated claim',detail:'C001 + C002 + C003 change / total revenue change',status:'Reconciled · 64.0%'}
+  ],
+  integrations:{prism:{state:'live_trace_pending',label:'Awaiting live trace',detail:'SDK adapter placeholder · handshake is not proof'},gide:{state:'pending',label:'Evaluation pending',detail:'Native GIDE run and JSONL evidence required'},elevenlabs:{state:'disabled',label:'Optional · disabled',detail:'Generate only from an approved memo'}},
+  activity:[
+    ['11:37','Reference dataset ingested','392 transaction rows and six monthly summaries'],['11:38','Variance engine completed','Digest 6a807a7ced1135a6…'],['11:38','Six material movements ranked','Gross revenue selected for driver attribution'],['11:39','Context suggested','NovaERP renewal retained as a suggestion'],['11:40','One cause deferred','Other Opex routed to finance review']
+  ]
+};
+const DEMO_JSON=JSON.stringify(DATA);
+
+let state={view:'overview',selected:'gross_revenue',mode:'demo',connected:false,banner:null,analysisRunning:false,reviewed:false,contextConfirmed:false,messages:[
+  {role:'assistant',text:'Revenue increased $675,000, or 18.0%. Enterprise accounts contributed $576,000. Three customers generated exactly 64.0% of total growth.',sources:['VAR-REV','DRV-ENT','DRV-TOP3']}
+]};
+function toast(message,error=false){const t=$('toast');t.textContent=message;t.className='toast'+(error?' error':'');t.hidden=false;clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.hidden=true,3000)}
+function statusPill(status){const map={reconciled:['Reconciled','good'],context:['Context suggested','neutral'],unexplained:['Cause open','warn'],conflict:['Conflict','bad']},v=map[status]||[status,'neutral'];return `<span class="pill ${v[1]}">${v[0]}</span>`}
+function pageHead(kicker,title,copy,actions=''){return `<div class="pagehead"><div><p class="eyebrow">${kicker}</p><h1>${title}</h1><p>${copy}</p></div><div class="head-actions">${actions}</div></div>`}
+function metric(label,value,note,bars=[8,13,18,12,21]){return `<div class="metric"><label>${label}</label><strong class="number">${value}</strong><small>${note}</small><span class="spark">${bars.map(h=>`<i style="height:${h}px"></i>`).join('')}</span></div>`}
+function varianceRows(){return DATA.variances.map(v=>`<tr class="variance-row ${state.selected===v.code?'selected':''}" data-variance="${v.code}"><td><button>${esc(v.name)}</button><small>${esc(v.story)}</small></td><td class="num">${money(v.prior)}</td><td class="num">${money(v.current)}</td><td class="num"><strong>${v.change>=0?'+':''}${money(v.change)}</strong><small>${pct(v.changePct)}</small></td><td>${statusPill(v.status)}</td></tr>`).join('')}
+function activity(){return `<div class="feed">${DATA.activity.map(a=>`<div class="feed-item"><p><strong>${a[1]}</strong><br>${a[2]}</p><small>${a[0]} · synthetic run</small></div>`).join('')}</div>`}
+function flowCard(){const nodes=[['Compare','2 periods',9,50,''],['Detect','6 material',25,29,''],['Attribute','5 drivers',42,67,''],['Reconcile','100% tied',59,30,'active'],['Explain','4 claims',76,65,''],['Human review','1 cause open',91,35,'review']];return `<section class="panel flow"><div class="panel-head"><span><h2>Agent reasoning path</h2><p>Animated process view · calculation remains deterministic</p></span><button class="btn small dark" id="rerun">Run analysis</button></div><canvas id="flowCanvas"></canvas><div class="flow-labels">${nodes.map(([n,s,x,y,c],i)=>`<span class="flow-node ${c}" style="left:${x}%;top:${y}%" data-node="${i}"><i>${i+1}</i><strong>${n}</strong><small>${s}</small></span>`).join('')}</div><span class="flow-note">● ${state.analysisRunning?'Analysis in motion':'Reference run complete'} · not live telemetry</span><div class="flow-legend"><span>Computed</span><span>Human review</span></div></section>`}
+function overview(){const s=DATA.summary;return pageHead('February close','Explain the change. Defend the answer.','January to February · synthetic monthly close',`<button class="btn" data-action="open-memo">Open memo</button><button class="btn primary" data-action="ask">Ask Mandate</button>`)+`<div class="metrics">${metric('Gross revenue change',usdK(s.grossRevenueChange,true),signedPct(s.grossRevenuePct)+' month over month',[8,10,12,13,21])}${metric('Top-three contribution',sharePct(s.topThreeShare),usdK(s.topThree)+' of total growth',[5,8,12,17,22])}${metric('Reconciled movements',DATA.reconciledLabel,'Numeric source tie-out',[20,20,20,20,20])}${metric('Causal exceptions',String(DATA.causalCount),'Human explanation required',[4,4,4,4,16])}</div><div class="grid-main">${flowCard()}<section class="panel decision-card"><div class="decision-top"><span class="pill warn">Human decision</span><h2>The amount ties.<br>The cause does not.</h2><p>Other Opex increased through an unmapped clearing batch. The transaction proves the amount, but not the business reason.</p></div><div class="decision-amount"><div class="kv"><span>Measured movement</span><b>+${money(DATA.opexChange)}</b></div><div class="kv"><span>Numeric reconciliation</span><b>Complete</b></div><div class="kv"><span>Causal support</span><b>Unexplained</b></div></div><div class="decision-callout"><strong>Decision:</strong> request owner context or leave the cause open in the close memo.</div><div class="decision-actions"><button class="btn primary" data-action="review">Review exception</button><button class="btn" data-action="evidence">Inspect evidence</button></div></section></div><div class="lower"><section class="panel"><div class="panel-head"><span><h2>Material movements</h2><p>Ranked by absolute impact · click any account</p></span><span class="pill good">Source rows verified</span></div><div class="table-wrap"><table><thead><tr><th>Account</th><th class="num">January</th><th class="num">February</th><th class="num">Change</th><th>Status</th></tr></thead><tbody>${varianceRows()}</tbody></table></div></section><section class="panel"><div class="panel-head"><span><h2>Run activity</h2><p>Five latest events</p></span></div>${activity()}</section></div>`}
+function variances(){const v=DATA.variances.find(x=>x.code===state.selected)||DATA.variances[0];const isRevenue=v.code==='gross_revenue';return pageHead('Variance explorer','Follow the movement to its source.','Account → driver → transaction → claim',`<button class="btn" data-action="download">Export evidence</button><button class="btn primary" data-action="ask">Ask about this</button>`)+`<div class="detail-layout"><section class="panel hero-card"><div class="row spread"><span>${statusPill(v.status)}</span><span class="mono muted">${esc(v.claim)}</span></div><h2>${esc(v.name)}</h2><div class="delta"><strong>${v.change>=0?'+':''}${money(v.change)}</strong><span>${pct(v.changePct)} vs January</span></div><p class="muted" style="font-size:10px;max-width:620px">${esc(v.story)}</p>${isRevenue?`<div class="barline"><i></i></div><div class="row spread fine"><span>Top three customers</span><b>64.0% of total movement</b></div><div class="driver-list">${DATA.drivers.map(d=>`<div class="driver"><span>${esc(d.name)}</span><span class="driver-track"><i style="width:${Math.round(d.change/160000*100)}%"></i></span><b>+${money(d.change)}</b></div>`).join('')}</div>`:`<div class="claimbox"><b>Guarded conclusion</b><br>${esc(v.story)} ${v.status==='unexplained'?'Mandate will not infer the missing business cause from the account name or transaction description.':''}</div>`}</section><aside class="panel evidence-card"><div class="row spread"><h3>Evidence contract</h3><span class="pill good">Lineage retained</span></div>${DATA.evidence.map(e=>`<div class="evidence-item"><b>${esc(e.file)}</b><span>${esc(e.detail)}</span><span>${esc(e.status)}</span></div>`).join('')}<div class="claimbox"><b>Calculation digest</b><br><span class="mono">${DATA.calculationDigest}</span><br>Every displayed number must resolve to a canonical claim before narrative generation.</div></aside></div><section class="panel" style="margin-top:18px"><div class="panel-head"><span><h2>All material movements</h2><p>Select another account without leaving the evidence trail</p></span></div><div class="table-wrap"><table><thead><tr><th>Account</th><th class="num">January</th><th class="num">February</th><th class="num">Change</th><th>Status</th></tr></thead><tbody>${varianceRows()}</tbody></table></div></section>`}
+function analyst(){return pageHead('Evidence-backed analyst','Ask what changed—and inspect every claim.','The model may phrase validated facts; it cannot calculate or approve them.',`<span class="pill ${connected()?'good':'neutral'}">${connected()?'Connected API':'Deterministic replay'}</span>`)+`<div class="chat-layout"><section class="panel chatbox"><div id="chatlog" class="chatlog">${state.messages.map(m=>`<div class="bubble ${m.role==='user'?'user':''}"><small>${m.role==='user'?'Yari · finance lead':'Mandate · validated response'}</small>${esc(m.text)}${m.limitations?.length?`<div class="fine" style="margin-top:8px">${m.limitations.map(esc).join(' ')}</div>`:''}${m.sources?.length?`<div class="citations">${m.sources.map(s=>`<button class="citation" data-claim="${s}">${s}</button>`).join('')}</div>`:''}</div>`).join('')}</div><div class="suggestions">${['What drove revenue growth?','Why did software increase?','Can we explain Other Opex?','Draft the executive headline'].map(q=>`<button class="btn small" data-prompt="${q}">${q}</button>`).join('')}</div><form id="chatForm" class="composer"><input id="chatInput" maxlength="500" placeholder="Ask about a variance, driver, or evidence gap…"><button class="btn primary">Send</button></form></section><aside class="panel"><div class="panel-head"><span><h2>Context memory</h2><p>Suggestions never overwrite calculations</p></span></div><div class="context-list"><div class="context-item"><span class="pill ${state.contextConfirmed?'good':'neutral'}">${state.contextConfirmed?'Confirmed this run':'Suggested'}</span><h3>NovaERP annual renewal</h3><p>${esc(DATA.contextItem?.statement||'Prior-close context says the renewal normally occurs in February. The current $82,000 amount is independently recalculated.')}</p><div class="row gap"><button class="btn small primary" data-action="confirm-context" ${state.contextConfirmed?'disabled':''}>${state.contextConfirmed?'Confirmed':'Confirm for this close'}</button><button class="btn small" data-action="inspect-context">History</button></div></div><div class="context-item"><span class="pill warn">No supported context</span><h3>Other Opex clearing batch</h3><p>No approved explanation is available. Ask an owner or retain the limitation.</p></div></div></aside></div>`}
+function review(){return pageHead('Controller review','Keep uncertainty visible until an owner resolves it.','Approval is bound to the exact analysis revision and narrative digest.',`<span class="pill ${state.reviewed?'good':'warn'}">${state.reviewed?'Memo approved':'1 item needs review'}</span>`)+`<div class="review-grid"><section class="panel review-queue"><article class="review-ticket"><div><span class="pill warn">Cause unexplained</span><h2>Other Opex clearing batch</h2><p>The $57,000 movement reconciles to transaction EXP-202602-OTHE-16. No source establishes the operational reason. Suggested action: request context from the controller and retain the limitation until confirmed.</p></div><div class="amount"><strong>+${money(DATA.opexChange)}</strong><span class="fine">38.0% increase</span></div><div class="actions"><button class="btn primary" data-action="assign">Assign to controller</button><button class="btn" data-action="leave-open">Keep cause open</button><button class="btn" data-action="evidence">View source row</button></div></article><article class="review-ticket"><div><span class="pill ${state.contextConfirmed?'good':'neutral'}">${state.contextConfirmed?'Confirmed':'Context suggested'}</span><h2>NovaERP annual renewal</h2><p>The current-period transaction supports the $82,000 increase. Prior context describes recurrence but requires confirmation for this close.</p></div><div class="amount"><strong>+${money(DATA.softwareChange)}</strong><span class="fine">45.6% increase</span></div><div class="actions"><button class="btn primary" data-action="confirm-context" ${state.contextConfirmed?'disabled':''}>${state.contextConfirmed?'Confirmed':'Confirm context'}</button><button class="btn" data-action="inspect-context">Inspect history</button></div></article></section><aside class="panel control-panel"><p class="eyebrow">Close control</p><h2>Analysis revision ${DATA.revision}</h2><p>The controller approves the memo, not the underlying source truth. Any calculation or narrative change invalidates the approval.</p><div class="control-list"><div class="control-row"><span>Calculation digest</span><b class="mono">${esc((DATA.calculationDigest||'').slice(0,8)+'…')}</b></div><div class="control-row"><span>Numeric tie-out</span><b>${esc(DATA.reconciledLabel)}</b></div><div class="control-row"><span>Unsupported causes</span><b>${DATA.causalCount}</b></div><div class="control-row"><span>Approval</span><b>${state.reviewed?'Recorded':'Pending'}</b></div></div><button class="btn primary" style="width:100%;margin-top:16px" data-action="approve" ${state.reviewed?'disabled':''}>${state.reviewed?(connected()?'Approved':'Approved for demo'):'Approve memo draft'}</button></aside></div>`}
+function memo(){return pageHead('Executive output','A finance memo with an evidence boundary.','Prepared from reconciled claims · synthetic demonstration',`<button class="btn" data-action="download">Download JSON</button><button class="btn" data-action="print">Print memo</button><button class="btn primary" data-action="audio">Listen to briefing</button>`)+`<div class="memo-toolbar"><span class="pill ${state.reviewed?'good':'warn'}">${state.reviewed?'Controller approved':'Draft · review required'}</span><span class="fine">${connected()?'Narrative digest '+(DATA.narrativeDigest||'').slice(0,12)+'…':'Narrative digest placeholder'} · revision ${DATA.revision}</span></div><article class="memo-sheet"><div class="letterhead"><div><div class="wordmark"><span class="brandmark"></span>MANDATE</div><span class="fine">Yari Tech Retail · Monthly performance review</span></div><address>February 2026 close<br>MO-2026-02-001<br>Synthetic · USD</address></div><p class="memo-class">Management reporting · decision draft</p><h1>Revenue increased 18%, led by three enterprise customers; one operating-cost cause remains open.</h1><div class="memo-meta"><div><label>From</label><span>Mandate financial change analyst</span></div><div><label>To</label><span>Finance leadership</span></div><div><label>Period</label><span>January → February 2026</span></div><div><label>Status</label><span>${state.reviewed?'Approved synthetic memo':'Human review required'}</span></div></div><section><h2>Executive assessment</h2><p>Gross revenue increased $675,000, or 18.0%, from $3.750 million to $4.425 million. Enterprise accounts contributed $576,000 of the increase. Northstar Commerce, Atlas Industrial, and Forma Retail Group contributed $432,000—exactly 64.0% of total growth.</p></section><section><h2>Operating drivers</h2><ul><li>Software expense increased $82,000, supported by the NovaERP annual-renewal transaction and prior-close context.</li><li>Logistics increased $93,000: $60,000 from higher standard volume and $33,000 from expedited shipping.</li><li>Payroll increased $120,000 from performance bonuses while headcount remained at 118.</li><li>Refunds increased $48,000; SmartHub Pro accounted for $42,000, or 87.5%.</li></ul></section><section><h2>Decision required</h2><p>Other Opex increased $57,000 through an unmapped clearing batch. The transaction reconciles to the account summary, but the source data does not establish its business cause. Finance should request owner context or retain the item as unexplained.</p></section><div class="decision-box"><strong>Recommended decision:</strong> release the supported commentary for review while keeping the Other Opex cause open. Do not infer a cause from the account label or clearing description.</div><div class="signoff"><span>Prepared from synthetic source rows</span><span>Calculation digest ${DATA.calculationDigest}</span></div></article>`}
+function assurance(){const item=(name,obj,cls)=>`<div class="status-row"><span>${name}</span><span class="pill ${cls}">${obj.label}</span></div>`;return pageHead('Trust and risk layer','Proof has a boundary.','Lineage, validation, human authority, and sponsor-integration readiness',`<button class="btn" data-action="contract">Copy integration contract</button>`)+`<div class="assurance-grid"><section class="panel assurance-card"><p class="eyebrow">Data assurance</p><h2>Every number resolves.</h2><p>Canonical amounts use deterministic integer calculations. Claims retain source files, row identifiers, formulas, and the calculation digest.</p><div class="status-list"><div class="status-row"><span>Source hashes</span><span class="pill good">Verified</span></div><div class="status-row"><span>Numeric reconciliation</span><span class="pill good">6 / 6</span></div><div class="status-row"><span>Causal coverage</span><span class="pill warn">1 open</span></div></div></section><section class="panel assurance-card"><p class="eyebrow">Human authority</p><h2>Context stays attributable.</h2><p>Prior-close memory begins as a suggestion. Controller approval is tied to the current analysis and becomes stale when facts change.</p><div class="status-list"><div class="status-row"><span>Context revision</span><span class="pill neutral">Versioned</span></div><div class="status-row"><span>Auditor access</span><span class="pill good">Read-only</span></div><div class="status-row"><span>Memo approval</span><span class="pill ${state.reviewed?'good':'warn'}">${state.reviewed?'Approved':'Pending'}</span></div></div></section><section class="panel assurance-card"><p class="eyebrow">Sponsor proof</p><h2>Integration status.</h2><p>The interface distinguishes planned, configured, and externally verified states. No handshake is presented as a live trace.</p><div class="status-list">${item('PRISM',DATA.integrations.prism,'warn')}${item('GIDE',DATA.integrations.gide,'neutral')}${item('ElevenLabs',DATA.integrations.elevenlabs,'neutral')}</div></section></div><section class="panel contract"><div class="panel-head" style="padding:0 0 14px;border:0"><span><h2>Cursor integration boundary</h2><p>One adapter maps these backend routes into the UI state</p></span><span class="pill dark">${connected()?'Connected contracts':'Synthetic replay'}</span></div><pre>${esc(JSON.stringify(API_ROUTES,null,2))}</pre></section>`}
+function render(){const views={overview,variances,analyst,review,memo,assurance};const banner=state.banner?`<div class="banner ${state.banner.kind||''}">${esc(state.banner.text)}</div>`:'';$('content').innerHTML=banner+views[state.view]();$('crumb').textContent={overview:'Close overview',variances:'Variance explorer',analyst:'Ask Mandate',review:'Review queue',memo:'Executive memo',assurance:'Assurance'}[state.view];document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===state.view));bind();if(state.view==='overview')drawFlow();if(state.view==='memo'&&$('briefingAudio')&&!$('briefingAudio').hidden){const host=document.querySelector('.memo-toolbar');if(host)host.after($('briefingAudio'))}}
+function bind(){document.querySelectorAll('[data-variance]').forEach(r=>r.onclick=()=>{state.selected=r.dataset.variance;state.view='variances';render()});document.querySelectorAll('[data-action]').forEach(b=>b.onclick=()=>action(b.dataset.action));document.querySelectorAll('[data-prompt]').forEach(b=>b.onclick=()=>send(b.dataset.prompt));document.querySelectorAll('[data-claim]').forEach(b=>b.onclick=()=>openEvidence(b.dataset.claim));const f=$('chatForm');if(f)f.onsubmit=e=>{e.preventDefault();const i=$('chatInput');if(i.value.trim())send(i.value.trim())};const rerun=$('rerun');if(rerun)rerun.onclick=runAnalysis}
+async function handleLiveError(err,fallback){
+  if(err&&err.status===409){state.banner={kind:'warn',text:'This record changed. The workspace refreshed instead of retrying a stale write.'};toast(err.message||'Stale revision. Refreshing…',true);try{await BackendAdapter.refreshContracts()}catch{} render();return}
+  if(err&&err.status===401){state.banner={kind:'error',text:'Session expired. Sign in again to continue the connected close.'};toast('Sign in required',true);openReauth();return}
+  if(err&&err.status===403){state.banner={kind:'error',text:'This action requires an analyst or controller session.'};toast(err.message||'Not permitted',true);if(fallback==='approve')openReauth();else render();return}
+  if(err&&err.code==='network'){state.banner={kind:'error',text:err.message};toast(err.message,true);render();return}
+  toast(err&&err.message||'Request failed',true);render();
+}
+function openReauth(){$('reauthError').textContent='';$('reauth').hidden=false;$('reauthUser').value=BackendAdapter.username==='controller'?'controller':'controller';$('reauthPass').value='';$('reauthPass').focus()}
+function closeReauth(){$('reauth').hidden=true;$('reauthPass').value='';$('reauthUser').value=''}
+async function confirmLiveContext(){
+  const item=DATA.contextItem;if(!item||!item.id){toast('No suggested NovaERP context is available on this analysis.',true);return}
+  if(item.status==='user_confirmed'){toast('Context is already confirmed for this run.');return}
+  try{
+    await BackendAdapter.request(API_ROUTES.confirm(item.id),{method:'POST',body:JSON.stringify({expected_revision:DATA.contextRevision})});
+    await BackendAdapter.refreshContracts();
+    toast('Context confirmed for this analysis. Calculated amounts are unchanged.');
+    render();
+  }catch(err){await handleLiveError(err)}
+}
+async function approveLiveMemo(){
+  if(BackendAdapter.role!=='controller'){openReauth();return}
+  try{
+    await BackendAdapter.request(API_ROUTES.review(BackendAdapter.analysisId),{method:'POST',body:JSON.stringify({decision:'approved',analysis_id:BackendAdapter.analysisId,analysis_revision:DATA.revision,expected_revision:DATA.revision,calculation_digest:DATA.calculationDigest,narrative_digest:DATA.narrativeDigest})});
+    await BackendAdapter.refreshContracts();
+    toast('Controller approval recorded against the current analysis revision and digests.');
+    render();
+  }catch(err){await handleLiveError(err,'approve')}
+}
+async function sendLive(question){
+  state.messages.push({role:'user',text:question});render();
+  try{
+    const reply=await BackendAdapter.request(API_ROUTES.chat(BackendAdapter.analysisId),{method:'POST',body:JSON.stringify({question})});
+    state.messages.push({role:'assistant',text:reply.answer||'No cited answer was returned.',sources:reply.claim_ids||[],limitations:reply.limitations||[]});
+    if(reply.mutated){await BackendAdapter.refreshContracts();toast('Unexpected mutation was reported; state was refreshed.',true)}
+    render();requestAnimationFrame(()=>{const l=$('chatlog');if(l)l.scrollTop=l.scrollHeight});
+  }catch(err){await handleLiveError(err)}
+}
+async function downloadLive(){
+  try{
+    const body=await BackendAdapter.request(API_ROUTES.exportJson(BackendAdapter.analysisId));
+    const blob=new Blob([JSON.stringify(body,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='mandate-money-operations-export.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),500);
+    toast('Server export.json downloaded.');
+  }catch(err){await handleLiveError(err)}
+}
+async function printLiveMemo(){
+  try{
+    const html=await BackendAdapter.request(API_ROUTES.memoHtml(BackendAdapter.analysisId),{text:true});
+    const w=window.open('','_blank');if(!w){toast('Pop-up blocked. Allow the print window to continue.',true);return}
+    w.document.write(html);w.document.close();w.focus();w.print();
+  }catch(err){await handleLiveError(err)}
+}
+async function listenLive(){
+  try{
+    const briefing=await BackendAdapter.request(API_ROUTES.briefing(BackendAdapter.analysisId),{method:'POST'});
+    if(briefing.status==='approval_required'){toast('Controller approval is required before a briefing.');state.banner={kind:'warn',text:briefing.transcript||'Approval is required before audio.'};render();return}
+    state.banner={kind:'',text:briefing.transcript||'Approved briefing transcript.'};
+    if(briefing.status==='audio_ready'&&briefing.audio_url){
+      const blob=await BackendAdapter.request(API_ROUTES.briefingAudio(BackendAdapter.analysisId),{blob:true});
+      const audio=$('briefingAudio');audio.src=URL.createObjectURL(blob);audio.hidden=false;audio.controls=true;audio.play().catch(()=>{});
+      toast('Approved briefing audio is ready.');
+    }else{
+      toast('Approved transcript available · audio_unavailable.');
+    }
+    render();
+  }catch(err){await handleLiveError(err)}
+}
+async function openEvidence(claimId){
+  if(!connected()){state.view='variances';state.selected='gross_revenue';render();toast(`Opened evidence for ${claimId}`);return}
+  try{
+    const ev=await BackendAdapter.request(API_ROUTES.evidence(claimId));
+    const files=(ev.items||ev.sources||ev.source_rows||[]).map(s=>s.source_file||s.file_name||s.transaction_id||s.source_id).filter(Boolean);
+    const match=DATA.variances.find(v=>v.claim===claimId)||DATA.variances.find(v=>claimId.includes(v.code.replace('_','')||''));
+    state.view='variances';if(match)state.selected=match.code;
+    toast(files.length?`Lineage for ${claimId}: ${files.slice(0,3).join(', ')}`:`Opened evidence for ${claimId}`);
+    render();
+  }catch(err){await handleLiveError(err)}
+}
+function action(a){
+  if(a==='open-memo'){state.view='memo';render();return}
+  if(a==='print'){if(connected()){printLiveMemo();return}if(state.view==='memo'){window.print();return}state.view='memo';render();return}
+  if(a==='ask'){state.view='analyst';render();return}
+  if(a==='review'){state.view='review';render();return}
+  if(a==='evidence'){state.view='variances';state.selected='other_opex';render();return}
+  if(a==='confirm-context'){if(connected()){confirmLiveContext();return}state.contextConfirmed=true;toast('Context confirmed for this synthetic close. Calculated amounts are unchanged.');render();return}
+  if(a==='approve'){if(connected()){approveLiveMemo();return}state.reviewed=true;toast('Demo approval recorded against analysis revision 3.');render();return}
+  if(a==='assign'){toast(connected()?'Assignment stays with the controller review queue.':'Assigned to Controller · backend mutation placeholder');return}
+  if(a==='leave-open'){toast('Other Opex will remain unexplained in the memo.');return}
+  if(a==='inspect-context'){toast(DATA.contextItem?`Revision ${DATA.contextItem.revision||DATA.contextRevision} · ${DATA.contextItem.status}`:'Context history: February recurrence · prior confirmation retained.');return}
+  if(a==='audio'){if(connected()){listenLive();return}toast('ElevenLabs placeholder: requires an approved memo and configured backend.');return}
+  if(a==='download'){if(connected()){downloadLive();return}downloadEvidence();return}
+  if(a==='contract'){navigator.clipboard?.writeText(JSON.stringify(API_ROUTES,null,2));toast('Backend route contract copied.');}
+}
+function send(question){if(connected()){sendLive(question);return}state.messages.push({role:'user',text:question});let q=question.toLowerCase(),text,sources=[];if(q.includes('other')||q.includes('explain')){text='Other Opex increased $57,000 through an unmapped clearing batch. The amount reconciles, but the data does not prove its business cause. I recommend routing it to the controller or retaining it as unexplained.';sources=['VAR-UNK']}else if(q.includes('software')){text='Software increased $82,000. A NovaERP annual-renewal transaction supports the amount. Prior-close context matches the recurrence, but must be confirmed for this analysis.';sources=['VAR-SW']}else if(q.includes('headline')||q.includes('draft')){text='Revenue increased 18%, led by three enterprise customers; one operating-cost cause remains open.';sources=['VAR-REV','DRV-TOP3','VAR-UNK']}else{text='Enterprise revenue increased $576,000, or 32.0%, and contributed 85.3% of total growth. Northstar Commerce, Atlas Industrial, and Forma Retail Group contributed $432,000—exactly 64.0% of the total increase.';sources=['DRV-ENT','DRV-TOP3']}state.messages.push({role:'assistant',text,sources});render();requestAnimationFrame(()=>{const l=$('chatlog');if(l)l.scrollTop=l.scrollHeight})}
+function downloadEvidence(){const blob=new Blob([JSON.stringify({synthetic:true,analysis_revision:DATA.revision,calculation_digest:DATA.calculationDigest,periods:{prior:DATA.prior,current:DATA.current},variances:DATA.variances,unexplained:DATA.variances.filter(v=>v.status==='unexplained')},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='mandate-money-operations-evidence.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),500);toast('Synthetic evidence package downloaded.')}
+function runAnalysis(){if(state.analysisRunning)return;state.analysisRunning=true;render();if(connected()){BackendAdapter.refreshContracts().then(()=>{state.analysisRunning=false;toast('Connected analysis refreshed · digest unchanged');render()}).catch(err=>{state.analysisRunning=false;handleLiveError(err)});return}setTimeout(()=>{state.analysisRunning=false;DATA.activity.unshift([new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),'Reference analysis rerun','Deterministic digest unchanged']);render();toast('Analysis complete · digest unchanged')},1800)}
+function drawFlow(){const c=$('flowCanvas');if(!c)return;const gl=c.getContext('webgl',{alpha:false,antialias:true});if(!gl){const ctx=c.getContext('2d');ctx.fillStyle='#102f29';ctx.fillRect(0,0,c.width,c.height);return}const vertex=`attribute vec2 p;uniform float size;void main(){gl_Position=vec4(p,0.,1.);gl_PointSize=size;}`;const frag=`precision mediump float;uniform vec4 color;void main(){float d=distance(gl_PointCoord,vec2(.5));if(d>.5)discard;gl_FragColor=color;}`;const shader=(type,src)=>{const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);return s};const prog=gl.createProgram();gl.attachShader(prog,shader(gl.VERTEX_SHADER,vertex));gl.attachShader(prog,shader(gl.FRAGMENT_SHADER,frag));gl.linkProgram(prog);gl.useProgram(prog);const pos=gl.getAttribLocation(prog,'p'),size=gl.getUniformLocation(prog,'size'),color=gl.getUniformLocation(prog,'color'),buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.enableVertexAttribArray(pos);gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0);const nodes=[[-.82,0],[-.5,.43],[-.16,-.38],[.18,.4],[.52,-.34],[.82,.3]],edges=[[0,1],[1,2],[2,3],[3,4],[4,5]];let raf=0;function frame(t){const dpr=Math.min(devicePixelRatio,2),w=Math.round(c.clientWidth*dpr),h=Math.round(c.clientHeight*dpr);if(c.width!==w||c.height!==h){c.width=w;c.height=h}gl.viewport(0,0,w,h);gl.clearColor(.062,.184,.16,1);gl.clear(gl.COLOR_BUFFER_BIT);const lines=edges.flatMap(([a,b])=>[...nodes[a],...nodes[b]]);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(lines),gl.STATIC_DRAW);gl.uniform1f(size,1);gl.uniform4f(color,.36,.56,.43,.45);gl.drawArrays(gl.LINES,0,lines.length/2);const dots=[];edges.forEach(([a,b],i)=>{for(let j=0;j<4;j++){const u=((t/2800)+(j/4)+(i*.07))%1;dots.push(nodes[a][0]+(nodes[b][0]-nodes[a][0])*u,nodes[a][1]+(nodes[b][1]-nodes[a][1])*u)}});gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(dots),gl.DYNAMIC_DRAW);gl.uniform1f(size,4*dpr);gl.uniform4f(color,.74,.88,.59,.9);gl.drawArrays(gl.POINTS,0,dots.length/2);if(!matchMedia('(prefers-reduced-motion:reduce)').matches)raf=requestAnimationFrame(frame)}cancelAnimationFrame(raf);frame(0)}
+function drawEntry(){const c=$('entryCanvas'),ctx=c.getContext('2d');let raf=0;function frame(t){const dpr=Math.min(devicePixelRatio,2),w=c.clientWidth*dpr,h=c.clientHeight*dpr;if(c.width!==w||c.height!==h){c.width=w;c.height=h}ctx.clearRect(0,0,w,h);ctx.strokeStyle='rgba(175,210,174,.24)';ctx.lineWidth=1*dpr;const pts=[[.08,.32],[.34,.7],[.61,.28],[.9,.55]];ctx.beginPath();pts.forEach(([x,y],i)=>i?ctx.lineTo(x*w,y*h):ctx.moveTo(x*w,y*h));ctx.stroke();pts.forEach(([x,y],i)=>{ctx.beginPath();ctx.arc(x*w,y*h,(i===2?7:4)*dpr,0,Math.PI*2);ctx.fillStyle=i===2?'rgba(218,183,108,.8)':'rgba(180,217,171,.7)';ctx.fill()});for(let i=0;i<8;i++){const u=((t/4500)+i/8)%1,seg=Math.min(2,Math.floor(u*3)),p=u*3-seg,a=pts[seg],b=pts[seg+1];ctx.beginPath();ctx.arc((a[0]+(b[0]-a[0])*p)*w,(a[1]+(b[1]-a[1])*p)*h,2*dpr,0,Math.PI*2);ctx.fillStyle='rgba(215,234,184,.85)';ctx.fill()}if(!matchMedia('(prefers-reduced-motion:reduce)').matches)raf=requestAnimationFrame(frame)}frame(0)}
+document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{state.mode=b.dataset.mode;document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('active',x===b));$('credentials').hidden=state.mode!=='api'});
+$('enter').onclick=async()=>{try{$('entryError').textContent='';$('enter').disabled=true;if(state.mode==='api'){const u=$('username').value.trim(),p=$('password').value;if(!u||!p)throw Error('Enter provisioned credentials for connected mode.');$('entryError').textContent='Loading packaged reference analysis…';await BackendAdapter.connectedBootstrap(u,p);if(!state.connected)throw Error('Connected contracts did not load. Demo figures were not substituted.')}$('entry').hidden=true;$('app').hidden=false;$('modePill').textContent=connected()?'Connected API':'Synthetic replay';$('password').value='';render()}catch(e){state.connected=false;$('entryError').textContent=e.message}finally{$('enter').disabled=false}};
+$('logout').onclick=()=>{if(connected()&&BackendAdapter.token){BackendAdapter.request(API_ROUTES.logout,{method:'POST'}).catch(()=>{})}resetDemoData();$('app').hidden=true;$('entry').hidden=false;state.view='overview';state.mode='demo';document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('active',x.dataset.mode==='demo'));$('credentials').hidden=true;$('modePill').textContent='Synthetic replay';applySessionChrome();drawEntry()};
+$('reauthCancel').onclick=closeReauth;
+$('reauthSubmit').onclick=async()=>{try{$('reauthError').textContent='';const u=$('reauthUser').value.trim(),p=$('reauthPass').value;if(!u||!p)throw Error('Enter controller credentials.');await BackendAdapter.signIn(u,p);applySessionChrome();closeReauth();if(u==='controller'||BackendAdapter.role==='controller'){await approveLiveMemo()}else{toast('Signed in as '+BackendAdapter.role+'. Controller role is required to approve.',true)}}catch(e){$('reauthError').textContent=e.message;$('reauthPass').value=''}};
+document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{state.view=b.dataset.view;render()});
+drawEntry();
+window.BackendAdapter=BackendAdapter;window.state=state;window.DATA=DATA;
+</script>
+</body>
+</html>

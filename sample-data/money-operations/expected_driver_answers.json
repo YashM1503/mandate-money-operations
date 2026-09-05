@@ -1,0 +1,119 @@
+{
+  "comparison": {
+    "current_period": "2026-02",
+    "prior_period": "2026-01",
+    "currency": "USD"
+  },
+  "answers": [
+    {
+      "id": "VAR-REV",
+      "question": "What changed in gross revenue?",
+      "change_usd": 675000,
+      "change_pct": 0.18,
+      "answer": "Gross revenue increased by $675,000, or 18.0%.",
+      "status": "computed_reconciled",
+      "evidence": [
+        "monthly_account_summaries.csv",
+        "revenue_transactions.csv"
+      ]
+    },
+    {
+      "id": "DRV-ENT",
+      "question": "What drove revenue growth?",
+      "change_usd": 576000,
+      "change_pct": 0.32,
+      "share_of_total_change": 0.8533333333333334,
+      "answer": "Enterprise revenue increased by $576,000, or 32.0%, and contributed 85.3% of total growth.",
+      "status": "computed_reconciled",
+      "evidence": [
+        "revenue_transactions.csv"
+      ]
+    },
+    {
+      "id": "DRV-TOP3",
+      "question": "How concentrated was the increase?",
+      "change_usd": 432000,
+      "share_of_total_change": 0.64,
+      "customer_ids": [
+        "C001",
+        "C002",
+        "C003"
+      ],
+      "answer": "Northstar Commerce, Atlas Industrial, and Forma Retail Group contributed $432,000, exactly 64.0% of the total increase.",
+      "status": "computed_reconciled",
+      "evidence": [
+        "revenue_transactions.csv"
+      ]
+    },
+    {
+      "id": "VAR-SW",
+      "question": "Why did software expense increase?",
+      "change_usd": 82000,
+      "share_explained": 1,
+      "answer": "Software expense increased $82,000 because of the NovaERP annual renewal.",
+      "status": "computed_plus_user_confirmed_context",
+      "evidence": [
+        "expense_transactions.csv",
+        "business_context_history.json"
+      ]
+    },
+    {
+      "id": "VAR-LOG",
+      "question": "Why did logistics expense increase?",
+      "change_usd": 93000,
+      "drivers": [
+        {
+          "name": "Volume",
+          "change_usd": 60000
+        },
+        {
+          "name": "Expedited shipping",
+          "change_usd": 33000
+        }
+      ],
+      "share_explained": 1,
+      "answer": "Logistics increased $93,000: $60,000 from higher standard volume and $33,000 from expedited shipping.",
+      "status": "computed_reconciled",
+      "evidence": [
+        "expense_transactions.csv"
+      ]
+    },
+    {
+      "id": "VAR-PAY",
+      "question": "Why did payroll increase?",
+      "change_usd": 120000,
+      "headcount_change": 0,
+      "answer": "Payroll increased $120,000 from performance bonuses; headcount remained at 118.",
+      "status": "computed_reconciled",
+      "evidence": [
+        "expense_transactions.csv",
+        "monthly_account_summaries.csv"
+      ]
+    },
+    {
+      "id": "VAR-REF",
+      "question": "What drove refunds?",
+      "change_usd": 48000,
+      "product_driver": "SmartHub Pro",
+      "product_change_usd": 42000,
+      "share_of_change": 0.875,
+      "answer": "Refunds increased $48,000; SmartHub Pro accounted for $42,000, or 87.5%, of the increase.",
+      "status": "computed_reconciled",
+      "evidence": [
+        "revenue_transactions.csv"
+      ]
+    },
+    {
+      "id": "VAR-UNK",
+      "question": "Why did Other Opex increase?",
+      "change_usd": 57000,
+      "explained_usd": 0,
+      "unexplained_usd": 57000,
+      "answer": "Other Opex increased $57,000 through an unmapped clearing batch. The transaction reconciles, but its business cause is unsupported and remains unexplained.",
+      "status": "unexplained",
+      "evidence": [
+        "expense_transactions.csv"
+      ]
+    }
+  ]
+}

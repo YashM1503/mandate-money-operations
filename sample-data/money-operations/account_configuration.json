@@ -1,0 +1,95 @@
+{
+  "schema_version": "1.0",
+  "currency": "USD",
+  "materiality": {
+    "absolute_minor": 2500000,
+    "percentage_bps": 500,
+    "always_include_top_n": 5
+  },
+  "driver_selection": {
+    "minimum_contribution_minor": 1000000,
+    "minimum_share_bps": 1000,
+    "target_directional_coverage_bps": 8000,
+    "maximum_drivers": 5
+  },
+  "reconciliation_tolerance_minor": 1,
+  "accounts": [
+    {
+      "account_code": "4000",
+      "account_name": "Revenue",
+      "account_type": "revenue",
+      "summary_column": "gross_revenue",
+      "transaction_source": "revenue",
+      "transaction_types": ["Sale"],
+      "analysis_dimensions": ["segment", "customer_id", "product", "region", "channel"]
+    },
+    {
+      "account_code": "4100",
+      "account_name": "Refunds",
+      "account_type": "contra_revenue",
+      "summary_column": "refunds",
+      "transaction_source": "revenue",
+      "transaction_types": ["Refund"],
+      "natural_sign": "positive",
+      "analysis_dimensions": ["product", "segment", "customer_id", "region", "channel"]
+    },
+    {
+      "account_code": "5000",
+      "account_name": "COGS",
+      "account_type": "expense",
+      "summary_column": "cogs",
+      "transaction_source": "expense",
+      "expense_account": "COGS",
+      "analysis_dimensions": ["driver_category", "vendor_id"]
+    },
+    {
+      "account_code": "6200",
+      "account_name": "Software",
+      "account_type": "expense",
+      "summary_column": "software_expense",
+      "transaction_source": "expense",
+      "expense_account": "Software",
+      "analysis_dimensions": ["driver_category", "vendor_id"]
+    },
+    {
+      "account_code": "6300",
+      "account_name": "Logistics",
+      "account_type": "expense",
+      "summary_column": "logistics_expense",
+      "transaction_source": "expense",
+      "expense_account": "Logistics",
+      "analysis_dimensions": ["driver_category", "vendor_id"]
+    },
+    {
+      "account_code": "6400",
+      "account_name": "Payroll",
+      "account_type": "expense",
+      "summary_column": "payroll_expense",
+      "transaction_source": "expense",
+      "expense_account": "Payroll",
+      "analysis_dimensions": ["driver_category", "vendor_id"]
+    },
+    {
+      "account_code": "6500",
+      "account_name": "Marketing",
+      "account_type": "expense",
+      "summary_column": "marketing_expense",
+      "transaction_source": "expense",
+      "expense_account": "Marketing",
+      "analysis_dimensions": ["driver_category", "vendor_id"]
+    },
+    {
+      "account_code": "6900",
+      "account_name": "Other Opex",
+      "account_type": "expense",
+      "summary_column": "other_opex",
+      "transaction_source": "expense",
+      "expense_account": "Other Opex",
+      "analysis_dimensions": ["driver_category", "vendor_id"],
+      "causal_unexplained_members": {
+        "driver_category": ["Unexplained"],
+        "vendor_id": ["V999"]
+      }
+    }
+  ]
+}

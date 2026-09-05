@@ -1,0 +1,95 @@
+[
+  {
+    "id": "mfa",
+    "question": "Is MFA enabled?",
+    "answer": "Conflict: policy requires MFA for Google Workspace and GitHub, but an internal message reports a possible active contractor exception. Current enforcement is unconfirmed.",
+    "status": "conflict",
+    "source_ids": [
+      "mfa-policy-v1",
+      "mfa-exception-v1"
+    ],
+    "support": "A policy requirement is not evidence of universal enforcement. Obtain current account state or exception resolution.",
+    "owner": "IT owner",
+    "priority": "high"
+  },
+  {
+    "id": "storage",
+    "question": "Where is customer data stored?",
+    "answer": "Primary customer database is AWS RDS in us-east-1. Other copies, exports, logs and devices are not established.",
+    "status": "evidence_backed",
+    "source_ids": [
+      "rds-snapshot-v1"
+    ],
+    "support": "Supported within the stated scope of the synthetic company record; not an external certification.",
+    "owner": "Engineering owner",
+    "priority": "high"
+  },
+  {
+    "id": "encryption",
+    "question": "Do you encrypt data at rest?",
+    "answer": "The primary RDS snapshot reports StorageEncrypted=true. Encryption of replicas, exports, logs, backups and devices is not established.",
+    "status": "evidence_backed",
+    "source_ids": [
+      "rds-snapshot-v1"
+    ],
+    "support": "Supported within the stated scope of the synthetic company record; not an external certification.",
+    "owner": "Engineering owner",
+    "priority": "high"
+  },
+  {
+    "id": "backups",
+    "question": "How often are backups performed, and are they automated?",
+    "answer": "Unknown / needs confirmation.",
+    "status": "unknown",
+    "source_ids": [],
+    "support": "No relevant company evidence supplied.",
+    "owner": "Engineering owner",
+    "priority": "high"
+  },
+  {
+    "id": "scans",
+    "question": "Is vulnerability scanning configured in CI?",
+    "answer": "Container image scanning is configured in CI. Successful recent execution, other scan coverage and penetration tests are not established.",
+    "status": "evidence_backed",
+    "source_ids": [
+      "ci-policy-v1"
+    ],
+    "support": "Supported within the stated scope of the synthetic company record; not an external certification.",
+    "owner": "Engineering owner",
+    "priority": "medium"
+  },
+  {
+    "id": "production_access",
+    "question": "Who has access to production?",
+    "answer": "The supplied roster names two synthetic production administrators: Maya Chen and Leo Patel. Effective access completeness is not established.",
+    "status": "evidence_backed",
+    "source_ids": [
+      "prod-access-v1"
+    ],
+    "support": "Supported within the stated scope of the synthetic company record; not an external certification.",
+    "owner": "IT owner",
+    "priority": "high"
+  },
+  {
+    "id": "offboarding",
+    "question": "Do you have an employee offboarding process?",
+    "answer": "A documented employee offboarding process assigns People and IT responsibilities. Evidence of implementation in individual departures was not supplied.",
+    "status": "evidence_backed",
+    "source_ids": [
+      "offboarding-v1"
+    ],
+    "support": "Supported within the stated scope of the synthetic company record; not an external certification.",
+    "owner": "People owner",
+    "priority": "medium"
+  },
+  {
+    "id": "background_checks",
+    "question": "Do you conduct employee background checks?",
+    "answer": "Unknown / needs confirmation.",
+    "status": "unknown",
+    "source_ids": [],
+    "support": "No relevant company evidence supplied.",
+    "owner": "People owner",
+    "priority": "medium"
+  }
+]

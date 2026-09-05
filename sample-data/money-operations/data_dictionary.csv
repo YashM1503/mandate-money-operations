@@ -1,0 +1,11 @@
+file,field,type,definition,example
+monthly_account_summaries.csv,period,string,YYYY-MM reporting period,2026-02
+monthly_account_summaries.csv,gross_revenue,number,"Sales before refunds, USD",4425000
+monthly_account_summaries.csv,refunds,number,"Refunds shown as a positive contra-revenue amount, USD",128000
+monthly_account_summaries.csv,headcount,integer,Month-end employees,118
+revenue_transactions.csv,amount,number,"Signed amount; sales positive and refunds negative, USD",560000
+revenue_transactions.csv,segment,enum,"Enterprise, SMB, or Consumer",Enterprise
+expense_transactions.csv,driver_category,string,Transaction-level attribution category,Annual renewal
+expense_transactions.csv,headcount_effect,integer,Change in employee count associated with transaction,0
+business_context_history.json,status,enum,user_confirmed or review_instruction,user_confirmed
+expected_driver_answers.json,status,enum,"computed_reconciled, computed_plus_user_confirmed_context, or unexplained",unexplained

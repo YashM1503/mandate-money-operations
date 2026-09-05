@@ -1,0 +1,16 @@
+vendor_id,vendor_name,primary_account
+V001,InventoryWorks,Inventory
+V002,SupplyForge,Inventory
+V003,NovaERP,Software
+V004,CloudGrid,Software
+V005,Secura Labs,Software
+V006,ParcelPro,Logistics
+V007,FreightLine,Logistics
+V008,QuickShip,Logistics
+V009,Payroll Clearing,Payroll
+V010,Tax Authority,Payroll
+V011,AdSphere,Marketing
+V012,Field Events Co,Marketing
+V013,OfficeWorks,Other Opex
+V014,Counsel LLP,Other Opex
+V999,Unmapped clearing batch,Other Opex

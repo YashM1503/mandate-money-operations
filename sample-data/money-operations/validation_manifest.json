@@ -1,0 +1,46 @@
+{
+  "dataset_id": "MANDATE-MONEY-OPS-SYNTHETIC-V1",
+  "generated_at": "2026-09-05T15:30:00Z",
+  "synthetic": true,
+  "company": "Yari Tech Retail",
+  "period_range": {
+    "from": "2025-10",
+    "to": "2026-03",
+    "focus_current": "2026-02",
+    "focus_prior": "2026-01"
+  },
+  "units": "USD unless otherwise stated",
+  "exact_checks": {
+    "six_month_gross_revenue": 23755000,
+    "annualized_gross_revenue": 47510000,
+    "january_gross_revenue": 3750000,
+    "february_gross_revenue": 4425000,
+    "gross_revenue_change": 675000,
+    "gross_revenue_change_pct": 0.18,
+    "enterprise_change": 576000,
+    "enterprise_change_pct": 0.32,
+    "top_three_customer_change": 432000,
+    "top_three_share_of_total_change": 0.64,
+    "software_change": 82000,
+    "logistics_change": 93000,
+    "payroll_change": 120000,
+    "headcount_change": 0,
+    "refunds_change": 48000,
+    "smarthub_pro_refund_change": 42000,
+    "other_opex_unexplained_change": 57000
+  },
+  "zero_denominator_policy": "Return null / unavailable for percentage change when the prior-period value is zero.",
+  "source_hashes": {
+    "monthly_account_summaries.csv": "436a0bd0763ce2f3d9ff1ca0bce046c4b113fdb778023419fe39200e26d96d50",
+    "revenue_transactions.csv": "501d64827895cf0157645b0ed6ef0158fe1dbbdf5f615fe7574fdd9b74cdcce1",
+    "expense_transactions.csv": "e2364909935535b911d5ad65e2abaa5ea7906afa9f53e96149ae44805ab42fce",
+    "customer_dimension.csv": "08a337a46b28ba0c203117da31da3a04d9b8ce99dba39011911458fa242381ed",
+    "product_dimension.csv": "d3f42c04ef7964ecb0d5faf8780c3815ef8d30d5e11bf64a88bd5e7e60003e70",
+    "channel_dimension.csv": "9c169a4c0b2a4e5f56d91300ba2a8867a89b7c384f8d58106b5eefdeaaadd0d8",
+    "region_dimension.csv": "94c97ce0364ec096e931dd973792b0133d7dddefab8d5267a811c1c1bb45db32",
+    "vendor_dimension.csv": "f90cb254c7ad3e0901193a687ad7344253b67af13981c2246459443a1a66013b",
+    "data_dictionary.csv": "c47654dd1bd2127880a56a357836902eeeb889c84cb1c54d2646d354d4dd3c65",
+    "business_context_history.json": "f176affe579baa6e500d5a9f7f85a183d06b4aaf2e2ee1147ee8b68dd4e4c1be",
+    "expected_driver_answers.json": "5d9e682d83221977c76b1ae5519b1dd03d314a466d0759d42163983930a8e0d6"
+  }
+}

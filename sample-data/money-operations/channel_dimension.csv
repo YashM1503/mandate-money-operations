@@ -1,0 +1,5 @@
+channel_id,channel_name,route_to_market
+CH01,Direct,Sales-led
+CH02,Partner,Channel-led
+CH03,Web,Self-service
+CH04,Marketplace,Third-party

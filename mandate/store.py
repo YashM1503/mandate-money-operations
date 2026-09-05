@@ -19,14 +19,54 @@ CREATE TABLE IF NOT EXISTS ledger(id TEXT PRIMARY KEY, case_id TEXT UNIQUE NOT N
 CREATE TABLE IF NOT EXISTS idempotency(key TEXT PRIMARY KEY, request_hash TEXT NOT NULL, ledger_id TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS sessions(token_hash TEXT PRIMARY KEY, username TEXT NOT NULL, role TEXT NOT NULL, expires REAL NOT NULL);
 CREATE TABLE IF NOT EXISTS login_attempts(client TEXT PRIMARY KEY, started REAL NOT NULL, count INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS mo_datasets(id TEXT PRIMARY KEY, status TEXT NOT NULL, revision INTEGER NOT NULL, entity_id TEXT NOT NULL, created_by TEXT NOT NULL, created_at TEXT NOT NULL, body_json TEXT NOT NULL, mac TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS mo_sources(id TEXT PRIMARY KEY, dataset_id TEXT NOT NULL REFERENCES mo_datasets(id), file_name TEXT NOT NULL, sha256 TEXT NOT NULL, byte_size INTEGER NOT NULL, row_count INTEGER NOT NULL, schema_version TEXT NOT NULL, metadata_json TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS mo_summary_rows(id TEXT PRIMARY KEY, dataset_id TEXT NOT NULL REFERENCES mo_datasets(id), period TEXT NOT NULL, entity_id TEXT NOT NULL, account_code TEXT NOT NULL, account_name TEXT NOT NULL, account_type TEXT NOT NULL, currency TEXT NOT NULL, amount_minor INTEGER NOT NULL, source_row_id TEXT NOT NULL, source_file TEXT NOT NULL DEFAULT '', source_row INTEGER NOT NULL DEFAULT 0);
+CREATE TABLE IF NOT EXISTS mo_transactions(id TEXT PRIMARY KEY, dataset_id TEXT NOT NULL REFERENCES mo_datasets(id), transaction_id TEXT NOT NULL, posted_date TEXT NOT NULL, period TEXT NOT NULL, entity_id TEXT NOT NULL, account_code TEXT NOT NULL, amount_minor INTEGER NOT NULL, currency TEXT NOT NULL, dimensions_json TEXT NOT NULL, source_file TEXT NOT NULL, source_row_number INTEGER NOT NULL, customer_id TEXT, product_id TEXT, UNIQUE(dataset_id, transaction_id));
+CREATE TABLE IF NOT EXISTS mo_analyses(id TEXT PRIMARY KEY, dataset_id TEXT NOT NULL REFERENCES mo_datasets(id), prior_period TEXT NOT NULL, current_period TEXT NOT NULL, status TEXT NOT NULL, revision INTEGER NOT NULL, calculation_version TEXT NOT NULL, created_by TEXT NOT NULL, created_at TEXT NOT NULL, body_json TEXT NOT NULL, mac TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS mo_claims(id TEXT PRIMARY KEY, analysis_id TEXT NOT NULL REFERENCES mo_analyses(id), original_id TEXT NOT NULL, account_code TEXT NOT NULL, claim_type TEXT NOT NULL, status TEXT NOT NULL, value_json TEXT NOT NULL, formula TEXT NOT NULL, source_ids_json TEXT NOT NULL, source_rows_json TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS mo_context(id TEXT PRIMARY KEY, entity_id TEXT NOT NULL, account_code TEXT NOT NULL, dimension TEXT, member TEXT, statement TEXT NOT NULL, status TEXT NOT NULL, actor TEXT NOT NULL, recorded_at TEXT NOT NULL, revision INTEGER NOT NULL, supersedes TEXT, period_scope_json TEXT NOT NULL, tombstoned INTEGER NOT NULL DEFAULT 0, analysis_id TEXT, supporting_claim_ids_json TEXT);
+CREATE TABLE IF NOT EXISTS mo_reviews(id TEXT PRIMARY KEY, analysis_id TEXT NOT NULL REFERENCES mo_analyses(id), analysis_revision INTEGER NOT NULL, narrative_digest TEXT NOT NULL, decision TEXT NOT NULL, actor TEXT NOT NULL, created_at TEXT NOT NULL, calculation_digest TEXT NOT NULL DEFAULT '');
+CREATE TABLE IF NOT EXISTS mo_events(id TEXT PRIMARY KEY, aggregate_type TEXT NOT NULL, aggregate_id TEXT NOT NULL, revision INTEGER NOT NULL, event_type TEXT NOT NULL, actor TEXT NOT NULL, created_at TEXT NOT NULL, body_json TEXT NOT NULL, prev_digest TEXT NOT NULL, digest TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS idx_mo_summary_period ON mo_summary_rows(dataset_id, period, account_code);
+CREATE INDEX IF NOT EXISTS idx_mo_txn_period ON mo_transactions(dataset_id, period, account_code);
+CREATE INDEX IF NOT EXISTS idx_mo_claims_analysis ON mo_claims(analysis_id, account_code);
+CREATE INDEX IF NOT EXISTS idx_mo_claims_original ON mo_claims(original_id);
+CREATE INDEX IF NOT EXISTS idx_mo_context_lookup ON mo_context(entity_id, account_code, tombstoned);
+CREATE INDEX IF NOT EXISTS idx_mo_events_agg ON mo_events(aggregate_type, aggregate_id, revision);
 '''
+
+
+def _table_columns(db, table):
+    return {row[1] for row in db.execute(f'PRAGMA table_info({table})')}
+
+
+def migrate_money_ops_schema(db):
+    """Add Money Operations columns on existing HMAC databases without rewriting rows."""
+    summary_cols = _table_columns(db, 'mo_summary_rows')
+    if summary_cols:
+        if 'source_file' not in summary_cols:
+            db.execute("ALTER TABLE mo_summary_rows ADD COLUMN source_file TEXT NOT NULL DEFAULT ''")
+        if 'source_row' not in summary_cols:
+            db.execute('ALTER TABLE mo_summary_rows ADD COLUMN source_row INTEGER NOT NULL DEFAULT 0')
+    txn_cols = _table_columns(db, 'mo_transactions')
+    if txn_cols:
+        if 'customer_id' not in txn_cols:
+            db.execute('ALTER TABLE mo_transactions ADD COLUMN customer_id TEXT')
+        if 'product_id' not in txn_cols:
+            db.execute('ALTER TABLE mo_transactions ADD COLUMN product_id TEXT')
+    review_cols = _table_columns(db, 'mo_reviews')
+    if review_cols and 'calculation_digest' not in review_cols:
+        db.execute("ALTER TABLE mo_reviews ADD COLUMN calculation_digest TEXT NOT NULL DEFAULT ''")
 
 
 class Store:
     def __init__(self,path,key):
         self.path=Path(path); self.key=key
         self.path.parent.mkdir(parents=True,exist_ok=True)
-        with self.connect() as db: db.executescript(SCHEMA)
+        with self.connect() as db:
+            db.executescript(SCHEMA)
+            migrate_money_ops_schema(db)
         self.path.chmod(0o600)
         with self.transaction() as db:
             if not db.execute('SELECT 1 FROM settings WHERE key=?',('cash',)).fetchone():

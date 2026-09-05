@@ -1,0 +1,62 @@
+[
+  {
+    "id": "mfa-policy-v1",
+    "title": "Access policy v1",
+    "kind": "policy",
+    "text": "MFA is mandatory for Google Workspace and GitHub. Policy requirement; this document does not attest actual enrollment.",
+    "origin_id": "mfa-policy-v1",
+    "parent_ids": [],
+    "updated_at": "2026-09-04T16:00:00+00:00",
+    "sha256": "4ac8726fdb12897721af1e255f4e4f8a632052ca87abe896a989587c8fb1e88a"
+  },
+  {
+    "id": "mfa-exception-v1",
+    "title": "Contractor access message",
+    "kind": "internal_message",
+    "text": "An active contractor exception may leave one Google Workspace account without MFA. Verify current account state.",
+    "origin_id": "mfa-exception-v1",
+    "parent_ids": [],
+    "updated_at": "2026-09-05T08:00:00+00:00",
+    "sha256": "4b3ce8a6d09be68dc59f3a14b3cd7d305e6d47305d2257f5569d780c5d761d54"
+  },
+  {
+    "id": "rds-snapshot-v1",
+    "title": "Primary database infrastructure snapshot",
+    "kind": "infrastructure",
+    "text": "Primary customer database: AWS RDS in us-east-1. StorageEncrypted=true. Scope excludes replicas, exports, logs, backups and employee devices.",
+    "origin_id": "rds-snapshot-v1",
+    "parent_ids": [],
+    "updated_at": "2026-09-04T16:00:00+00:00",
+    "sha256": "66a590183c3c5f41cf218f5eeecb65e9b324fff541adc01192568dea4403e702"
+  },
+  {
+    "id": "ci-policy-v1",
+    "title": "Container CI pipeline configuration",
+    "kind": "configuration",
+    "text": "Container image vulnerability scan is configured in CI. No evidence here of latest successful run, web application scans or penetration tests.",
+    "origin_id": "ci-policy-v1",
+    "parent_ids": [],
+    "updated_at": "2026-09-04T16:00:00+00:00",
+    "sha256": "48a22cf35adbe59c4aee5e7c06e24ed15c7db545db4d5ed10cd235d300a48712"
+  },
+  {
+    "id": "prod-access-v1",
+    "title": "Production access roster",
+    "kind": "employee_information",
+    "text": "Two synthetic named production administrators: Maya Chen and Leo Patel. This roster does not prove no additional effective permissions exist.",
+    "origin_id": "prod-access-v1",
+    "parent_ids": [],
+    "updated_at": "2026-09-04T16:00:00+00:00",
+    "sha256": "192eb692390a08890f3f0c0224266783f2441a097b4f5224b9fb9e35d4aef9ff"
+  },
+  {
+    "id": "offboarding-v1",
+    "title": "Employee offboarding procedure",
+    "kind": "policy",
+    "text": "On departure, the People owner requests account disablement and the IT owner removes access and records completion. A documented process; no completed offboarding samples supplied.",
+    "origin_id": "offboarding-v1",
+    "parent_ids": [],
+    "updated_at": "2026-09-04T16:00:00+00:00",
+    "sha256": "bd1ce96f3134b1a91dc818e0a87725fb267427715177d224f4b1e40bb5da9396"
+  }
+]

@@ -1,0 +1,417 @@
+{
+  "schema_version": "1.0",
+  "synthetic": true,
+  "engine": "browser-replay",
+  "revision": 11,
+  "questions": [
+    {
+      "id": "mfa",
+      "question": "Is MFA enabled?",
+      "answer": "New synthetic IAM snapshot reports MFA enabled for listed Google Workspace and GitHub accounts; the prior contractor exception is disabled. Other services and future state are not established.",
+      "status": "evidence_backed",
+      "source_ids": [
+        "mfa-policy-v1",
+        "mfa-exception-v1",
+        "mfa-iam-v2"
+      ],
+      "support": "New scoped operational evidence resolves the earlier exception; prior evidence remains.",
+      "owner": "IT owner",
+      "priority": "high"
+    },
+    {
+      "id": "storage",
+      "question": "Where is customer data stored?",
+      "answer": "Primary customer database is AWS RDS in us-east-1. Other copies, exports, logs and devices are not established.",
+      "status": "evidence_backed",
+      "source_ids": [
+        "rds-snapshot-v1"
+      ],
+      "support": "Supported within the stated scope of the synthetic company record; not an external certification.",
+      "owner": "Engineering owner",
+      "priority": "high"
+    },
+    {
+      "id": "encryption",
+      "question": "Do you encrypt data at rest?",
+      "answer": "The primary RDS snapshot reports StorageEncrypted=true. Encryption of replicas, exports, logs, backups and devices is not established.",
+      "status": "evidence_backed",
+      "source_ids": [
+        "rds-snapshot-v1"
+      ],
+      "support": "Supported within the stated scope of the synthetic company record; not an external certification.",
+      "owner": "Engineering owner",
+      "priority": "high"
+    },
+    {
+      "id": "backups",
+      "question": "How often are backups performed, and are they automated?",
+      "answer": "User reports backups are performed weekly and are automated.",
+      "status": "user_confirmed",
+      "source_ids": [],
+      "support": "Employee assertion; supporting configuration and restore-test evidence are absent.",
+      "owner": "Engineering owner",
+      "priority": "high"
+    },
+    {
+      "id": "scans",
+      "question": "Is vulnerability scanning configured in CI?",
+      "answer": "Container image scanning is configured in CI. Successful recent execution, other scan coverage and penetration tests are not established.",
+      "status": "evidence_backed",
+      "source_ids": [
+        "ci-policy-v1"
+      ],
+      "support": "Supported within the stated scope of the synthetic company record; not an external certification.",
+      "owner": "Engineering owner",
+      "priority": "medium"
+    },
+    {
+      "id": "production_access",
+      "question": "Who has access to production?",
+      "answer": "The supplied roster names two synthetic production administrators: Maya Chen and Leo Patel. Effective access completeness is not established.",
+      "status": "evidence_backed",
+      "source_ids": [
+        "prod-access-v1"
+      ],
+      "support": "Supported within the stated scope of the synthetic company record; not an external certification.",
+      "owner": "IT owner",
+      "priority": "high"
+    },
+    {
+      "id": "offboarding",
+      "question": "Do you have an employee offboarding process?",
+      "answer": "A documented employee offboarding process assigns People and IT responsibilities. Evidence of implementation in individual departures was not supplied.",
+      "status": "evidence_backed",
+      "source_ids": [
+        "offboarding-v1"
+      ],
+      "support": "Supported within the stated scope of the synthetic company record; not an external certification.",
+      "owner": "People owner",
+      "priority": "medium"
+    },
+    {
+      "id": "background_checks",
+      "question": "Do you conduct employee background checks?",
+      "answer": "Unknown / needs confirmation.",
+      "status": "unknown",
+      "source_ids": [],
+      "support": "No relevant company evidence supplied.",
+      "owner": "People owner",
+      "priority": "medium"
+    }
+  ],
+  "sources": [
+    {
+      "id": "mfa-policy-v1",
+      "title": "Access policy v1",
+      "kind": "policy",
+      "text": "MFA is mandatory for Google Workspace and GitHub. Policy requirement; this document does not attest actual enrollment.",
+      "origin_id": "mfa-policy-v1",
+      "parent_ids": [],
+      "updated_at": "2026-09-04T16:00:00+00:00",
+      "sha256": "4ac8726fdb12897721af1e255f4e4f8a632052ca87abe896a989587c8fb1e88a"
+    },
+    {
+      "id": "mfa-exception-v1",
+      "title": "Contractor access message",
+      "kind": "internal_message",
+      "text": "An active contractor exception may leave one Google Workspace account without MFA. Verify current account state.",
+      "origin_id": "mfa-exception-v1",
+      "parent_ids": [],
+      "updated_at": "2026-09-05T08:00:00+00:00",
+      "sha256": "4b3ce8a6d09be68dc59f3a14b3cd7d305e6d47305d2257f5569d780c5d761d54"
+    },
+    {
+      "id": "rds-snapshot-v1",
+      "title": "Primary database infrastructure snapshot",
+      "kind": "infrastructure",
+      "text": "Primary customer database: AWS RDS in us-east-1. StorageEncrypted=true. Scope excludes replicas, exports, logs, backups and employee devices.",
+      "origin_id": "rds-snapshot-v1",
+      "parent_ids": [],
+      "updated_at": "2026-09-04T16:00:00+00:00",
+      "sha256": "66a590183c3c5f41cf218f5eeecb65e9b324fff541adc01192568dea4403e702"
+    },
+    {
+      "id": "ci-policy-v1",
+      "title": "Container CI pipeline configuration",
+      "kind": "configuration",
+      "text": "Container image vulnerability scan is configured in CI. No evidence here of latest successful run, web application scans or penetration tests.",
+      "origin_id": "ci-policy-v1",
+      "parent_ids": [],
+      "updated_at": "2026-09-04T16:00:00+00:00",
+      "sha256": "48a22cf35adbe59c4aee5e7c06e24ed15c7db545db4d5ed10cd235d300a48712"
+    },
+    {
+      "id": "prod-access-v1",
+      "title": "Production access roster",
+      "kind": "employee_information",
+      "text": "Two synthetic named production administrators: Maya Chen and Leo Patel. This roster does not prove no additional effective permissions exist.",
+      "origin_id": "prod-access-v1",
+      "parent_ids": [],
+      "updated_at": "2026-09-04T16:00:00+00:00",
+      "sha256": "192eb692390a08890f3f0c0224266783f2441a097b4f5224b9fb9e35d4aef9ff"
+    },
+    {
+      "id": "offboarding-v1",
+      "title": "Employee offboarding procedure",
+      "kind": "policy",
+      "text": "On departure, the People owner requests account disablement and the IT owner removes access and records completion. A documented process; no completed offboarding samples supplied.",
+      "origin_id": "offboarding-v1",
+      "parent_ids": [],
+      "updated_at": "2026-09-04T16:00:00+00:00",
+      "sha256": "bd1ce96f3134b1a91dc818e0a87725fb267427715177d224f4b1e40bb5da9396"
+    },
+    {
+      "id": "mfa-iam-v2",
+      "title": "New synthetic IAM snapshot v2",
+      "kind": "infrastructure",
+      "text": "Synthetic current IAM check: prior contractor exception disabled; all currently listed Google Workspace and GitHub accounts have MFA enabled. Scope: these two services at snapshot time only.",
+      "origin_id": "mfa-iam-v2",
+      "parent_ids": [],
+      "updated_at": "2026-09-05T15:00:00+00:00",
+      "sha256": "6fe2b428625ecb7dad8646d9cfc88a16b3189b45504dc510a180c50782f2ca9e"
+    }
+  ],
+  "history": [
+    {
+      "type": "retrieval",
+      "question_id": null,
+      "actor": "system",
+      "time": "2026-09-05T14:00:25.064679+00:00",
+      "retrieved_ids": [
+        "mfa-policy-v1",
+        "mfa-exception-v1",
+        "rds-snapshot-v1",
+        "ci-policy-v1",
+        "prod-access-v1",
+        "offboarding-v1"
+      ],
+      "invalid_source_ids": [],
+      "unique_origin_count": 6,
+      "revision": 1
+    },
+    {
+      "type": "retrieval",
+      "actor": "Yari (demo)",
+      "time": "2026-09-05T15:26:53.095Z",
+      "revision": 2,
+      "question_id": "mfa",
+      "retrieved_ids": [
+        "mfa-policy-v1",
+        "mfa-exception-v1"
+      ]
+    },
+    {
+      "type": "response",
+      "actor": "Yari (demo)",
+      "time": "2026-09-05T15:26:53.095Z",
+      "revision": 2,
+      "question_id": "mfa",
+      "status": "conflict",
+      "retrieved_ids": [
+        "mfa-policy-v1",
+        "mfa-exception-v1"
+      ]
+    },
+    {
+      "type": "retrieval",
+      "actor": "Yari (demo)",
+      "time": "2026-09-05T15:26:53.251Z",
+      "revision": 3,
+      "question_id": "mfa",
+      "retrieved_ids": [
+        "mfa-policy-v1",
+        "mfa-exception-v1"
+      ]
+    },
+    {
+      "type": "response",
+      "actor": "Yari (demo)",
+      "time": "2026-09-05T15:26:53.251Z",
+      "revision": 3,
+      "question_id": "mfa",
+      "status": "conflict",
+      "retrieved_ids": [
+        "mfa-policy-v1",
+        "mfa-exception-v1"
+      ]
+    },
+    {
+      "type": "retrieval",
+      "actor": "Yari (demo)",
+      "time": "2026-09-05T15:26:53.297Z",
+      "revision": 4,
+      "question_id": "backups",
+      "retrieved_ids": []
+    },
+    {
+      "type": "response",
+      "actor": "Yari (demo)",
+      "time": "2026-09-05T15:26:53.297Z",
+      "revision": 4,
+      "question_id": "backups",
+      "status": "unknown",
+      "retrieved_ids": []
+    },
+    {
+      "type": "retrieval",
+      "actor": "Yari (demo)",
+      "time": "2026-09-05T15:26:53.581Z",
+      "revision": 5,
+      "question_id": "backups",
+      "retrieved_ids": []
+    },
+    {
+      "type": "memory_updated",
+      "actor": "Yari (demo)",
+      "time": "2026-09-05T15:26:53.581Z",
+      "revision": 5,
+      "before": {
+        "performed": null,
+        "frequency": null,
+        "automated": null
+      },
+      "after": {
+        "performed": true,
+        "frequency": "weekly",
+        "automated": null
+      }
+    },
+    {
+      "type": "response",
+      "actor": "Yari (demo)",
+      "time": "2026-09-05T15:26:53.581Z",
+      "revision": 5,
+      "question_id": "backups",
+      "status": "unknown",
+      "retrieved_ids": []
+    },
+    {
+      "type": "retrieval",
+      "actor": "Yari (demo)",
+      "time": "2026-09-05T15:26:53.830Z",
+      "revision": 6,
+      "question_id": "backups",
+      "retrieved_ids": []
+    },
+    {
+      "type": "response",
+      "actor": "Yari (demo)",
+      "time": "2026-09-05T15:26:53.830Z",
+      "revision": 6,
+      "question_id": "backups",
+      "status": "unknown",
+      "retrieved_ids": []
+    },
+    {
+      "type": "retrieval",
+      "actor": "Yari (demo)",
+      "time": "2026-09-05T15:26:54.081Z",
+      "revision": 7,
+      "question_id": "backups",
+      "retrieved_ids": []
+    },
+    {
+      "type": "memory_updated",
+      "actor": "Yari (demo)",
+      "time": "2026-09-05T15:26:54.081Z",
+      "revision": 7,
+      "before": {
+        "performed": true,
+        "frequency": "weekly",
+        "automated": null
+      },
+      "after": {
+        "performed": true,
+        "frequency": "weekly",
+        "automated": true
+      }
+    },
+    {
+      "type": "response",
+      "actor": "Yari (demo)",
+      "time": "2026-09-05T15:26:54.081Z",
+      "revision": 7,
+      "question_id": "backups",
+      "status": "user_confirmed",
+      "retrieved_ids": []
+    },
+    {
+      "type": "retrieval",
+      "actor": "Yari (demo)",
+      "time": "2026-09-05T15:26:54.114Z",
+      "revision": 8,
+      "question_id": null,
+      "retrieved_ids": []
+    },
+    {
+      "type": "response",
+      "actor": "Yari (demo)",
+      "time": "2026-09-05T15:26:54.114Z",
+      "revision": 8,
+      "question_id": null,
+      "status": "unknown",
+      "retrieved_ids": []
+    },
+    {
+      "type": "retrieval",
+      "actor": "Yari (demo)",
+      "time": "2026-09-05T15:26:54.363Z",
+      "revision": 9,
+      "question_id": null,
+      "retrieved_ids": []
+    },
+    {
+      "type": "response",
+      "actor": "Yari (demo)",
+      "time": "2026-09-05T15:26:54.363Z",
+      "revision": 9,
+      "question_id": null,
+      "status": "unknown",
+      "retrieved_ids": []
+    },
+    {
+      "type": "retrieval",
+      "actor": "Yari (demo)",
+      "time": "2026-09-05T15:26:54.613Z",
+      "revision": 10,
+      "question_id": "backups",
+      "retrieved_ids": []
+    },
+    {
+      "type": "response",
+      "actor": "Yari (demo)",
+      "time": "2026-09-05T15:26:54.613Z",
+      "revision": 10,
+      "question_id": "backups",
+      "status": "user_confirmed",
+      "retrieved_ids": []
+    },
+    {
+      "type": "synthetic_source_added",
+      "actor": "Yari (demo)",
+      "time": "2026-09-05T15:26:55.197Z",
+      "revision": 11,
+      "source_id": "mfa-iam-v2",
+      "prior_question": {
+        "id": "mfa",
+        "question": "Is MFA enabled?",
+        "answer": "Conflict: policy requires MFA for Google Workspace and GitHub, but an internal message reports a possible active contractor exception. Current enforcement is unconfirmed.",
+        "status": "conflict",
+        "source_ids": [
+          "mfa-policy-v1",
+          "mfa-exception-v1"
+        ],
+        "support": "A policy requirement is not evidence of universal enforcement. Obtain current account state or exception resolution.",
+        "owner": "IT owner",
+        "priority": "high"
+      }
+    }
+  ],
+  "statuses": {
+    "evidence_backed": 6,
+    "user_confirmed": 1,
+    "unknown": 1,
+    "conflict": 0
+  },
+  "limitation": "Browser state is editable; hashes do not prove real-world truth."
+}

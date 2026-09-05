@@ -1,0 +1,8 @@
+product_id,product_name,family,revenue_model
+P001,Platform,Software,Recurring
+P002,Analytics,Software,Recurring
+P003,Services,Services,Project
+P004,Commerce,Software,Recurring
+P005,SmartHub Pro,Hardware,Transactional
+P006,SmartHub Mini,Hardware,Transactional
+P007,Accessories,Hardware,Transactional

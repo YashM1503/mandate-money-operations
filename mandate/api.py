@@ -19,6 +19,8 @@ class StrictBody(BaseModel): model_config=ConfigDict(extra='forbid',strict=True)
 class Login(StrictBody):
     username:str=Field(min_length=1,max_length=32)
     password:str=Field(min_length=1,max_length=128)
+class SecurityRevision(StrictBody): expected_revision:int=Field(ge=1)
+class SecurityMessage(SecurityRevision): message:str=Field(min_length=1,max_length=4000)
 class Version(StrictBody): version:int=Field(ge=1)
 class ApprovalRequest(Version):
     decision_fingerprint:str=Field(pattern=r'^[a-f0-9]{64}$')
@@ -54,19 +56,24 @@ def create_app(store=None,users=None):
     async def headers(request,call_next):
         # Incremental ASGI body cap prevents unbounded JSON even without Content-Length.
         size=0; receive=request._receive
+        path=request.url.path
+        max_body=16384
+        if path=='/api/money-operations/datasets':
+            try: max_body=max(16384,int(os.getenv('MANDATE_MAX_UPLOAD_BYTES','2000000')))
+            except ValueError: max_body=2000000
         async def limited_receive():
             nonlocal size
             message=await receive();size+=len(message.get('body',b''))
-            if size>16384: raise HTTPException(413,'Request too large')
+            if size>max_body: raise HTTPException(413,'Request too large')
             return message
         request._receive=limited_receive
         if not (request.headers.get('content-length','0') or '0').isdigit(): return JSONResponse({'detail':'Invalid content length'},400)
-        if int(request.headers.get('content-length','0') or 0)>16384: return JSONResponse({'detail':'Request too large'},413)
+        if int(request.headers.get('content-length','0') or 0)>max_body: return JSONResponse({'detail':'Request too large'},413)
         response=await call_next(request)
         response.headers.update({'X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Referrer-Policy':'no-referrer','Cache-Control':'no-store','Permissions-Policy':'camera=(), microphone=(), geolocation=()'})
-        if request.url.path=='/':
+        if request.url.path in ('/','/money-operations'):
             # Unified artifact requires inline script and style; no third-party resources.
-            response.headers['Content-Security-Policy']="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
+            response.headers['Content-Security-Policy']="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; media-src 'self' blob:; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
         return response
     security=HTTPBearer(auto_error=False)
     def auth(credentials:HTTPAuthorizationCredentials|None=Depends(security)):
@@ -104,6 +111,8 @@ def create_app(store=None,users=None):
     def health(): return {'status':'ok','payment_mode':'synthetic_ledger'}
     @app.get('/')
     def index(): return FileResponse(ROOT/'static/index.html')
+    @app.get('/money-operations')
+    def money_operations_index(): return FileResponse(ROOT/'static/money-operations.html')
     @app.post('/api/login')
     def login(body:Login,request:Request):
         client=request.client.host if request.client else 'unknown'
@@ -255,4 +264,48 @@ def create_app(store=None,users=None):
             def m(name,value,unit,denominator,description):return dict(name=name,value=value,unit=unit,denominator=denominator,description=description)
             ms=[m('Cases loaded',n,'count',None,'Synthetic payment cases in this database'),m('Independent beneficiary evidence',sum(v['decision']['independent_verified'] for v in vs),'cases',n,'At least one authorized source root for current destination'),m('Verified simulated effects',sum(e['event_type']=='simulated_payment_verified' for e in events),'count',released,'Recorded only after exact ledger readback'),m('Audit integrity',sum(v['journal']['valid'] for v in vs),'cases',n,'HMAC linkage plus current snapshot; same-database anchors'),m('Pending independent verification',sum(not v['decision']['independent_verified'] for v in vs),'cases',n,'Does not equate to fraud'),m('Approvals revoked',sum(e['event_type']=='approval_revoked' for e in events),'count',None,'Observed revocation events'),m('Bank source roots',sum(v['decision']['root_count'] for v in vs),'count',n,'Deduplicated root count, not a confidence score')]
             return dict(metrics=ms,journal=dict(valid=all(v['journal']['valid'] for v in vs),count=len(events)),integrations=integration_status(),admit_coverage='Unassessed: separate ADMIT definition not supplied',fraud_prevention_rate=None)
+    from .security import init_profile,respond,add_resolution,export_questionnaire
+    with store.transaction() as db:
+        db.execute('CREATE TABLE IF NOT EXISTS security_profiles (id INTEGER PRIMARY KEY, body TEXT NOT NULL, mac TEXT NOT NULL)')
+    def security_read(db):
+        row=db.execute('SELECT body,mac FROM security_profiles WHERE id=1').fetchone()
+        if not row: return init_profile()
+        expected=hmac.new(store.key,row['body'].encode(),hashlib.sha256).hexdigest()
+        if not hmac.compare_digest(expected,row['mac']): raise HTTPException(409,'Security profile integrity failed')
+        return json.loads(row['body'])
+    def security_write(db,profile):
+        body=json.dumps(profile,sort_keys=True,separators=(',',':'))
+        mac=hmac.new(store.key,body.encode(),hashlib.sha256).hexdigest()
+        db.execute('INSERT INTO security_profiles VALUES(1,?,?) ON CONFLICT(id) DO UPDATE SET body=excluded.body,mac=excluded.mac',(body,mac))
+    @app.get('/security')
+    def security_index(): return FileResponse(ROOT/'static/security.html')
+    @app.get('/api/security/profile')
+    def security_profile(user=Depends(auth)):
+        with store.connect() as db:
+            return security_read(db)
+    @app.post('/api/security/chat')
+    def security_chat(body:SecurityMessage,user=Depends(auth)):
+        if user['role'] not in ('analyst','controller'): raise HTTPException(403,'Reviewer role required')
+        with store.transaction() as db:
+            profile=security_read(db)
+            if profile['revision']!=body.expected_revision: raise HTTPException(409,'Profile changed; reload before replying')
+            profile,reply=respond(profile,body.message,user['username'])
+            security_write(db,profile)
+            return dict(profile=profile,reply=reply,mode='deterministic-local')
+    @app.post('/api/security/resolution-fixture')
+    def security_resolution(body:SecurityRevision,user=Depends(auth)):
+        if user['role'] not in ('analyst','controller'): raise HTTPException(403,'Reviewer role required')
+        with store.transaction() as db:
+            profile=security_read(db)
+            if profile['revision']!=body.expected_revision: raise HTTPException(409,'Profile changed; reload before continuing')
+            profile=add_resolution(profile,user['username']);security_write(db,profile)
+            return profile
+    @app.get('/api/security/questionnaire')
+    def security_export(user=Depends(auth)):
+        with store.connect() as db: return export_questionnaire(security_read(db))
+    from .money_operations_service import init_money_operations,register_money_operations
+    from .money_operations_contracts import register_money_operations_extensions
+    init_money_operations(store)
+    register_money_operations(app,store,auth)
+    register_money_operations_extensions(app,store,auth)
     return app

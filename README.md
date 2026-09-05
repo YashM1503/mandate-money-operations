@@ -1,3 +1,43 @@
+# MANDATE Money Operations — start here
+
+The primary hackathon demonstration explains financial changes across periods
+from account summaries and transaction-level synthetic data. Open
+`/money-operations` in connected mode to show the January-to-February close:
+gross revenue increased $675,000 (18.0%), enterprise contributed $576,000
+(32.0%), and three customers contributed $432,000 (64.0% of total growth).
+Prior-close context requires current-run confirmation, and Other Opex remains
+visibly reconciled but causally unexplained pending human review.
+
+The offline visual replay is `static/money-operations.html`. PRISM observes the
+validated narrative boundary, GIDE usage requires a separate native evaluation,
+and ElevenLabs briefing is optional and restricted to an approved memo. All
+included financial records are fictional.
+
+## Run the Money Operations demo
+
+```sh
+/opt/anaconda3/bin/python3.13 scripts/bootstrap.py
+MANDATE_DATA_DIR=./data /opt/anaconda3/bin/python3.13 -m uvicorn mandate.api:create_app --factory --host 127.0.0.1 --port 8000 --workers 1 --no-proxy-headers
+```
+
+Open <http://127.0.0.1:8000/money-operations>, choose **Connected API**, and use
+the locally generated credentials in `data/demo-credentials.txt`. Never commit
+the `data/` directory.
+
+## Additional reference workflows
+
+### Security analyst demo
+
+The Regodit security questionnaire workflow is now the primary demonstration. Open `static/security.html` directly for an offline synthetic replay, or start the API using the commands below and visit `/security` for authenticated server mode. `/` retains the earlier payment MVP.
+
+Try: MFA conflict → Complete backups → yes → daily → yes → Actually backups are weekly → load new synthetic IAM evidence → export questionnaire → decision memo.
+
+The security analyst is a bounded deterministic engine. It does not yet make live model calls or submit security traces to PRISM. The existing AP model/PRISM adapter is retained. Meaningful GIDE usage and verified PRISM ingestion remain required event work; this package does not claim qualification or production readiness.
+
+See `docs/Mandate_UI_Specification.docx`, `docs/Mandate_Business_Explanation.docx`, `docs/SECURITY_UPDATE_QA.md` and `docs/MASTER_BUILD_PROMPTS.md`. Synthetic security records live in `sample-data/security-*.json`. The editable reference story deck is under `demo/`.
+
+---
+
 # Mandate
 
 Mandate checks whether the evidence authorizing a supplier payment is independent, then binds human authority to an exact simulated effect. The demo catches an agent updating a supplier master from an unverified message and later treating its own update as confirmation.

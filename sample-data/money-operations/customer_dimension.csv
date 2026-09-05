@@ -1,0 +1,25 @@
+customer_id,customer_name,segment,primary_product,channel,region,allocation_weight
+C001,Northstar Commerce,Enterprise,Platform,Direct,Northeast,0.24
+C002,Atlas Industrial,Enterprise,Platform,Direct,Midwest,0.21
+C003,Forma Retail Group,Enterprise,Analytics,Direct,West,0.18
+C004,Horizon Outfitters,Enterprise,Platform,Partner,South,0.15
+C005,Meridian Markets,Enterprise,Analytics,Direct,Northeast,0.12
+C006,BluePeak Stores,Enterprise,Services,Partner,West,0.1
+C101,Bright Cart,SMB,Commerce,Partner,South,0.15
+C102,Urban Shelf,SMB,Commerce,Partner,Northeast,0.14
+C103,Market Lane,SMB,Platform,Direct,Midwest,0.13
+C104,Juniper Goods,SMB,Commerce,Web,West,0.12
+C105,Oak & Main,SMB,Analytics,Direct,South,0.11
+C106,Common Basket,SMB,Commerce,Web,Northeast,0.1
+C107,Fieldstone Shop,SMB,Platform,Partner,Midwest,0.09
+C108,Elm Street Retail,SMB,Commerce,Web,West,0.08
+C109,Good Day Supply,SMB,Services,Direct,South,0.08
+C201,Consumer East,Consumer,SmartHub Pro,Web,Northeast,0.16
+C202,Consumer West,Consumer,SmartHub Pro,Web,West,0.15
+C203,Consumer South,Consumer,SmartHub Mini,Web,South,0.14
+C204,Consumer Midwest,Consumer,SmartHub Mini,Web,Midwest,0.13
+C205,Marketplace A,Consumer,Accessories,Marketplace,Northeast,0.11
+C206,Marketplace B,Consumer,Accessories,Marketplace,West,0.1
+C207,Direct Consumer A,Consumer,SmartHub Pro,Web,South,0.08
+C208,Direct Consumer B,Consumer,SmartHub Mini,Web,Midwest,0.07
+C209,Direct Consumer C,Consumer,Accessories,Marketplace,West,0.06

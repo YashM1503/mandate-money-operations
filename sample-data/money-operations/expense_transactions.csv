@@ -1,0 +1,93 @@
+transaction_id,date,period,account,vendor_id,vendor_name,driver_category,amount,headcount_effect,source_system,invoice_id,description
+EXP-202510-COGS-01,2025-10-06,2025-10,COGS,V001,InventoryWorks,Unit volume,1050000,0,Synthetic AP,BILL-202510-V001-1,Inventory purchases
+EXP-202510-COGS-02,2025-10-07,2025-10,COGS,V002,SupplyForge,Unit volume,700000,0,Synthetic AP,BILL-202510-V002-2,Inventory purchases
+EXP-202510-SOFT-03,2025-10-08,2025-10,Software,V003,NovaERP,Recurring subscription,68250,0,Synthetic AP,BILL-202510-V003-3,ERP platform charge
+EXP-202510-SOFT-04,2025-10-09,2025-10,Software,V004,CloudGrid,Usage,63000,0,Synthetic AP,BILL-202510-V004-4,Cloud platform consumption
+EXP-202510-SOFT-05,2025-10-10,2025-10,Software,V005,Secura Labs,Recurring subscription,43750,0,Synthetic AP,BILL-202510-V005-5,Security platform subscription
+EXP-202510-LOGI-06,2025-10-11,2025-10,Logistics,V006,ParcelPro,Volume,179950,0,Synthetic AP,BILL-202510-V006-6,Standard parcel volume
+EXP-202510-LOGI-07,2025-10-12,2025-10,Logistics,V007,FreightLine,Volume,79650,0,Synthetic AP,BILL-202510-V007-7,Standard freight volume
+EXP-202510-LOGI-08,2025-10-13,2025-10,Logistics,V008,QuickShip,Expedited shipping,35400,0,Synthetic AP,BILL-202510-V008-8,Expedited deliveries
+EXP-202510-PAYR-09,2025-10-14,2025-10,Payroll,V009,Payroll Clearing,Base payroll,880000,0,Synthetic AP,BILL-202510-V009-9,Base salaries
+EXP-202510-PAYR-11,2025-10-16,2025-10,Payroll,V010,Tax Authority,Payroll tax,20000,0,Synthetic AP,BILL-202510-V010-11,Employer payroll taxes
+EXP-202510-OTHE-14,2025-10-19,2025-10,Other Opex,V013,OfficeWorks,Office and administration,87000,0,Synthetic AP,BILL-202510-V013-14,Office and administration
+EXP-202510-OTHE-15,2025-10-20,2025-10,Other Opex,V014,Counsel LLP,Legal,34800,0,Synthetic AP,BILL-202510-V014-15,Legal services
+EXP-202510-OTHE-16,2025-10-21,2025-10,Other Opex,V999,Unmapped clearing batch,Unexplained,23200,0,Synthetic AP,BILL-202510-V999-16,Unclassified clearing entry; no supporting memo
+EXP-202510-MARK-12,2025-10-17,2025-10,Marketing,V011,AdSphere,Campaigns,168000,0,Synthetic AP,BILL-202510-V011-12,Digital campaigns
+EXP-202510-MARK-13,2025-10-18,2025-10,Marketing,V012,Field Events Co,Events,72000,0,Synthetic AP,BILL-202510-V012-13,Events and field marketing
+EXP-202511-COGS-01,2025-11-06,2025-11,COGS,V001,InventoryWorks,Unit volume,1086000,0,Synthetic AP,BILL-202511-V001-1,Inventory purchases
+EXP-202511-COGS-02,2025-11-07,2025-11,COGS,V002,SupplyForge,Unit volume,724000,0,Synthetic AP,BILL-202511-V002-2,Inventory purchases
+EXP-202511-SOFT-03,2025-11-08,2025-11,Software,V003,NovaERP,Recurring subscription,68640,0,Synthetic AP,BILL-202511-V003-3,ERP platform charge
+EXP-202511-SOFT-04,2025-11-09,2025-11,Software,V004,CloudGrid,Usage,63360,0,Synthetic AP,BILL-202511-V004-4,Cloud platform consumption
+EXP-202511-SOFT-05,2025-11-10,2025-11,Software,V005,Secura Labs,Recurring subscription,44000,0,Synthetic AP,BILL-202511-V005-5,Security platform subscription
+EXP-202511-LOGI-06,2025-11-11,2025-11,Logistics,V006,ParcelPro,Volume,183000,0,Synthetic AP,BILL-202511-V006-6,Standard parcel volume
+EXP-202511-LOGI-07,2025-11-12,2025-11,Logistics,V007,FreightLine,Volume,81000,0,Synthetic AP,BILL-202511-V007-7,Standard freight volume
+EXP-202511-LOGI-08,2025-11-13,2025-11,Logistics,V008,QuickShip,Expedited shipping,36000,0,Synthetic AP,BILL-202511-V008-8,Expedited deliveries
+EXP-202511-PAYR-09,2025-11-14,2025-11,Payroll,V009,Payroll Clearing,Base payroll,885000,0,Synthetic AP,BILL-202511-V009-9,Base salaries
+EXP-202511-PAYR-11,2025-11-16,2025-11,Payroll,V010,Tax Authority,Payroll tax,20000,0,Synthetic AP,BILL-202511-V010-11,Employer payroll taxes
+EXP-202511-OTHE-14,2025-11-19,2025-11,Other Opex,V013,OfficeWorks,Office and administration,88800,0,Synthetic AP,BILL-202511-V013-14,Office and administration
+EXP-202511-OTHE-15,2025-11-20,2025-11,Other Opex,V014,Counsel LLP,Legal,35520,0,Synthetic AP,BILL-202511-V014-15,Legal services
+EXP-202511-OTHE-16,2025-11-21,2025-11,Other Opex,V999,Unmapped clearing batch,Unexplained,23680,0,Synthetic AP,BILL-202511-V999-16,Unclassified clearing entry; no supporting memo
+EXP-202511-MARK-12,2025-11-17,2025-11,Marketing,V011,AdSphere,Campaigns,175000,0,Synthetic AP,BILL-202511-V011-12,Digital campaigns
+EXP-202511-MARK-13,2025-11-18,2025-11,Marketing,V012,Field Events Co,Events,75000,0,Synthetic AP,BILL-202511-V012-13,Events and field marketing
+EXP-202512-COGS-01,2025-12-06,2025-12,COGS,V001,InventoryWorks,Unit volume,1188000,0,Synthetic AP,BILL-202512-V001-1,Inventory purchases
+EXP-202512-COGS-02,2025-12-07,2025-12,COGS,V002,SupplyForge,Unit volume,792000,0,Synthetic AP,BILL-202512-V002-2,Inventory purchases
+EXP-202512-SOFT-03,2025-12-08,2025-12,Software,V003,NovaERP,Recurring subscription,69420,0,Synthetic AP,BILL-202512-V003-3,ERP platform charge
+EXP-202512-SOFT-04,2025-12-09,2025-12,Software,V004,CloudGrid,Usage,64080,0,Synthetic AP,BILL-202512-V004-4,Cloud platform consumption
+EXP-202512-SOFT-05,2025-12-10,2025-12,Software,V005,Secura Labs,Recurring subscription,44500,0,Synthetic AP,BILL-202512-V005-5,Security platform subscription
+EXP-202512-LOGI-06,2025-12-11,2025-12,Logistics,V006,ParcelPro,Volume,201300,0,Synthetic AP,BILL-202512-V006-6,Standard parcel volume
+EXP-202512-LOGI-07,2025-12-12,2025-12,Logistics,V007,FreightLine,Volume,89100,0,Synthetic AP,BILL-202512-V007-7,Standard freight volume
+EXP-202512-LOGI-08,2025-12-13,2025-12,Logistics,V008,QuickShip,Expedited shipping,39600,0,Synthetic AP,BILL-202512-V008-8,Expedited deliveries
+EXP-202512-PAYR-09,2025-12-14,2025-12,Payroll,V009,Payroll Clearing,Base payroll,895000,0,Synthetic AP,BILL-202512-V009-9,Base salaries
+EXP-202512-PAYR-11,2025-12-16,2025-12,Payroll,V010,Tax Authority,Payroll tax,20000,0,Synthetic AP,BILL-202512-V010-11,Employer payroll taxes
+EXP-202512-OTHE-14,2025-12-19,2025-12,Other Opex,V013,OfficeWorks,Office and administration,91200,0,Synthetic AP,BILL-202512-V013-14,Office and administration
+EXP-202512-OTHE-15,2025-12-20,2025-12,Other Opex,V014,Counsel LLP,Legal,36480,0,Synthetic AP,BILL-202512-V014-15,Legal services
+EXP-202512-OTHE-16,2025-12-21,2025-12,Other Opex,V999,Unmapped clearing batch,Unexplained,24320,0,Synthetic AP,BILL-202512-V999-16,Unclassified clearing entry; no supporting memo
+EXP-202512-MARK-12,2025-12-17,2025-12,Marketing,V011,AdSphere,Campaigns,199500,0,Synthetic AP,BILL-202512-V011-12,Digital campaigns
+EXP-202512-MARK-13,2025-12-18,2025-12,Marketing,V012,Field Events Co,Events,85500,0,Synthetic AP,BILL-202512-V012-13,Events and field marketing
+EXP-202601-COGS-01,2026-01-06,2026-01,COGS,V001,InventoryWorks,Unit volume,1104000,0,Synthetic AP,BILL-202601-V001-1,Inventory purchases
+EXP-202601-COGS-02,2026-01-07,2026-01,COGS,V002,SupplyForge,Unit volume,736000,0,Synthetic AP,BILL-202601-V002-2,Inventory purchases
+EXP-202601-SOFT-03,2026-01-08,2026-01,Software,V003,NovaERP,Recurring subscription,70000,0,Synthetic AP,BILL-202601-V003-3,Monthly ERP platform charge
+EXP-202601-SOFT-04,2026-01-09,2026-01,Software,V004,CloudGrid,Usage,65000,0,Synthetic AP,BILL-202601-V004-4,Cloud platform consumption
+EXP-202601-SOFT-05,2026-01-10,2026-01,Software,V005,Secura Labs,Recurring subscription,45000,0,Synthetic AP,BILL-202601-V005-5,Security platform subscription
+EXP-202601-LOGI-06,2026-01-11,2026-01,Logistics,V006,ParcelPro,Volume,190000,0,Synthetic AP,BILL-202601-V006-6,Standard parcel volume
+EXP-202601-LOGI-07,2026-01-12,2026-01,Logistics,V007,FreightLine,Volume,80000,0,Synthetic AP,BILL-202601-V007-7,Standard freight volume
+EXP-202601-LOGI-08,2026-01-13,2026-01,Logistics,V008,QuickShip,Expedited shipping,40000,0,Synthetic AP,BILL-202601-V008-8,Expedited deliveries
+EXP-202601-PAYR-09,2026-01-14,2026-01,Payroll,V009,Payroll Clearing,Base payroll,900000,0,Synthetic AP,BILL-202601-V009-9,Base salaries
+EXP-202601-PAYR-10,2026-01-15,2026-01,Payroll,V009,Payroll Clearing,Performance bonus,0,0,Synthetic AP,BILL-202601-V009-10,No performance bonus in January
+EXP-202601-PAYR-11,2026-01-16,2026-01,Payroll,V010,Tax Authority,Payroll tax,20000,0,Synthetic AP,BILL-202601-V010-11,Employer payroll taxes
+EXP-202601-OTHE-14,2026-01-19,2026-01,Other Opex,V013,OfficeWorks,Office and administration,90000,0,Synthetic AP,BILL-202601-V013-14,Office and administration
+EXP-202601-OTHE-15,2026-01-20,2026-01,Other Opex,V014,Counsel LLP,Legal,35000,0,Synthetic AP,BILL-202601-V014-15,Legal services
+EXP-202601-OTHE-16,2026-01-21,2026-01,Other Opex,V999,Unmapped clearing batch,Unexplained,25000,0,Synthetic AP,BILL-202601-V999-16,Unclassified clearing entry; no supporting memo
+EXP-202601-MARK-12,2026-01-17,2026-01,Marketing,V011,AdSphere,Campaigns,182000,0,Synthetic AP,BILL-202601-V011-12,Digital campaigns
+EXP-202601-MARK-13,2026-01-18,2026-01,Marketing,V012,Field Events Co,Events,78000,0,Synthetic AP,BILL-202601-V012-13,Events and field marketing
+EXP-202602-COGS-01,2026-02-06,2026-02,COGS,V001,InventoryWorks,Unit volume,1272000,0,Synthetic AP,BILL-202602-V001-1,Inventory purchases
+EXP-202602-COGS-02,2026-02-07,2026-02,COGS,V002,SupplyForge,Unit volume,848000,0,Synthetic AP,BILL-202602-V002-2,Inventory purchases
+EXP-202602-SOFT-03,2026-02-08,2026-02,Software,V003,NovaERP,Annual renewal,152000,0,Synthetic AP,BILL-202602-V003-3,Monthly ERP charge plus annual renewal
+EXP-202602-SOFT-04,2026-02-09,2026-02,Software,V004,CloudGrid,Usage,65000,0,Synthetic AP,BILL-202602-V004-4,Cloud platform consumption
+EXP-202602-SOFT-05,2026-02-10,2026-02,Software,V005,Secura Labs,Recurring subscription,45000,0,Synthetic AP,BILL-202602-V005-5,Security platform subscription
+EXP-202602-LOGI-06,2026-02-11,2026-02,Logistics,V006,ParcelPro,Volume,230000,0,Synthetic AP,BILL-202602-V006-6,Higher standard parcel volume
+EXP-202602-LOGI-07,2026-02-12,2026-02,Logistics,V007,FreightLine,Volume,100000,0,Synthetic AP,BILL-202602-V007-7,Higher standard freight volume
+EXP-202602-LOGI-08,2026-02-13,2026-02,Logistics,V008,QuickShip,Expedited shipping,73000,0,Synthetic AP,BILL-202602-V008-8,Expedited deliveries
+EXP-202602-PAYR-09,2026-02-14,2026-02,Payroll,V009,Payroll Clearing,Base payroll,900000,0,Synthetic AP,BILL-202602-V009-9,Base salaries
+EXP-202602-PAYR-10,2026-02-15,2026-02,Payroll,V009,Payroll Clearing,Performance bonus,120000,0,Synthetic AP,BILL-202602-V009-10,Quarterly performance bonuses
+EXP-202602-PAYR-11,2026-02-16,2026-02,Payroll,V010,Tax Authority,Payroll tax,20000,0,Synthetic AP,BILL-202602-V010-11,Employer payroll taxes
+EXP-202602-OTHE-14,2026-02-19,2026-02,Other Opex,V013,OfficeWorks,Office and administration,90000,0,Synthetic AP,BILL-202602-V013-14,Office and administration
+EXP-202602-OTHE-15,2026-02-20,2026-02,Other Opex,V014,Counsel LLP,Legal,35000,0,Synthetic AP,BILL-202602-V014-15,Legal services
+EXP-202602-OTHE-16,2026-02-21,2026-02,Other Opex,V999,Unmapped clearing batch,Unexplained,82000,0,Synthetic AP,BILL-202602-V999-16,Unclassified clearing entry; no supporting memo
+EXP-202602-MARK-12,2026-02-17,2026-02,Marketing,V011,AdSphere,Campaigns,192500,0,Synthetic AP,BILL-202602-V011-12,Digital campaigns
+EXP-202602-MARK-13,2026-02-18,2026-02,Marketing,V012,Field Events Co,Events,82500,0,Synthetic AP,BILL-202602-V012-13,Events and field marketing
+EXP-202603-COGS-01,2026-03-06,2026-03,COGS,V001,InventoryWorks,Unit volume,1248000,0,Synthetic AP,BILL-202603-V001-1,Inventory purchases
+EXP-202603-COGS-02,2026-03-07,2026-03,COGS,V002,SupplyForge,Unit volume,832000,0,Synthetic AP,BILL-202603-V002-2,Inventory purchases
+EXP-202603-SOFT-03,2026-03-08,2026-03,Software,V003,NovaERP,Recurring subscription,72150,0,Synthetic AP,BILL-202603-V003-3,ERP platform charge
+EXP-202603-SOFT-04,2026-03-09,2026-03,Software,V004,CloudGrid,Usage,66600,0,Synthetic AP,BILL-202603-V004-4,Cloud platform consumption
+EXP-202603-SOFT-05,2026-03-10,2026-03,Software,V005,Secura Labs,Recurring subscription,46250,0,Synthetic AP,BILL-202603-V005-5,Security platform subscription
+EXP-202603-LOGI-06,2026-03-11,2026-03,Logistics,V006,ParcelPro,Volume,222650,0,Synthetic AP,BILL-202603-V006-6,Standard parcel volume
+EXP-202603-LOGI-07,2026-03-12,2026-03,Logistics,V007,FreightLine,Volume,98550,0,Synthetic AP,BILL-202603-V007-7,Standard freight volume
+EXP-202603-LOGI-08,2026-03-13,2026-03,Logistics,V008,QuickShip,Expedited shipping,43800,0,Synthetic AP,BILL-202603-V008-8,Expedited deliveries
+EXP-202603-PAYR-09,2026-03-14,2026-03,Payroll,V009,Payroll Clearing,Base payroll,915000,0,Synthetic AP,BILL-202603-V009-9,Base salaries
+EXP-202603-PAYR-11,2026-03-16,2026-03,Payroll,V010,Tax Authority,Payroll tax,20000,0,Synthetic AP,BILL-202603-V010-11,Employer payroll taxes
+EXP-202603-OTHE-14,2026-03-19,2026-03,Other Opex,V013,OfficeWorks,Office and administration,93000,0,Synthetic AP,BILL-202603-V013-14,Office and administration
+EXP-202603-OTHE-15,2026-03-20,2026-03,Other Opex,V014,Counsel LLP,Legal,37200,0,Synthetic AP,BILL-202603-V014-15,Legal services
+EXP-202603-OTHE-16,2026-03-21,2026-03,Other Opex,V999,Unmapped clearing batch,Unexplained,24800,0,Synthetic AP,BILL-202603-V999-16,Unclassified clearing entry; no supporting memo
+EXP-202603-MARK-12,2026-03-17,2026-03,Marketing,V011,AdSphere,Campaigns,189000,0,Synthetic AP,BILL-202603-V011-12,Digital campaigns
+EXP-202603-MARK-13,2026-03-18,2026-03,Marketing,V012,Field Events Co,Events,81000,0,Synthetic AP,BILL-202603-V012-13,Events and field marketing

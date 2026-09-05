@@ -9,5 +9,9 @@ __pycache__/
 .pytest_cache/
 artifacts/
 *.sqlite3*
+*.sqlite
+*.db
+*credentials*
+.DS_Store
 *.log
 node_modules/

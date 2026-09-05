@@ -1,0 +1,301 @@
+transaction_id,date,period,customer_id,customer_name,segment,product,channel,region,transaction_type,amount,source_system,invoice_id
+REV-202510-C001-01,2025-10-08,2025-10,C001,Northstar Commerce,Enterprise,Platform,Direct,Northeast,Sale,277200,Synthetic ERP,INV-202510-C001A
+REV-202510-C001-02,2025-10-21,2025-10,C001,Northstar Commerce,Enterprise,Platform,Direct,Northeast,Sale,118800,Synthetic ERP,INV-202510-C001B
+REV-202510-C002-01,2025-10-08,2025-10,C002,Atlas Industrial,Enterprise,Platform,Direct,Midwest,Sale,242550,Synthetic ERP,INV-202510-C002A
+REV-202510-C002-02,2025-10-21,2025-10,C002,Atlas Industrial,Enterprise,Platform,Direct,Midwest,Sale,103950,Synthetic ERP,INV-202510-C002B
+REV-202510-C003-01,2025-10-08,2025-10,C003,Forma Retail Group,Enterprise,Analytics,Direct,West,Sale,207900,Synthetic ERP,INV-202510-C003A
+REV-202510-C003-02,2025-10-21,2025-10,C003,Forma Retail Group,Enterprise,Analytics,Direct,West,Sale,89100,Synthetic ERP,INV-202510-C003B
+REV-202510-C004-01,2025-10-08,2025-10,C004,Horizon Outfitters,Enterprise,Platform,Partner,South,Sale,173250,Synthetic ERP,INV-202510-C004A
+REV-202510-C004-02,2025-10-21,2025-10,C004,Horizon Outfitters,Enterprise,Platform,Partner,South,Sale,74250,Synthetic ERP,INV-202510-C004B
+REV-202510-C005-01,2025-10-08,2025-10,C005,Meridian Markets,Enterprise,Analytics,Direct,Northeast,Sale,138600,Synthetic ERP,INV-202510-C005A
+REV-202510-C005-02,2025-10-21,2025-10,C005,Meridian Markets,Enterprise,Analytics,Direct,Northeast,Sale,59400,Synthetic ERP,INV-202510-C005B
+REV-202510-C006-01,2025-10-08,2025-10,C006,BluePeak Stores,Enterprise,Services,Partner,West,Sale,115500,Synthetic ERP,INV-202510-C006A
+REV-202510-C006-02,2025-10-21,2025-10,C006,BluePeak Stores,Enterprise,Services,Partner,West,Sale,49500,Synthetic ERP,INV-202510-C006B
+REV-202510-C101-01,2025-10-08,2025-10,C101,Bright Cart,SMB,Commerce,Partner,South,Sale,115500,Synthetic ERP,INV-202510-C101A
+REV-202510-C101-02,2025-10-21,2025-10,C101,Bright Cart,SMB,Commerce,Partner,South,Sale,49500,Synthetic ERP,INV-202510-C101B
+REV-202510-C102-01,2025-10-08,2025-10,C102,Urban Shelf,SMB,Commerce,Partner,Northeast,Sale,107800,Synthetic ERP,INV-202510-C102A
+REV-202510-C102-02,2025-10-21,2025-10,C102,Urban Shelf,SMB,Commerce,Partner,Northeast,Sale,46200,Synthetic ERP,INV-202510-C102B
+REV-202510-C103-01,2025-10-08,2025-10,C103,Market Lane,SMB,Platform,Direct,Midwest,Sale,100100,Synthetic ERP,INV-202510-C103A
+REV-202510-C103-02,2025-10-21,2025-10,C103,Market Lane,SMB,Platform,Direct,Midwest,Sale,42900,Synthetic ERP,INV-202510-C103B
+REV-202510-C104-01,2025-10-08,2025-10,C104,Juniper Goods,SMB,Commerce,Web,West,Sale,92400,Synthetic ERP,INV-202510-C104A
+REV-202510-C104-02,2025-10-21,2025-10,C104,Juniper Goods,SMB,Commerce,Web,West,Sale,39600,Synthetic ERP,INV-202510-C104B
+REV-202510-C105-01,2025-10-08,2025-10,C105,Oak & Main,SMB,Analytics,Direct,South,Sale,84700,Synthetic ERP,INV-202510-C105A
+REV-202510-C105-02,2025-10-21,2025-10,C105,Oak & Main,SMB,Analytics,Direct,South,Sale,36300,Synthetic ERP,INV-202510-C105B
+REV-202510-C106-01,2025-10-08,2025-10,C106,Common Basket,SMB,Commerce,Web,Northeast,Sale,77000,Synthetic ERP,INV-202510-C106A
+REV-202510-C106-02,2025-10-21,2025-10,C106,Common Basket,SMB,Commerce,Web,Northeast,Sale,33000,Synthetic ERP,INV-202510-C106B
+REV-202510-C107-01,2025-10-08,2025-10,C107,Fieldstone Shop,SMB,Platform,Partner,Midwest,Sale,69300,Synthetic ERP,INV-202510-C107A
+REV-202510-C107-02,2025-10-21,2025-10,C107,Fieldstone Shop,SMB,Platform,Partner,Midwest,Sale,29700,Synthetic ERP,INV-202510-C107B
+REV-202510-C108-01,2025-10-08,2025-10,C108,Elm Street Retail,SMB,Commerce,Web,West,Sale,61600,Synthetic ERP,INV-202510-C108A
+REV-202510-C108-02,2025-10-21,2025-10,C108,Elm Street Retail,SMB,Commerce,Web,West,Sale,26400,Synthetic ERP,INV-202510-C108B
+REV-202510-C109-01,2025-10-08,2025-10,C109,Good Day Supply,SMB,Services,Direct,South,Sale,61600,Synthetic ERP,INV-202510-C109A
+REV-202510-C109-02,2025-10-21,2025-10,C109,Good Day Supply,SMB,Services,Direct,South,Sale,26400,Synthetic ERP,INV-202510-C109B
+REV-202510-C201-01,2025-10-08,2025-10,C201,Consumer East,Consumer,SmartHub Pro,Web,Northeast,Sale,89600,Synthetic ERP,INV-202510-C201A
+REV-202510-C201-02,2025-10-21,2025-10,C201,Consumer East,Consumer,SmartHub Pro,Web,Northeast,Sale,38400,Synthetic ERP,INV-202510-C201B
+REV-202510-C202-01,2025-10-08,2025-10,C202,Consumer West,Consumer,SmartHub Pro,Web,West,Sale,84000,Synthetic ERP,INV-202510-C202A
+REV-202510-C202-02,2025-10-21,2025-10,C202,Consumer West,Consumer,SmartHub Pro,Web,West,Sale,36000,Synthetic ERP,INV-202510-C202B
+REV-202510-C203-01,2025-10-08,2025-10,C203,Consumer South,Consumer,SmartHub Mini,Web,South,Sale,78400,Synthetic ERP,INV-202510-C203A
+REV-202510-C203-02,2025-10-21,2025-10,C203,Consumer South,Consumer,SmartHub Mini,Web,South,Sale,33600,Synthetic ERP,INV-202510-C203B
+REV-202510-C204-01,2025-10-08,2025-10,C204,Consumer Midwest,Consumer,SmartHub Mini,Web,Midwest,Sale,72800,Synthetic ERP,INV-202510-C204A
+REV-202510-C204-02,2025-10-21,2025-10,C204,Consumer Midwest,Consumer,SmartHub Mini,Web,Midwest,Sale,31200,Synthetic ERP,INV-202510-C204B
+REV-202510-C205-01,2025-10-08,2025-10,C205,Marketplace A,Consumer,Accessories,Marketplace,Northeast,Sale,61600,Synthetic ERP,INV-202510-C205A
+REV-202510-C205-02,2025-10-21,2025-10,C205,Marketplace A,Consumer,Accessories,Marketplace,Northeast,Sale,26400,Synthetic ERP,INV-202510-C205B
+REV-202510-C206-01,2025-10-08,2025-10,C206,Marketplace B,Consumer,Accessories,Marketplace,West,Sale,56000,Synthetic ERP,INV-202510-C206A
+REV-202510-C206-02,2025-10-21,2025-10,C206,Marketplace B,Consumer,Accessories,Marketplace,West,Sale,24000,Synthetic ERP,INV-202510-C206B
+REV-202510-C207-01,2025-10-08,2025-10,C207,Direct Consumer A,Consumer,SmartHub Pro,Web,South,Sale,44800,Synthetic ERP,INV-202510-C207A
+REV-202510-C207-02,2025-10-21,2025-10,C207,Direct Consumer A,Consumer,SmartHub Pro,Web,South,Sale,19200,Synthetic ERP,INV-202510-C207B
+REV-202510-C208-01,2025-10-08,2025-10,C208,Direct Consumer B,Consumer,SmartHub Mini,Web,Midwest,Sale,39200,Synthetic ERP,INV-202510-C208A
+REV-202510-C208-02,2025-10-21,2025-10,C208,Direct Consumer B,Consumer,SmartHub Mini,Web,Midwest,Sale,16800,Synthetic ERP,INV-202510-C208B
+REV-202510-C209-01,2025-10-08,2025-10,C209,Direct Consumer C,Consumer,Accessories,Marketplace,West,Sale,33600,Synthetic ERP,INV-202510-C209A
+REV-202510-C209-02,2025-10-21,2025-10,C209,Direct Consumer C,Consumer,Accessories,Marketplace,West,Sale,14400,Synthetic ERP,INV-202510-C209B
+REF-202510-PRO,2025-10-24,2025-10,C201,Consumer East,Consumer,SmartHub Pro,Web,Northeast,Refund,-36000,Synthetic ERP,CM-202510-PRO
+REF-202510-OTH,2025-10-25,2025-10,C203,Consumer South,Consumer,SmartHub Mini,Web,South,Refund,-39000,Synthetic ERP,CM-202510-OTH
+REV-202511-C001-01,2025-11-08,2025-11,C001,Northstar Commerce,Enterprise,Platform,Direct,Northeast,Sale,288960,Synthetic ERP,INV-202511-C001A
+REV-202511-C001-02,2025-11-21,2025-11,C001,Northstar Commerce,Enterprise,Platform,Direct,Northeast,Sale,123840,Synthetic ERP,INV-202511-C001B
+REV-202511-C002-01,2025-11-08,2025-11,C002,Atlas Industrial,Enterprise,Platform,Direct,Midwest,Sale,252840,Synthetic ERP,INV-202511-C002A
+REV-202511-C002-02,2025-11-21,2025-11,C002,Atlas Industrial,Enterprise,Platform,Direct,Midwest,Sale,108360,Synthetic ERP,INV-202511-C002B
+REV-202511-C003-01,2025-11-08,2025-11,C003,Forma Retail Group,Enterprise,Analytics,Direct,West,Sale,216720,Synthetic ERP,INV-202511-C003A
+REV-202511-C003-02,2025-11-21,2025-11,C003,Forma Retail Group,Enterprise,Analytics,Direct,West,Sale,92880,Synthetic ERP,INV-202511-C003B
+REV-202511-C004-01,2025-11-08,2025-11,C004,Horizon Outfitters,Enterprise,Platform,Partner,South,Sale,180600,Synthetic ERP,INV-202511-C004A
+REV-202511-C004-02,2025-11-21,2025-11,C004,Horizon Outfitters,Enterprise,Platform,Partner,South,Sale,77400,Synthetic ERP,INV-202511-C004B
+REV-202511-C005-01,2025-11-08,2025-11,C005,Meridian Markets,Enterprise,Analytics,Direct,Northeast,Sale,144480,Synthetic ERP,INV-202511-C005A
+REV-202511-C005-02,2025-11-21,2025-11,C005,Meridian Markets,Enterprise,Analytics,Direct,Northeast,Sale,61920,Synthetic ERP,INV-202511-C005B
+REV-202511-C006-01,2025-11-08,2025-11,C006,BluePeak Stores,Enterprise,Services,Partner,West,Sale,120400,Synthetic ERP,INV-202511-C006A
+REV-202511-C006-02,2025-11-21,2025-11,C006,BluePeak Stores,Enterprise,Services,Partner,West,Sale,51600,Synthetic ERP,INV-202511-C006B
+REV-202511-C101-01,2025-11-08,2025-11,C101,Bright Cart,SMB,Commerce,Partner,South,Sale,118650,Synthetic ERP,INV-202511-C101A
+REV-202511-C101-02,2025-11-21,2025-11,C101,Bright Cart,SMB,Commerce,Partner,South,Sale,50850,Synthetic ERP,INV-202511-C101B
+REV-202511-C102-01,2025-11-08,2025-11,C102,Urban Shelf,SMB,Commerce,Partner,Northeast,Sale,110740,Synthetic ERP,INV-202511-C102A
+REV-202511-C102-02,2025-11-21,2025-11,C102,Urban Shelf,SMB,Commerce,Partner,Northeast,Sale,47460,Synthetic ERP,INV-202511-C102B
+REV-202511-C103-01,2025-11-08,2025-11,C103,Market Lane,SMB,Platform,Direct,Midwest,Sale,102830,Synthetic ERP,INV-202511-C103A
+REV-202511-C103-02,2025-11-21,2025-11,C103,Market Lane,SMB,Platform,Direct,Midwest,Sale,44070,Synthetic ERP,INV-202511-C103B
+REV-202511-C104-01,2025-11-08,2025-11,C104,Juniper Goods,SMB,Commerce,Web,West,Sale,94920,Synthetic ERP,INV-202511-C104A
+REV-202511-C104-02,2025-11-21,2025-11,C104,Juniper Goods,SMB,Commerce,Web,West,Sale,40680,Synthetic ERP,INV-202511-C104B
+REV-202511-C105-01,2025-11-08,2025-11,C105,Oak & Main,SMB,Analytics,Direct,South,Sale,87010,Synthetic ERP,INV-202511-C105A
+REV-202511-C105-02,2025-11-21,2025-11,C105,Oak & Main,SMB,Analytics,Direct,South,Sale,37290,Synthetic ERP,INV-202511-C105B
+REV-202511-C106-01,2025-11-08,2025-11,C106,Common Basket,SMB,Commerce,Web,Northeast,Sale,79100,Synthetic ERP,INV-202511-C106A
+REV-202511-C106-02,2025-11-21,2025-11,C106,Common Basket,SMB,Commerce,Web,Northeast,Sale,33900,Synthetic ERP,INV-202511-C106B
+REV-202511-C107-01,2025-11-08,2025-11,C107,Fieldstone Shop,SMB,Platform,Partner,Midwest,Sale,71190,Synthetic ERP,INV-202511-C107A
+REV-202511-C107-02,2025-11-21,2025-11,C107,Fieldstone Shop,SMB,Platform,Partner,Midwest,Sale,30510,Synthetic ERP,INV-202511-C107B
+REV-202511-C108-01,2025-11-08,2025-11,C108,Elm Street Retail,SMB,Commerce,Web,West,Sale,63280,Synthetic ERP,INV-202511-C108A
+REV-202511-C108-02,2025-11-21,2025-11,C108,Elm Street Retail,SMB,Commerce,Web,West,Sale,27120,Synthetic ERP,INV-202511-C108B
+REV-202511-C109-01,2025-11-08,2025-11,C109,Good Day Supply,SMB,Services,Direct,South,Sale,63280,Synthetic ERP,INV-202511-C109A
+REV-202511-C109-02,2025-11-21,2025-11,C109,Good Day Supply,SMB,Services,Direct,South,Sale,27120,Synthetic ERP,INV-202511-C109B
+REV-202511-C201-01,2025-11-08,2025-11,C201,Consumer East,Consumer,SmartHub Pro,Web,Northeast,Sale,92960,Synthetic ERP,INV-202511-C201A
+REV-202511-C201-02,2025-11-21,2025-11,C201,Consumer East,Consumer,SmartHub Pro,Web,Northeast,Sale,39840,Synthetic ERP,INV-202511-C201B
+REV-202511-C202-01,2025-11-08,2025-11,C202,Consumer West,Consumer,SmartHub Pro,Web,West,Sale,87150,Synthetic ERP,INV-202511-C202A
+REV-202511-C202-02,2025-11-21,2025-11,C202,Consumer West,Consumer,SmartHub Pro,Web,West,Sale,37350,Synthetic ERP,INV-202511-C202B
+REV-202511-C203-01,2025-11-08,2025-11,C203,Consumer South,Consumer,SmartHub Mini,Web,South,Sale,81340,Synthetic ERP,INV-202511-C203A
+REV-202511-C203-02,2025-11-21,2025-11,C203,Consumer South,Consumer,SmartHub Mini,Web,South,Sale,34860,Synthetic ERP,INV-202511-C203B
+REV-202511-C204-01,2025-11-08,2025-11,C204,Consumer Midwest,Consumer,SmartHub Mini,Web,Midwest,Sale,75530,Synthetic ERP,INV-202511-C204A
+REV-202511-C204-02,2025-11-21,2025-11,C204,Consumer Midwest,Consumer,SmartHub Mini,Web,Midwest,Sale,32370,Synthetic ERP,INV-202511-C204B
+REV-202511-C205-01,2025-11-08,2025-11,C205,Marketplace A,Consumer,Accessories,Marketplace,Northeast,Sale,63910,Synthetic ERP,INV-202511-C205A
+REV-202511-C205-02,2025-11-21,2025-11,C205,Marketplace A,Consumer,Accessories,Marketplace,Northeast,Sale,27390,Synthetic ERP,INV-202511-C205B
+REV-202511-C206-01,2025-11-08,2025-11,C206,Marketplace B,Consumer,Accessories,Marketplace,West,Sale,58100,Synthetic ERP,INV-202511-C206A
+REV-202511-C206-02,2025-11-21,2025-11,C206,Marketplace B,Consumer,Accessories,Marketplace,West,Sale,24900,Synthetic ERP,INV-202511-C206B
+REV-202511-C207-01,2025-11-08,2025-11,C207,Direct Consumer A,Consumer,SmartHub Pro,Web,South,Sale,46480,Synthetic ERP,INV-202511-C207A
+REV-202511-C207-02,2025-11-21,2025-11,C207,Direct Consumer A,Consumer,SmartHub Pro,Web,South,Sale,19920,Synthetic ERP,INV-202511-C207B
+REV-202511-C208-01,2025-11-08,2025-11,C208,Direct Consumer B,Consumer,SmartHub Mini,Web,Midwest,Sale,40670,Synthetic ERP,INV-202511-C208A
+REV-202511-C208-02,2025-11-21,2025-11,C208,Direct Consumer B,Consumer,SmartHub Mini,Web,Midwest,Sale,17430,Synthetic ERP,INV-202511-C208B
+REV-202511-C209-01,2025-11-08,2025-11,C209,Direct Consumer C,Consumer,Accessories,Marketplace,West,Sale,34860,Synthetic ERP,INV-202511-C209A
+REV-202511-C209-02,2025-11-21,2025-11,C209,Direct Consumer C,Consumer,Accessories,Marketplace,West,Sale,14940,Synthetic ERP,INV-202511-C209B
+REF-202511-PRO,2025-11-24,2025-11,C201,Consumer East,Consumer,SmartHub Pro,Web,Northeast,Refund,-37440,Synthetic ERP,CM-202511-PRO
+REF-202511-OTH,2025-11-25,2025-11,C203,Consumer South,Consumer,SmartHub Mini,Web,South,Refund,-40560,Synthetic ERP,CM-202511-OTH
+REV-202512-C001-01,2025-12-08,2025-12,C001,Northstar Commerce,Enterprise,Platform,Direct,Northeast,Sale,319200,Synthetic ERP,INV-202512-C001A
+REV-202512-C001-02,2025-12-21,2025-12,C001,Northstar Commerce,Enterprise,Platform,Direct,Northeast,Sale,136800,Synthetic ERP,INV-202512-C001B
+REV-202512-C002-01,2025-12-08,2025-12,C002,Atlas Industrial,Enterprise,Platform,Direct,Midwest,Sale,279300,Synthetic ERP,INV-202512-C002A
+REV-202512-C002-02,2025-12-21,2025-12,C002,Atlas Industrial,Enterprise,Platform,Direct,Midwest,Sale,119700,Synthetic ERP,INV-202512-C002B
+REV-202512-C003-01,2025-12-08,2025-12,C003,Forma Retail Group,Enterprise,Analytics,Direct,West,Sale,239400,Synthetic ERP,INV-202512-C003A
+REV-202512-C003-02,2025-12-21,2025-12,C003,Forma Retail Group,Enterprise,Analytics,Direct,West,Sale,102600,Synthetic ERP,INV-202512-C003B
+REV-202512-C004-01,2025-12-08,2025-12,C004,Horizon Outfitters,Enterprise,Platform,Partner,South,Sale,199500,Synthetic ERP,INV-202512-C004A
+REV-202512-C004-02,2025-12-21,2025-12,C004,Horizon Outfitters,Enterprise,Platform,Partner,South,Sale,85500,Synthetic ERP,INV-202512-C004B
+REV-202512-C005-01,2025-12-08,2025-12,C005,Meridian Markets,Enterprise,Analytics,Direct,Northeast,Sale,159600,Synthetic ERP,INV-202512-C005A
+REV-202512-C005-02,2025-12-21,2025-12,C005,Meridian Markets,Enterprise,Analytics,Direct,Northeast,Sale,68400,Synthetic ERP,INV-202512-C005B
+REV-202512-C006-01,2025-12-08,2025-12,C006,BluePeak Stores,Enterprise,Services,Partner,West,Sale,133000,Synthetic ERP,INV-202512-C006A
+REV-202512-C006-02,2025-12-21,2025-12,C006,BluePeak Stores,Enterprise,Services,Partner,West,Sale,57000,Synthetic ERP,INV-202512-C006B
+REV-202512-C101-01,2025-12-08,2025-12,C101,Bright Cart,SMB,Commerce,Partner,South,Sale,131250,Synthetic ERP,INV-202512-C101A
+REV-202512-C101-02,2025-12-21,2025-12,C101,Bright Cart,SMB,Commerce,Partner,South,Sale,56250,Synthetic ERP,INV-202512-C101B
+REV-202512-C102-01,2025-12-08,2025-12,C102,Urban Shelf,SMB,Commerce,Partner,Northeast,Sale,122500,Synthetic ERP,INV-202512-C102A
+REV-202512-C102-02,2025-12-21,2025-12,C102,Urban Shelf,SMB,Commerce,Partner,Northeast,Sale,52500,Synthetic ERP,INV-202512-C102B
+REV-202512-C103-01,2025-12-08,2025-12,C103,Market Lane,SMB,Platform,Direct,Midwest,Sale,113750,Synthetic ERP,INV-202512-C103A
+REV-202512-C103-02,2025-12-21,2025-12,C103,Market Lane,SMB,Platform,Direct,Midwest,Sale,48750,Synthetic ERP,INV-202512-C103B
+REV-202512-C104-01,2025-12-08,2025-12,C104,Juniper Goods,SMB,Commerce,Web,West,Sale,105000,Synthetic ERP,INV-202512-C104A
+REV-202512-C104-02,2025-12-21,2025-12,C104,Juniper Goods,SMB,Commerce,Web,West,Sale,45000,Synthetic ERP,INV-202512-C104B
+REV-202512-C105-01,2025-12-08,2025-12,C105,Oak & Main,SMB,Analytics,Direct,South,Sale,96250,Synthetic ERP,INV-202512-C105A
+REV-202512-C105-02,2025-12-21,2025-12,C105,Oak & Main,SMB,Analytics,Direct,South,Sale,41250,Synthetic ERP,INV-202512-C105B
+REV-202512-C106-01,2025-12-08,2025-12,C106,Common Basket,SMB,Commerce,Web,Northeast,Sale,87500,Synthetic ERP,INV-202512-C106A
+REV-202512-C106-02,2025-12-21,2025-12,C106,Common Basket,SMB,Commerce,Web,Northeast,Sale,37500,Synthetic ERP,INV-202512-C106B
+REV-202512-C107-01,2025-12-08,2025-12,C107,Fieldstone Shop,SMB,Platform,Partner,Midwest,Sale,78750,Synthetic ERP,INV-202512-C107A
+REV-202512-C107-02,2025-12-21,2025-12,C107,Fieldstone Shop,SMB,Platform,Partner,Midwest,Sale,33750,Synthetic ERP,INV-202512-C107B
+REV-202512-C108-01,2025-12-08,2025-12,C108,Elm Street Retail,SMB,Commerce,Web,West,Sale,70000,Synthetic ERP,INV-202512-C108A
+REV-202512-C108-02,2025-12-21,2025-12,C108,Elm Street Retail,SMB,Commerce,Web,West,Sale,30000,Synthetic ERP,INV-202512-C108B
+REV-202512-C109-01,2025-12-08,2025-12,C109,Good Day Supply,SMB,Services,Direct,South,Sale,70000,Synthetic ERP,INV-202512-C109A
+REV-202512-C109-02,2025-12-21,2025-12,C109,Good Day Supply,SMB,Services,Direct,South,Sale,30000,Synthetic ERP,INV-202512-C109B
+REV-202512-C201-01,2025-12-08,2025-12,C201,Consumer East,Consumer,SmartHub Pro,Web,Northeast,Sale,100800,Synthetic ERP,INV-202512-C201A
+REV-202512-C201-02,2025-12-21,2025-12,C201,Consumer East,Consumer,SmartHub Pro,Web,Northeast,Sale,43200,Synthetic ERP,INV-202512-C201B
+REV-202512-C202-01,2025-12-08,2025-12,C202,Consumer West,Consumer,SmartHub Pro,Web,West,Sale,94500,Synthetic ERP,INV-202512-C202A
+REV-202512-C202-02,2025-12-21,2025-12,C202,Consumer West,Consumer,SmartHub Pro,Web,West,Sale,40500,Synthetic ERP,INV-202512-C202B
+REV-202512-C203-01,2025-12-08,2025-12,C203,Consumer South,Consumer,SmartHub Mini,Web,South,Sale,88200,Synthetic ERP,INV-202512-C203A
+REV-202512-C203-02,2025-12-21,2025-12,C203,Consumer South,Consumer,SmartHub Mini,Web,South,Sale,37800,Synthetic ERP,INV-202512-C203B
+REV-202512-C204-01,2025-12-08,2025-12,C204,Consumer Midwest,Consumer,SmartHub Mini,Web,Midwest,Sale,81900,Synthetic ERP,INV-202512-C204A
+REV-202512-C204-02,2025-12-21,2025-12,C204,Consumer Midwest,Consumer,SmartHub Mini,Web,Midwest,Sale,35100,Synthetic ERP,INV-202512-C204B
+REV-202512-C205-01,2025-12-08,2025-12,C205,Marketplace A,Consumer,Accessories,Marketplace,Northeast,Sale,69300,Synthetic ERP,INV-202512-C205A
+REV-202512-C205-02,2025-12-21,2025-12,C205,Marketplace A,Consumer,Accessories,Marketplace,Northeast,Sale,29700,Synthetic ERP,INV-202512-C205B
+REV-202512-C206-01,2025-12-08,2025-12,C206,Marketplace B,Consumer,Accessories,Marketplace,West,Sale,63000,Synthetic ERP,INV-202512-C206A
+REV-202512-C206-02,2025-12-21,2025-12,C206,Marketplace B,Consumer,Accessories,Marketplace,West,Sale,27000,Synthetic ERP,INV-202512-C206B
+REV-202512-C207-01,2025-12-08,2025-12,C207,Direct Consumer A,Consumer,SmartHub Pro,Web,South,Sale,50400,Synthetic ERP,INV-202512-C207A
+REV-202512-C207-02,2025-12-21,2025-12,C207,Direct Consumer A,Consumer,SmartHub Pro,Web,South,Sale,21600,Synthetic ERP,INV-202512-C207B
+REV-202512-C208-01,2025-12-08,2025-12,C208,Direct Consumer B,Consumer,SmartHub Mini,Web,Midwest,Sale,44100,Synthetic ERP,INV-202512-C208A
+REV-202512-C208-02,2025-12-21,2025-12,C208,Direct Consumer B,Consumer,SmartHub Mini,Web,Midwest,Sale,18900,Synthetic ERP,INV-202512-C208B
+REV-202512-C209-01,2025-12-08,2025-12,C209,Direct Consumer C,Consumer,Accessories,Marketplace,West,Sale,37800,Synthetic ERP,INV-202512-C209A
+REV-202512-C209-02,2025-12-21,2025-12,C209,Direct Consumer C,Consumer,Accessories,Marketplace,West,Sale,16200,Synthetic ERP,INV-202512-C209B
+REF-202512-PRO,2025-12-24,2025-12,C201,Consumer East,Consumer,SmartHub Pro,Web,Northeast,Refund,-45600,Synthetic ERP,CM-202512-PRO
+REF-202512-OTH,2025-12-25,2025-12,C203,Consumer South,Consumer,SmartHub Mini,Web,South,Refund,-49400,Synthetic ERP,CM-202512-OTH
+REV-202601-C001-01,2026-01-08,2026-01,C001,Northstar Commerce,Enterprise,Platform,Direct,Northeast,Sale,280000,Synthetic ERP,INV-202601-C001A
+REV-202601-C001-02,2026-01-21,2026-01,C001,Northstar Commerce,Enterprise,Platform,Direct,Northeast,Sale,120000,Synthetic ERP,INV-202601-C001B
+REV-202601-C002-01,2026-01-08,2026-01,C002,Atlas Industrial,Enterprise,Platform,Direct,Midwest,Sale,252000,Synthetic ERP,INV-202601-C002A
+REV-202601-C002-02,2026-01-21,2026-01,C002,Atlas Industrial,Enterprise,Platform,Direct,Midwest,Sale,108000,Synthetic ERP,INV-202601-C002B
+REV-202601-C003-01,2026-01-08,2026-01,C003,Forma Retail Group,Enterprise,Analytics,Direct,West,Sale,210000,Synthetic ERP,INV-202601-C003A
+REV-202601-C003-02,2026-01-21,2026-01,C003,Forma Retail Group,Enterprise,Analytics,Direct,West,Sale,90000,Synthetic ERP,INV-202601-C003B
+REV-202601-C004-01,2026-01-08,2026-01,C004,Horizon Outfitters,Enterprise,Platform,Partner,South,Sale,196000,Synthetic ERP,INV-202601-C004A
+REV-202601-C004-02,2026-01-21,2026-01,C004,Horizon Outfitters,Enterprise,Platform,Partner,South,Sale,84000,Synthetic ERP,INV-202601-C004B
+REV-202601-C005-01,2026-01-08,2026-01,C005,Meridian Markets,Enterprise,Analytics,Direct,Northeast,Sale,175000,Synthetic ERP,INV-202601-C005A
+REV-202601-C005-02,2026-01-21,2026-01,C005,Meridian Markets,Enterprise,Analytics,Direct,Northeast,Sale,75000,Synthetic ERP,INV-202601-C005B
+REV-202601-C006-01,2026-01-08,2026-01,C006,BluePeak Stores,Enterprise,Services,Partner,West,Sale,147000,Synthetic ERP,INV-202601-C006A
+REV-202601-C006-02,2026-01-21,2026-01,C006,BluePeak Stores,Enterprise,Services,Partner,West,Sale,63000,Synthetic ERP,INV-202601-C006B
+REV-202601-C101-01,2026-01-08,2026-01,C101,Bright Cart,SMB,Commerce,Partner,South,Sale,120750,Synthetic ERP,INV-202601-C101A
+REV-202601-C101-02,2026-01-21,2026-01,C101,Bright Cart,SMB,Commerce,Partner,South,Sale,51750,Synthetic ERP,INV-202601-C101B
+REV-202601-C102-01,2026-01-08,2026-01,C102,Urban Shelf,SMB,Commerce,Partner,Northeast,Sale,112700,Synthetic ERP,INV-202601-C102A
+REV-202601-C102-02,2026-01-21,2026-01,C102,Urban Shelf,SMB,Commerce,Partner,Northeast,Sale,48300,Synthetic ERP,INV-202601-C102B
+REV-202601-C103-01,2026-01-08,2026-01,C103,Market Lane,SMB,Platform,Direct,Midwest,Sale,104650,Synthetic ERP,INV-202601-C103A
+REV-202601-C103-02,2026-01-21,2026-01,C103,Market Lane,SMB,Platform,Direct,Midwest,Sale,44850,Synthetic ERP,INV-202601-C103B
+REV-202601-C104-01,2026-01-08,2026-01,C104,Juniper Goods,SMB,Commerce,Web,West,Sale,96600,Synthetic ERP,INV-202601-C104A
+REV-202601-C104-02,2026-01-21,2026-01,C104,Juniper Goods,SMB,Commerce,Web,West,Sale,41400,Synthetic ERP,INV-202601-C104B
+REV-202601-C105-01,2026-01-08,2026-01,C105,Oak & Main,SMB,Analytics,Direct,South,Sale,88550,Synthetic ERP,INV-202601-C105A
+REV-202601-C105-02,2026-01-21,2026-01,C105,Oak & Main,SMB,Analytics,Direct,South,Sale,37950,Synthetic ERP,INV-202601-C105B
+REV-202601-C106-01,2026-01-08,2026-01,C106,Common Basket,SMB,Commerce,Web,Northeast,Sale,80500,Synthetic ERP,INV-202601-C106A
+REV-202601-C106-02,2026-01-21,2026-01,C106,Common Basket,SMB,Commerce,Web,Northeast,Sale,34500,Synthetic ERP,INV-202601-C106B
+REV-202601-C107-01,2026-01-08,2026-01,C107,Fieldstone Shop,SMB,Platform,Partner,Midwest,Sale,72450,Synthetic ERP,INV-202601-C107A
+REV-202601-C107-02,2026-01-21,2026-01,C107,Fieldstone Shop,SMB,Platform,Partner,Midwest,Sale,31050,Synthetic ERP,INV-202601-C107B
+REV-202601-C108-01,2026-01-08,2026-01,C108,Elm Street Retail,SMB,Commerce,Web,West,Sale,64400,Synthetic ERP,INV-202601-C108A
+REV-202601-C108-02,2026-01-21,2026-01,C108,Elm Street Retail,SMB,Commerce,Web,West,Sale,27600,Synthetic ERP,INV-202601-C108B
+REV-202601-C109-01,2026-01-08,2026-01,C109,Good Day Supply,SMB,Services,Direct,South,Sale,64400,Synthetic ERP,INV-202601-C109A
+REV-202601-C109-02,2026-01-21,2026-01,C109,Good Day Supply,SMB,Services,Direct,South,Sale,27600,Synthetic ERP,INV-202601-C109B
+REV-202601-C201-01,2026-01-08,2026-01,C201,Consumer East,Consumer,SmartHub Pro,Web,Northeast,Sale,89600,Synthetic ERP,INV-202601-C201A
+REV-202601-C201-02,2026-01-21,2026-01,C201,Consumer East,Consumer,SmartHub Pro,Web,Northeast,Sale,38400,Synthetic ERP,INV-202601-C201B
+REV-202601-C202-01,2026-01-08,2026-01,C202,Consumer West,Consumer,SmartHub Pro,Web,West,Sale,84000,Synthetic ERP,INV-202601-C202A
+REV-202601-C202-02,2026-01-21,2026-01,C202,Consumer West,Consumer,SmartHub Pro,Web,West,Sale,36000,Synthetic ERP,INV-202601-C202B
+REV-202601-C203-01,2026-01-08,2026-01,C203,Consumer South,Consumer,SmartHub Mini,Web,South,Sale,78400,Synthetic ERP,INV-202601-C203A
+REV-202601-C203-02,2026-01-21,2026-01,C203,Consumer South,Consumer,SmartHub Mini,Web,South,Sale,33600,Synthetic ERP,INV-202601-C203B
+REV-202601-C204-01,2026-01-08,2026-01,C204,Consumer Midwest,Consumer,SmartHub Mini,Web,Midwest,Sale,72800,Synthetic ERP,INV-202601-C204A
+REV-202601-C204-02,2026-01-21,2026-01,C204,Consumer Midwest,Consumer,SmartHub Mini,Web,Midwest,Sale,31200,Synthetic ERP,INV-202601-C204B
+REV-202601-C205-01,2026-01-08,2026-01,C205,Marketplace A,Consumer,Accessories,Marketplace,Northeast,Sale,61600,Synthetic ERP,INV-202601-C205A
+REV-202601-C205-02,2026-01-21,2026-01,C205,Marketplace A,Consumer,Accessories,Marketplace,Northeast,Sale,26400,Synthetic ERP,INV-202601-C205B
+REV-202601-C206-01,2026-01-08,2026-01,C206,Marketplace B,Consumer,Accessories,Marketplace,West,Sale,56000,Synthetic ERP,INV-202601-C206A
+REV-202601-C206-02,2026-01-21,2026-01,C206,Marketplace B,Consumer,Accessories,Marketplace,West,Sale,24000,Synthetic ERP,INV-202601-C206B
+REV-202601-C207-01,2026-01-08,2026-01,C207,Direct Consumer A,Consumer,SmartHub Pro,Web,South,Sale,44800,Synthetic ERP,INV-202601-C207A
+REV-202601-C207-02,2026-01-21,2026-01,C207,Direct Consumer A,Consumer,SmartHub Pro,Web,South,Sale,19200,Synthetic ERP,INV-202601-C207B
+REV-202601-C208-01,2026-01-08,2026-01,C208,Direct Consumer B,Consumer,SmartHub Mini,Web,Midwest,Sale,39200,Synthetic ERP,INV-202601-C208A
+REV-202601-C208-02,2026-01-21,2026-01,C208,Direct Consumer B,Consumer,SmartHub Mini,Web,Midwest,Sale,16800,Synthetic ERP,INV-202601-C208B
+REV-202601-C209-01,2026-01-08,2026-01,C209,Direct Consumer C,Consumer,Accessories,Marketplace,West,Sale,33600,Synthetic ERP,INV-202601-C209A
+REV-202601-C209-02,2026-01-21,2026-01,C209,Direct Consumer C,Consumer,Accessories,Marketplace,West,Sale,14400,Synthetic ERP,INV-202601-C209B
+REF-202601-PRO,2026-01-24,2026-01,C201,Consumer East,Consumer,SmartHub Pro,Web,Northeast,Refund,-35000,Synthetic ERP,CM-202601-PRO
+REF-202601-OTH,2026-01-25,2026-01,C203,Consumer South,Consumer,SmartHub Mini,Web,South,Refund,-45000,Synthetic ERP,CM-202601-OTH
+REV-202602-C001-01,2026-02-08,2026-02,C001,Northstar Commerce,Enterprise,Platform,Direct,Northeast,Sale,392000,Synthetic ERP,INV-202602-C001A
+REV-202602-C001-02,2026-02-21,2026-02,C001,Northstar Commerce,Enterprise,Platform,Direct,Northeast,Sale,168000,Synthetic ERP,INV-202602-C001B
+REV-202602-C002-01,2026-02-08,2026-02,C002,Atlas Industrial,Enterprise,Platform,Direct,Midwest,Sale,353500,Synthetic ERP,INV-202602-C002A
+REV-202602-C002-02,2026-02-21,2026-02,C002,Atlas Industrial,Enterprise,Platform,Direct,Midwest,Sale,151500,Synthetic ERP,INV-202602-C002B
+REV-202602-C003-01,2026-02-08,2026-02,C003,Forma Retail Group,Enterprise,Analytics,Direct,West,Sale,298900,Synthetic ERP,INV-202602-C003A
+REV-202602-C003-02,2026-02-21,2026-02,C003,Forma Retail Group,Enterprise,Analytics,Direct,West,Sale,128100,Synthetic ERP,INV-202602-C003B
+REV-202602-C004-01,2026-02-08,2026-02,C004,Horizon Outfitters,Enterprise,Platform,Partner,South,Sale,238000,Synthetic ERP,INV-202602-C004A
+REV-202602-C004-02,2026-02-21,2026-02,C004,Horizon Outfitters,Enterprise,Platform,Partner,South,Sale,102000,Synthetic ERP,INV-202602-C004B
+REV-202602-C005-01,2026-02-08,2026-02,C005,Meridian Markets,Enterprise,Analytics,Direct,Northeast,Sale,206500,Synthetic ERP,INV-202602-C005A
+REV-202602-C005-02,2026-02-21,2026-02,C005,Meridian Markets,Enterprise,Analytics,Direct,Northeast,Sale,88500,Synthetic ERP,INV-202602-C005B
+REV-202602-C006-01,2026-02-08,2026-02,C006,BluePeak Stores,Enterprise,Services,Partner,West,Sale,174300,Synthetic ERP,INV-202602-C006A
+REV-202602-C006-02,2026-02-21,2026-02,C006,BluePeak Stores,Enterprise,Services,Partner,West,Sale,74700,Synthetic ERP,INV-202602-C006B
+REV-202602-C101-01,2026-02-08,2026-02,C101,Bright Cart,SMB,Commerce,Partner,South,Sale,127050,Synthetic ERP,INV-202602-C101A
+REV-202602-C101-02,2026-02-21,2026-02,C101,Bright Cart,SMB,Commerce,Partner,South,Sale,54450,Synthetic ERP,INV-202602-C101B
+REV-202602-C102-01,2026-02-08,2026-02,C102,Urban Shelf,SMB,Commerce,Partner,Northeast,Sale,118580,Synthetic ERP,INV-202602-C102A
+REV-202602-C102-02,2026-02-21,2026-02,C102,Urban Shelf,SMB,Commerce,Partner,Northeast,Sale,50820,Synthetic ERP,INV-202602-C102B
+REV-202602-C103-01,2026-02-08,2026-02,C103,Market Lane,SMB,Platform,Direct,Midwest,Sale,110110,Synthetic ERP,INV-202602-C103A
+REV-202602-C103-02,2026-02-21,2026-02,C103,Market Lane,SMB,Platform,Direct,Midwest,Sale,47190,Synthetic ERP,INV-202602-C103B
+REV-202602-C104-01,2026-02-08,2026-02,C104,Juniper Goods,SMB,Commerce,Web,West,Sale,101640,Synthetic ERP,INV-202602-C104A
+REV-202602-C104-02,2026-02-21,2026-02,C104,Juniper Goods,SMB,Commerce,Web,West,Sale,43560,Synthetic ERP,INV-202602-C104B
+REV-202602-C105-01,2026-02-08,2026-02,C105,Oak & Main,SMB,Analytics,Direct,South,Sale,93170,Synthetic ERP,INV-202602-C105A
+REV-202602-C105-02,2026-02-21,2026-02,C105,Oak & Main,SMB,Analytics,Direct,South,Sale,39930,Synthetic ERP,INV-202602-C105B
+REV-202602-C106-01,2026-02-08,2026-02,C106,Common Basket,SMB,Commerce,Web,Northeast,Sale,84700,Synthetic ERP,INV-202602-C106A
+REV-202602-C106-02,2026-02-21,2026-02,C106,Common Basket,SMB,Commerce,Web,Northeast,Sale,36300,Synthetic ERP,INV-202602-C106B
+REV-202602-C107-01,2026-02-08,2026-02,C107,Fieldstone Shop,SMB,Platform,Partner,Midwest,Sale,76230,Synthetic ERP,INV-202602-C107A
+REV-202602-C107-02,2026-02-21,2026-02,C107,Fieldstone Shop,SMB,Platform,Partner,Midwest,Sale,32670,Synthetic ERP,INV-202602-C107B
+REV-202602-C108-01,2026-02-08,2026-02,C108,Elm Street Retail,SMB,Commerce,Web,West,Sale,67760,Synthetic ERP,INV-202602-C108A
+REV-202602-C108-02,2026-02-21,2026-02,C108,Elm Street Retail,SMB,Commerce,Web,West,Sale,29040,Synthetic ERP,INV-202602-C108B
+REV-202602-C109-01,2026-02-08,2026-02,C109,Good Day Supply,SMB,Services,Direct,South,Sale,67760,Synthetic ERP,INV-202602-C109A
+REV-202602-C109-02,2026-02-21,2026-02,C109,Good Day Supply,SMB,Services,Direct,South,Sale,29040,Synthetic ERP,INV-202602-C109B
+REV-202602-C201-01,2026-02-08,2026-02,C201,Consumer East,Consumer,SmartHub Pro,Web,Northeast,Sale,93968,Synthetic ERP,INV-202602-C201A
+REV-202602-C201-02,2026-02-21,2026-02,C201,Consumer East,Consumer,SmartHub Pro,Web,Northeast,Sale,40272,Synthetic ERP,INV-202602-C201B
+REV-202602-C202-01,2026-02-08,2026-02,C202,Consumer West,Consumer,SmartHub Pro,Web,West,Sale,88095,Synthetic ERP,INV-202602-C202A
+REV-202602-C202-02,2026-02-21,2026-02,C202,Consumer West,Consumer,SmartHub Pro,Web,West,Sale,37755,Synthetic ERP,INV-202602-C202B
+REV-202602-C203-01,2026-02-08,2026-02,C203,Consumer South,Consumer,SmartHub Mini,Web,South,Sale,82222,Synthetic ERP,INV-202602-C203A
+REV-202602-C203-02,2026-02-21,2026-02,C203,Consumer South,Consumer,SmartHub Mini,Web,South,Sale,35238,Synthetic ERP,INV-202602-C203B
+REV-202602-C204-01,2026-02-08,2026-02,C204,Consumer Midwest,Consumer,SmartHub Mini,Web,Midwest,Sale,76349,Synthetic ERP,INV-202602-C204A
+REV-202602-C204-02,2026-02-21,2026-02,C204,Consumer Midwest,Consumer,SmartHub Mini,Web,Midwest,Sale,32721,Synthetic ERP,INV-202602-C204B
+REV-202602-C205-01,2026-02-08,2026-02,C205,Marketplace A,Consumer,Accessories,Marketplace,Northeast,Sale,64603,Synthetic ERP,INV-202602-C205A
+REV-202602-C205-02,2026-02-21,2026-02,C205,Marketplace A,Consumer,Accessories,Marketplace,Northeast,Sale,27687,Synthetic ERP,INV-202602-C205B
+REV-202602-C206-01,2026-02-08,2026-02,C206,Marketplace B,Consumer,Accessories,Marketplace,West,Sale,58730,Synthetic ERP,INV-202602-C206A
+REV-202602-C206-02,2026-02-21,2026-02,C206,Marketplace B,Consumer,Accessories,Marketplace,West,Sale,25170,Synthetic ERP,INV-202602-C206B
+REV-202602-C207-01,2026-02-08,2026-02,C207,Direct Consumer A,Consumer,SmartHub Pro,Web,South,Sale,46984,Synthetic ERP,INV-202602-C207A
+REV-202602-C207-02,2026-02-21,2026-02,C207,Direct Consumer A,Consumer,SmartHub Pro,Web,South,Sale,20136,Synthetic ERP,INV-202602-C207B
+REV-202602-C208-01,2026-02-08,2026-02,C208,Direct Consumer B,Consumer,SmartHub Mini,Web,Midwest,Sale,41111,Synthetic ERP,INV-202602-C208A
+REV-202602-C208-02,2026-02-21,2026-02,C208,Direct Consumer B,Consumer,SmartHub Mini,Web,Midwest,Sale,17619,Synthetic ERP,INV-202602-C208B
+REV-202602-C209-01,2026-02-08,2026-02,C209,Direct Consumer C,Consumer,Accessories,Marketplace,West,Sale,35238,Synthetic ERP,INV-202602-C209A
+REV-202602-C209-02,2026-02-21,2026-02,C209,Direct Consumer C,Consumer,Accessories,Marketplace,West,Sale,15102,Synthetic ERP,INV-202602-C209B
+REF-202602-PRO,2026-02-24,2026-02,C201,Consumer East,Consumer,SmartHub Pro,Web,Northeast,Refund,-77000,Synthetic ERP,CM-202602-PRO
+REF-202602-OTH,2026-02-25,2026-02,C203,Consumer South,Consumer,SmartHub Mini,Web,South,Refund,-51000,Synthetic ERP,CM-202602-OTH
+REV-202603-C001-01,2026-03-08,2026-03,C001,Northstar Commerce,Enterprise,Platform,Direct,Northeast,Sale,378000,Synthetic ERP,INV-202603-C001A
+REV-202603-C001-02,2026-03-21,2026-03,C001,Northstar Commerce,Enterprise,Platform,Direct,Northeast,Sale,162000,Synthetic ERP,INV-202603-C001B
+REV-202603-C002-01,2026-03-08,2026-03,C002,Atlas Industrial,Enterprise,Platform,Direct,Midwest,Sale,330750,Synthetic ERP,INV-202603-C002A
+REV-202603-C002-02,2026-03-21,2026-03,C002,Atlas Industrial,Enterprise,Platform,Direct,Midwest,Sale,141750,Synthetic ERP,INV-202603-C002B
+REV-202603-C003-01,2026-03-08,2026-03,C003,Forma Retail Group,Enterprise,Analytics,Direct,West,Sale,283500,Synthetic ERP,INV-202603-C003A
+REV-202603-C003-02,2026-03-21,2026-03,C003,Forma Retail Group,Enterprise,Analytics,Direct,West,Sale,121500,Synthetic ERP,INV-202603-C003B
+REV-202603-C004-01,2026-03-08,2026-03,C004,Horizon Outfitters,Enterprise,Platform,Partner,South,Sale,236250,Synthetic ERP,INV-202603-C004A
+REV-202603-C004-02,2026-03-21,2026-03,C004,Horizon Outfitters,Enterprise,Platform,Partner,South,Sale,101250,Synthetic ERP,INV-202603-C004B
+REV-202603-C005-01,2026-03-08,2026-03,C005,Meridian Markets,Enterprise,Analytics,Direct,Northeast,Sale,189000,Synthetic ERP,INV-202603-C005A
+REV-202603-C005-02,2026-03-21,2026-03,C005,Meridian Markets,Enterprise,Analytics,Direct,Northeast,Sale,81000,Synthetic ERP,INV-202603-C005B
+REV-202603-C006-01,2026-03-08,2026-03,C006,BluePeak Stores,Enterprise,Services,Partner,West,Sale,157500,Synthetic ERP,INV-202603-C006A
+REV-202603-C006-02,2026-03-21,2026-03,C006,BluePeak Stores,Enterprise,Services,Partner,West,Sale,67500,Synthetic ERP,INV-202603-C006B
+REV-202603-C101-01,2026-03-08,2026-03,C101,Bright Cart,SMB,Commerce,Partner,South,Sale,127050,Synthetic ERP,INV-202603-C101A
+REV-202603-C101-02,2026-03-21,2026-03,C101,Bright Cart,SMB,Commerce,Partner,South,Sale,54450,Synthetic ERP,INV-202603-C101B
+REV-202603-C102-01,2026-03-08,2026-03,C102,Urban Shelf,SMB,Commerce,Partner,Northeast,Sale,118580,Synthetic ERP,INV-202603-C102A
+REV-202603-C102-02,2026-03-21,2026-03,C102,Urban Shelf,SMB,Commerce,Partner,Northeast,Sale,50820,Synthetic ERP,INV-202603-C102B
+REV-202603-C103-01,2026-03-08,2026-03,C103,Market Lane,SMB,Platform,Direct,Midwest,Sale,110110,Synthetic ERP,INV-202603-C103A
+REV-202603-C103-02,2026-03-21,2026-03,C103,Market Lane,SMB,Platform,Direct,Midwest,Sale,47190,Synthetic ERP,INV-202603-C103B
+REV-202603-C104-01,2026-03-08,2026-03,C104,Juniper Goods,SMB,Commerce,Web,West,Sale,101640,Synthetic ERP,INV-202603-C104A
+REV-202603-C104-02,2026-03-21,2026-03,C104,Juniper Goods,SMB,Commerce,Web,West,Sale,43560,Synthetic ERP,INV-202603-C104B
+REV-202603-C105-01,2026-03-08,2026-03,C105,Oak & Main,SMB,Analytics,Direct,South,Sale,93170,Synthetic ERP,INV-202603-C105A
+REV-202603-C105-02,2026-03-21,2026-03,C105,Oak & Main,SMB,Analytics,Direct,South,Sale,39930,Synthetic ERP,INV-202603-C105B
+REV-202603-C106-01,2026-03-08,2026-03,C106,Common Basket,SMB,Commerce,Web,Northeast,Sale,84700,Synthetic ERP,INV-202603-C106A
+REV-202603-C106-02,2026-03-21,2026-03,C106,Common Basket,SMB,Commerce,Web,Northeast,Sale,36300,Synthetic ERP,INV-202603-C106B
+REV-202603-C107-01,2026-03-08,2026-03,C107,Fieldstone Shop,SMB,Platform,Partner,Midwest,Sale,76230,Synthetic ERP,INV-202603-C107A
+REV-202603-C107-02,2026-03-21,2026-03,C107,Fieldstone Shop,SMB,Platform,Partner,Midwest,Sale,32670,Synthetic ERP,INV-202603-C107B
+REV-202603-C108-01,2026-03-08,2026-03,C108,Elm Street Retail,SMB,Commerce,Web,West,Sale,67760,Synthetic ERP,INV-202603-C108A
+REV-202603-C108-02,2026-03-21,2026-03,C108,Elm Street Retail,SMB,Commerce,Web,West,Sale,29040,Synthetic ERP,INV-202603-C108B
+REV-202603-C109-01,2026-03-08,2026-03,C109,Good Day Supply,SMB,Services,Direct,South,Sale,67760,Synthetic ERP,INV-202603-C109A
+REV-202603-C109-02,2026-03-21,2026-03,C109,Good Day Supply,SMB,Services,Direct,South,Sale,29040,Synthetic ERP,INV-202603-C109B
+REV-202603-C201-01,2026-03-08,2026-03,C201,Consumer East,Consumer,SmartHub Pro,Web,Northeast,Sale,94080,Synthetic ERP,INV-202603-C201A
+REV-202603-C201-02,2026-03-21,2026-03,C201,Consumer East,Consumer,SmartHub Pro,Web,Northeast,Sale,40320,Synthetic ERP,INV-202603-C201B
+REV-202603-C202-01,2026-03-08,2026-03,C202,Consumer West,Consumer,SmartHub Pro,Web,West,Sale,88200,Synthetic ERP,INV-202603-C202A
+REV-202603-C202-02,2026-03-21,2026-03,C202,Consumer West,Consumer,SmartHub Pro,Web,West,Sale,37800,Synthetic ERP,INV-202603-C202B
+REV-202603-C203-01,2026-03-08,2026-03,C203,Consumer South,Consumer,SmartHub Mini,Web,South,Sale,82320,Synthetic ERP,INV-202603-C203A
+REV-202603-C203-02,2026-03-21,2026-03,C203,Consumer South,Consumer,SmartHub Mini,Web,South,Sale,35280,Synthetic ERP,INV-202603-C203B
+REV-202603-C204-01,2026-03-08,2026-03,C204,Consumer Midwest,Consumer,SmartHub Mini,Web,Midwest,Sale,76440,Synthetic ERP,INV-202603-C204A
+REV-202603-C204-02,2026-03-21,2026-03,C204,Consumer Midwest,Consumer,SmartHub Mini,Web,Midwest,Sale,32760,Synthetic ERP,INV-202603-C204B
+REV-202603-C205-01,2026-03-08,2026-03,C205,Marketplace A,Consumer,Accessories,Marketplace,Northeast,Sale,64680,Synthetic ERP,INV-202603-C205A
+REV-202603-C205-02,2026-03-21,2026-03,C205,Marketplace A,Consumer,Accessories,Marketplace,Northeast,Sale,27720,Synthetic ERP,INV-202603-C205B
+REV-202603-C206-01,2026-03-08,2026-03,C206,Marketplace B,Consumer,Accessories,Marketplace,West,Sale,58800,Synthetic ERP,INV-202603-C206A
+REV-202603-C206-02,2026-03-21,2026-03,C206,Marketplace B,Consumer,Accessories,Marketplace,West,Sale,25200,Synthetic ERP,INV-202603-C206B
+REV-202603-C207-01,2026-03-08,2026-03,C207,Direct Consumer A,Consumer,SmartHub Pro,Web,South,Sale,47040,Synthetic ERP,INV-202603-C207A
+REV-202603-C207-02,2026-03-21,2026-03,C207,Direct Consumer A,Consumer,SmartHub Pro,Web,South,Sale,20160,Synthetic ERP,INV-202603-C207B
+REV-202603-C208-01,2026-03-08,2026-03,C208,Direct Consumer B,Consumer,SmartHub Mini,Web,Midwest,Sale,41160,Synthetic ERP,INV-202603-C208A
+REV-202603-C208-02,2026-03-21,2026-03,C208,Direct Consumer B,Consumer,SmartHub Mini,Web,Midwest,Sale,17640,Synthetic ERP,INV-202603-C208B
+REV-202603-C209-01,2026-03-08,2026-03,C209,Direct Consumer C,Consumer,Accessories,Marketplace,West,Sale,35280,Synthetic ERP,INV-202603-C209A
+REV-202603-C209-02,2026-03-21,2026-03,C209,Direct Consumer C,Consumer,Accessories,Marketplace,West,Sale,15120,Synthetic ERP,INV-202603-C209B
+REF-202603-PRO,2026-03-24,2026-03,C201,Consumer East,Consumer,SmartHub Pro,Web,Northeast,Refund,-49920,Synthetic ERP,CM-202603-PRO
+REF-202603-OTH,2026-03-25,2026-03,C203,Consumer South,Consumer,SmartHub Mini,Web,South,Refund,-54080,Synthetic ERP,CM-202603-OTH
