@@ -49,18 +49,18 @@ h1,h2,h3,p{margin:0}a{color:inherit}[hidden]{display:none!important}.serif{font-
   <div class="entry-story">
     <div class="wordmark"><span class="brandmark"></span>MANDATE</div>
     <div class="entry-copy">
-      <p class="eyebrow">Financial change intelligence</p>
+      <p class="eyebrow">Megan’s February close</p>
       <h1>The number moved.<br><em>Now prove why.</em></h1>
-      <p>Mandate turns monthly summaries and transaction rows into controller-ready explanations—with every driver reconciled, every claim traceable, and every unknown left honest.</p>
+      <p>Megan runs a $47 million tech retailer with a five-person finance team. The close already has the numbers. Mandate finds the drivers, keeps the trail, and leaves anything unproven for her.</p>
     </div>
     <div class="entry-viz"><canvas id="entryCanvas"></canvas><span class="entry-viz-label ev1">Two periods</span><span class="entry-viz-label ev2">392 source rows</span><span class="entry-viz-label ev3">One decision trail</span></div>
-    <div class="entry-foot"><span>Maximor · Money Operations</span><span>Synthetic finance data · Human approval required</span></div>
+    <div class="entry-foot"><span>Megan keeps final approval</span><span>Synthetic close · Human approval required</span></div>
   </div>
   <div class="entry-form">
     <div class="entry-card">
       <p class="eyebrow">Variance review workspace</p>
-      <h2>Welcome back.</h2>
-      <p>Explore the reference close or connect this interface to the authenticated Money Operations API.</p>
+      <h2>Welcome back to the close.</h2>
+      <p>Replay Megan’s January-to-February explanation, or connect the same workspace to the authenticated API.</p>
       <div class="mode-grid">
         <button class="mode-card active" data-mode="demo"><strong>Synthetic replay</strong><span>Complete interactive reference case</span></button>
         <button class="mode-card" data-mode="api"><strong>Connected API</strong><span>Provisioned credentials · packaged dataset</span></button>
@@ -447,7 +447,21 @@ function action(a){
   if(a==='assign'){toast(connected()?'Assignment stays with the controller review queue.':'Assigned to Controller · backend mutation placeholder');return}
   if(a==='leave-open'){toast('Other Opex will remain unexplained in the memo.');return}
   if(a==='inspect-context'){toast(DATA.contextItem?`Revision ${DATA.contextItem.revision||DATA.contextRevision} · ${DATA.contextItem.status}`:'Context history: February recurrence · prior confirmation retained.');return}
-  if(a==='audio'){if(connected()){listenLive();return}toast('ElevenLabs placeholder: requires an approved memo and configured backend.');return}
+  if(a==='audio'){
+    if(connected()){listenLive();return}
+    if(!state.reviewed){toast('Approve the memo before the briefing.');return}
+    const text='Revenue increased 18.0%, primarily driven by a 32.0% increase in enterprise accounts, with three customers accounting for 64.0% of the increase. Other Opex remains unexplained. Megan keeps final approval.';
+    if(window.speechSynthesis){
+      const utter=new SpeechSynthesisUtterance(text);
+      utter.rate=1.02;
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utter);
+      toast('Local readout of the approved memo.');
+      return
+    }
+    toast('Briefing needs a browser speech engine or configured ElevenLabs.');
+    return
+  }
   if(a==='download'){if(connected()){downloadLive();return}downloadEvidence();return}
   if(a==='contract'){navigator.clipboard?.writeText(JSON.stringify(API_ROUTES,null,2));toast('Backend route contract copied.');}
 }

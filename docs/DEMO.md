@@ -23,6 +23,10 @@ Script: `qa-evidence/money-operations-demo/VOICEOVER-PRODUCT-45s.txt`.
 On camera (~70%): cycle, 18 / 32 / 64, provenance, review, memo.
 Spoken if asked (~30%): PRISM 25 → 45, ~$270 / close, 196 tests, GIDE rate limit.
 
+After approval, **Listen to briefing** reads the memo. Synthetic replay uses
+the browser speech engine. Connected mode uses ElevenLabs when
+`MONEY_OPS_AUDIO_ENABLED` and the API key / voice id are set.
+
 ## Run locally
 
 ```sh

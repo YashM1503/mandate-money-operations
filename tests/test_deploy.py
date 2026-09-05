@@ -1,6 +1,8 @@
 import os
 
 from mandate.api import allowed_hosts
+from mandate.env import masked
+from mandate.money_operations_narrative import try_model_compose
 
 
 def test_allowed_hosts_keeps_loopback_for_healthchecks(monkeypatch):
@@ -28,3 +30,18 @@ def test_allowed_hosts_appends_platform_hostnames(monkeypatch):
     assert 'mandate.onrender.com' in hosts
     assert 'mandate.up.railway.app' in hosts
     assert 'mandate-money.fly.dev' in hosts
+
+
+def test_masked_env_never_prints_secret(monkeypatch):
+    monkeypatch.setenv('ELEVENLABS_API_KEY', 'sk-live-should-not-leak')
+    label = masked('ELEVENLABS_API_KEY')
+    assert label.startswith('set (')
+    assert 'sk-live' not in label
+
+
+def test_try_model_compose_stays_off_without_egress(monkeypatch):
+    monkeypatch.delenv('MANDATE_ALLOW_SYNTHETIC_EGRESS', raising=False)
+    monkeypatch.setenv('MANDATE_MODEL_URL', 'https://example.invalid/v1/chat/completions')
+    monkeypatch.setenv('MANDATE_MODEL_KEY', 'not-a-real-key')
+    monkeypatch.setenv('MANDATE_MODEL_NAME', 'demo')
+    assert try_model_compose({'claims': []}) is None

@@ -1,22 +1,40 @@
-# MANDATE Money Operations — start here
+# Mandate — Megan’s financial change analyst
 
-The primary hackathon demonstration explains financial changes across periods
-from account summaries and transaction-level synthetic data. Open
-`/money-operations` in connected mode to show the January-to-February close:
-gross revenue increased $675,000 (18.0%), enterprise contributed $576,000
-(32.0%), and three customers contributed $432,000 (64.0% of total growth).
-Prior-close context requires current-run confirmation, and Other Opex remains
-visibly reconciled but causally unexplained pending human review.
+Megan runs a $47 million tech retailer with a five-person finance team. Every
+close delivers the numbers before it delivers the explanation. The team can
+see that revenue moved. Proving the drivers still takes hours.
 
-The offline visual replay is `static/money-operations.html`. PRISM live traces
-for the rejected and corrected narratives were verified in the sponsor
-dashboard; see `docs/PRISM_LIVE_EVIDENCE.md`. GIDE usage requires a separate
-native evaluation, and ElevenLabs briefing is optional and restricted to an
-approved memo. All included financial records are fictional.
+Mandate is the change analyst for that close. It compares two periods, ranks
+the material moves, drills to transaction rows, and writes a controller-ready
+memo. Megan keeps the last click.
 
-## Run the Money Operations demo
+## The February close
 
-Python 3.12 or newer is required.
+January → February 2026, synthetic pack:
+
+- Revenue increased **$675,000**, or **18.0%**
+- Enterprise accounts increased **32.0%**
+- Three customers accounted for **64.0%** of the increase
+- Other Opex increased **$57,000**. The amount ties. The cause stays open.
+
+That is the move from “Revenue increased 18%” to the sentence judges asked
+for — with one residual left honest.
+
+## What it does
+
+1. **Observe** — first pass can be thin: revenue increased 18%.
+2. **Improve** — rerun from the ledger. Rank, attribute, reconcile.
+3. **Prove** — click a claim. Source file, row, and calculation digest stay
+   attached.
+4. **Human in the loop** — confirm prior-close context for this run. Approve
+   the memo. Do not invent a cause for Other Opex.
+
+The engine owns the math (integer cents). Chat and voice only phrase cited
+claims. They cannot approve, edit, or release.
+
+## Run Megan’s close
+
+Python 3.12 or newer.
 
 ```sh
 python3.12 -m venv .venv
@@ -26,68 +44,62 @@ python scripts/bootstrap.py
 uvicorn mandate.api:create_app --factory --host 127.0.0.1 --port 8000 --workers 1 --no-proxy-headers
 ```
 
-Open <http://127.0.0.1:8000/money-operations>, choose **Connected API**, and use
-the locally generated credentials in `data/demo-credentials.txt`. Never commit
-the `data/` directory.
-
-Or, after Docker is available:
+Open http://127.0.0.1:8000/money-operations. Use **Synthetic replay** for the
+45-second path, or **Connected API** with `data/demo-credentials.txt`.
 
 ```sh
 docker compose up --build
 ```
 
-The first container start bootstraps `/data`. Read credentials from the volume,
-not from Git. See `docs/DEPLOYMENT.md`.
+## Chat and voice briefing
 
-## Additional reference workflows
+Ask Mandate answers from validated claims. After Megan (controller) approves
+the memo, **Listen to briefing** reads that approved text.
 
-### Security analyst demo
+| Need | Where | Notes |
+|---|---|---|
+| Local `.env` | copy `.env.example` → `.env` | Never commit `.env` |
+| Voice | `MONEY_OPS_AUDIO_ENABLED=true` plus `ELEVENLABS_API_KEY` and `ELEVENLABS_VOICE_ID` | Speaks approved memo only |
+| Chat phrasing | `MANDATE_ALLOW_SYNTHETIC_EGRESS=1` plus `MANDATE_MODEL_URL`, `MANDATE_MODEL_KEY`, `MANDATE_MODEL_NAME` | Draft is re-validated; failure falls back to the template |
+| Check wiring | `python scripts/check_integrations.py` | Prints set/missing, never the secret |
 
-The Regodit security questionnaire workflow remains an additional reference demonstration. Open `static/security.html` directly for an offline synthetic replay, or start the API using the commands below and visit `/security` for authenticated server mode. `/` retains the earlier payment MVP.
+Without keys, synthetic replay still reads the memo locally after approval.
+Connected mode without ElevenLabs returns the approved transcript and
+`audio_unavailable`.
 
-Try: MFA conflict → Complete backups → yes → daily → yes → Actually backups are weekly → load new synthetic IAM evidence → export questionnaire → decision memo.
+## How the build is structured
 
-The security analyst is a bounded deterministic engine. It does not yet make live model calls or submit security traces to PRISM. The existing AP model/PRISM adapter is retained. Meaningful GIDE usage and verified PRISM ingestion remain required event work; this package does not claim qualification or production readiness.
+- **Deterministic engine** — 392 rows, 8 accounts, 107 claims, digest
+  `6a807a7ced1135a6`. p50 analyze is about 5 ms.
+- **Narrative boundary** — 18 / 32 / 64 is cited. Other Opex cannot be
+  explained from the account name.
+- **Context memory** — NovaERP is suggested until this close confirms it.
+  Confirmation does not change amounts.
+- **Review** — approval is bound to analysis revision, calculation digest,
+  and narrative digest.
+- **PRISM** — observed the weak 18% story (quality 25) and the corrected
+  story (quality 45). Runtime stays `live_trace_pending` without an SDK
+  receipt. See `docs/PRISM_LIVE_EVIDENCE.md`.
+- **GIDE** — native app received the evaluation prompt and was rate-limited.
+  See `docs/GIDE_ATTEMPT_EVIDENCE.md`.
 
-See `docs/Mandate_UI_Specification.docx`, `docs/Mandate_Business_Explanation.docx`, `docs/SECURITY_UPDATE_QA.md` and `docs/MASTER_BUILD_PROMPTS.md`. Synthetic security records live in `sample-data/security-*.json`. The editable reference story deck is under `demo/`.
+Judging numbers and so-what: `docs/JUDGING_METRICS.md`. Demo beats:
+`docs/DEMO.md`.
 
----
+## Additional features
 
-# Mandate
+These are in the same service. They are not Megan’s close.
 
-Mandate checks whether the evidence authorizing a supplier payment is independent, then binds human authority to an exact simulated effect. The demo catches an agent updating a supplier master from an unverified message and later treating its own update as confirmation.
-
-**Scope:** authenticated local API and premium unified HTML, fictional retailer data, no real money. Local tests and browser workflow passed. Live model/PRISM proof, actual GIDE development use, container build and cloud release are pending external gates. See docs/QA_REPORT.md; this is not a production banking certification.
-
-## Start locally
-
-```sh
-python3.12 -m venv .venv
-. .venv/bin/activate
-pip install -r requirements-dev.txt
-python scripts/bootstrap.py
-uvicorn mandate.api:create_app --factory --host 127.0.0.1 --port 8000 --workers 1 --no-proxy-headers
-```
-
-Open http://127.0.0.1:8000. Read the generated `data/demo-credentials.txt` privately. Sign in as analyst to investigate/verify, controller to approve/release, or auditor to inspect. Passwords are random and are not included in this repository. Do not share or commit the data directory.
+- **Ask Mandate** — claim-backed Q&A on the same analysis.
+- **Voice briefing** — ElevenLabs readout of an approved memo.
+- **Assurance** — lineage, integration status, no handshake-as-live-proof.
+- **Security questionnaire** — `/security`, a separate evidence-first intake.
+- **Supplier payment MVP** — `/`, independent-evidence gates on a synthetic
+  ledger. Not a bank rail.
 
 ## Verify
 
 ```sh
 python -m pytest -q
-python scripts/run_evaluation.py
-pip-audit -r requirements.lock
+python scripts/check_integrations.py
 ```
-
-The deterministic evaluation has 12 authored cases; it does not measure real-world fraud prevention. Use `MANDATE_DATA_DIR` pointing at a new directory and run bootstrap there to create fresh demo state. Each dataset includes $90,000 cash, $30,000 commitments and a $10,000 reserve. Cash and exception attestations expire after 24 hours intentionally.
-
-## Read in this order
-
-1. docs/JUDGING_METRICS.md — five official buckets, measured numbers, labor estimates.
-2. docs/DEMO.md — 45-second product clip and what is on camera.
-3. docs/PRISM_LIVE_EVIDENCE.md and docs/GIDE_ATTEMPT_EVIDENCE.md — sponsor results only.
-4. docs/DEPLOYMENT.md — local, Docker and cloud prerequisites.
-5. docs/MONEY_OPERATIONS_BACKEND.md — engine, claims, Other Opex boundary.
-6. docs/QA_REPORT.md — completed checks and unresolved gates.
-
-The four Resolve modules under mandate/core are pinned and attributed in THIRD_PARTY_NOTICES.md. The finance adaptation lives in Mandate's surrounding modules and UI. Disclose pre-event work and Resolve reuse to organizers. Confirm mixed-editor eligibility, team-size contradiction and prebuild rules before claiming qualification.

@@ -12,8 +12,10 @@ from .store import Store
 from .fixtures import digest,evidence
 from .controls import evaluate
 from .core.approval import create_approval_for_decision,approval_from_dict,validate_approval,consume_approval
+from .env import load_runtime_env
 
 ROOT=Path(__file__).resolve().parent.parent
+load_runtime_env()
 
 def _script_csp(path:Path)->str:
     """Allow only the exact inline scripts shipped in a static page."""

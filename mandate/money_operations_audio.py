@@ -155,7 +155,7 @@ def synthesize_transcript(transcript: str, voice_id: str, api_key: str) -> bytes
         response = client.post(
             url,
             headers={'xi-api-key': api_key, 'Accept': 'audio/mpeg', 'Content-Type': 'application/json'},
-            json={'text': transcript, 'model_id': 'eleven_monolingual_v1'},
+            json={'text': transcript, 'model_id': os.getenv('ELEVENLABS_MODEL_ID', 'eleven_turbo_v2_5').strip() or 'eleven_turbo_v2_5'},
         )
     response.raise_for_status()
     audio = response.content

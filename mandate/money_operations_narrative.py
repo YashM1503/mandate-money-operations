@@ -7,8 +7,13 @@ from __future__ import annotations
 
 import csv
 import io
+import json
+import os
 import re
 from html import escape
+from urllib.parse import urlsplit
+
+import httpx
 
 FORMULA_PREFIXES = ('=', '+', '-', '@', '\t')
 CURRENCY_RE = re.compile(r'\$\d{1,3}(?:,\d{3})*(?:\.\d+)?|\$\d+(?:\.\d+)?')
@@ -348,7 +353,68 @@ def try_model_compose(package: dict) -> dict | None:
     When a provider is wired, follow `.cursor/skills/mandate-money-operations/SKILL.md`.
     Failed validation must fall back to the deterministic template.
     """
-    return None
+    from .env import load_runtime_env
+    load_runtime_env()
+    if os.getenv('MANDATE_ALLOW_SYNTHETIC_EGRESS') != '1':
+        return None
+    url = (os.getenv('MANDATE_MODEL_URL') or '').strip()
+    key = (os.getenv('MANDATE_MODEL_KEY') or '').strip()
+    name = (os.getenv('MANDATE_MODEL_NAME') or '').strip()
+    if not (url and key and name):
+        return None
+    claims = [
+        {
+            'id': claim.get('id'),
+            'type': claim.get('claim_type') or claim.get('type'),
+            'status': claim.get('status') or claim.get('reconciliation_status'),
+            'display': {
+                'usd': display_usd(abs(claim_amount_minor(claim) or 0)) if claim_amount_minor(claim) is not None else None,
+                'pct': display_pct(claim_bps(claim)) if claim_bps(claim) is not None else None,
+            },
+            'entities': list(claim_entities(claim))[:8],
+        }
+        for claim in (package.get('claims') or [])[:40]
+        if isinstance(claim, dict) and claim.get('id')
+    ]
+    if not claims:
+        return None
+    parsed = urlsplit(url)
+    if parsed.username or parsed.password or parsed.query or parsed.fragment:
+        return None
+    if parsed.scheme == 'http' and parsed.hostname not in {'127.0.0.1', 'localhost'}:
+        return None
+    if parsed.scheme not in {'https', 'http'}:
+        return None
+    prompt = (
+        'Phrase only these validated Money Operations claims. Do not calculate. '
+        'Do not invent an Other Opex cause. Return JSON with headline, text, '
+        'and cited_claim_ids. Cite claim IDs for every amount.'
+    )
+    payload = {
+        'model': name,
+        'temperature': 0,
+        'messages': [
+            {'role': 'system', 'content': prompt},
+            {'role': 'user', 'content': json.dumps({'synthetic': True, 'claims': claims}, separators=(',', ':'))},
+        ],
+    }
+    headers = {'Authorization': f'Bearer {key}', 'Content-Type': 'application/json'}
+    with httpx.Client(timeout=20.0, follow_redirects=False, trust_env=False) as client:
+        response = client.post(url, headers=headers, json=payload)
+    response.raise_for_status()
+    body = response.json()
+    content = (((body.get('choices') or [{}])[0].get('message') or {}).get('content'))
+    if not isinstance(content, str) or not content.strip():
+        return None
+    draft = json.loads(content)
+    if not isinstance(draft, dict):
+        return None
+    return {
+        'headline': str(draft.get('headline') or '').strip(),
+        'text': str(draft.get('text') or draft.get('body') or '').strip(),
+        'cited_claim_ids': list(draft.get('cited_claim_ids') or []),
+        'mode': 'model',
+    }
 
 
 def compose(package: dict) -> dict:
@@ -371,7 +437,7 @@ def compose(package: dict) -> dict:
             'mode': draft.get('mode', 'model'),
             'narrative_source': 'model',
         }
-    except (NarrativeError, TypeError, KeyError, ValueError, RuntimeError):
+    except (NarrativeError, TypeError, KeyError, ValueError, RuntimeError, json.JSONDecodeError, httpx.HTTPError):
         return dict(template, model_error='validation_or_provider_failed', narrative_source='deterministic_template')
 
 

@@ -1,7 +1,10 @@
 """Create local credentials once; writes secrets to restricted files, never source control."""
-import hashlib,json,os,secrets
+import hashlib,json,os,secrets,sys
 from pathlib import Path
 root=Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(root))
+from mandate.env import load_runtime_env
+load_runtime_env()
 data=Path(os.getenv('MANDATE_DATA_DIR',str(root/'data')));data.mkdir(parents=True,exist_ok=True)
 config=data/'config.json'
 if config.exists(): raise SystemExit('Existing configuration retained. See data/demo-credentials.txt or your secret manager.')
