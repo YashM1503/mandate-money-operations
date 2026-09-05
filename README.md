@@ -28,7 +28,7 @@ the `data/` directory.
 
 ### Security analyst demo
 
-The Regodit security questionnaire workflow is now the primary demonstration. Open `static/security.html` directly for an offline synthetic replay, or start the API using the commands below and visit `/security` for authenticated server mode. `/` retains the earlier payment MVP.
+The Regodit security questionnaire workflow remains an additional reference demonstration. Open `static/security.html` directly for an offline synthetic replay, or start the API using the commands below and visit `/security` for authenticated server mode. `/` retains the earlier payment MVP.
 
 Try: MFA conflict → Complete backups → yes → daily → yes → Actually backups are weekly → load new synthetic IAM evidence → export questionnaire → decision memo.
 
