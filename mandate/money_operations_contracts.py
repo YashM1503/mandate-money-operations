@@ -251,13 +251,15 @@ def serialize_overview(row, body: dict, context_rows: list[dict], review=None) -
         'causally_unexplained': unexplained,
         'approval_state': _approval_state(row, body, review),
         'prism': prism_status(),
-        'audio': audio_state(),
+        'audio': audio_state() if body.get('synthetic') is True else {
+            'enabled': False, 'configured': False, 'provider': 'none', 'state': 'audio_unavailable',
+        },
         'calculation_digest': body.get('calculation_digest'),
         'calculation_version': row['calculation_version'],
         'suggested_context_count': sum(
             1 for item in context_rows if item.get('analysis_id') == row['id'] and item.get('status') == 'context_suggested' and item.get('active')
         ),
-        'synthetic': True,
+        'synthetic': body.get('synthetic') is True,
     }
 
 
@@ -312,7 +314,7 @@ def serialize_graph(row, body: dict, context_rows: list[dict]) -> dict:
         'analysis_id': row['id'],
         'nodes': nodes,
         'edges': edges,
-        'synthetic': True,
+        'synthetic': body.get('synthetic') is True,
     }
 
 
@@ -477,7 +479,7 @@ def serialize_variance(row, body: dict, account: str, context_rows: list[dict]) 
         'next_action': next_action,
         'reconciliation_status': (recon or {}).get('status') if isinstance(recon, dict) else None,
         'calculation_digest': body.get('calculation_digest'),
-        'synthetic': True,
+        'synthetic': body.get('synthetic') is True,
     }
 
 
@@ -496,7 +498,7 @@ def serialize_variance_list(row, body: dict, context_rows: list[dict]) -> dict:
         'analysis_id': row['id'],
         'items': items,
         'calculation_digest': body.get('calculation_digest'),
-        'synthetic': True,
+        'synthetic': body.get('synthetic') is True,
     }
 
 
@@ -547,7 +549,7 @@ def serialize_memo(row, body: dict, context_rows: list[dict], review=None) -> di
         'calculation_digest': body.get('calculation_digest'),
         'narrative_digest': narrative_digest(narrative),
         'periods': periods,
-        'synthetic': True,
+        'synthetic': body.get('synthetic') is True,
     }
 
 

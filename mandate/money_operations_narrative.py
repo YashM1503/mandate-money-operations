@@ -243,9 +243,15 @@ def deterministic_template(claims: list[dict]) -> dict:
         sentences.append({'text': text, 'claim_ids': claim_ids})
 
     if revenue is not None:
-        amount = display_usd(abs(claim_amount_minor(revenue) or 0))
-        pct = display_pct(claim_bps(revenue_pct or revenue))
-        direction = str(revenue.get('direction') or claim_value(revenue).get('direction') or 'increase')
+        revenue_amount = claim_amount_minor(revenue) or 0
+        amount = display_usd(abs(revenue_amount))
+        revenue_bps = claim_bps(revenue_pct or revenue)
+        pct = display_pct(abs(revenue_bps)) if revenue_bps is not None else None
+        direction = str(
+            revenue.get('direction')
+            or claim_value(revenue).get('direction')
+            or ('increase' if revenue_amount > 0 else 'decrease' if revenue_amount < 0 else 'flat')
+        )
         if pct and direction == 'increase':
             headline = f'Gross revenue increased {pct} ({amount}).'
             add(revenue, f'Gross revenue increased {pct}, or {amount}.', [revenue_pct] if revenue_pct else [])
@@ -296,12 +302,14 @@ def deterministic_template(claims: list[dict]) -> dict:
         if share and isinstance(share_bps, int) and abs(share_bps) > 10_000:
             add(top3, f'{who} contributed {contrib}, equal to {share} of net account variance.')
         elif share:
-            add(top3, f'{who} contributed {contrib}, equal to {share} of total growth.')
+            movement = 'total decline' if (claim_amount_minor(revenue) or 0) < 0 else 'total growth'
+            add(top3, f'{who} contributed {contrib}, equal to {share} of {movement}.')
         else:
-            add(top3, f'{who} contributed {contrib} of total growth.')
-        rev_pct = display_pct(claim_bps(revenue_pct or revenue)) if revenue is not None else None
-        ent_pct_h = display_pct(claim_bps(enterprise)) if enterprise is not None else None
-        if rev_pct and ent_pct_h and share and not offsets:
+            movement = 'the decline' if (claim_amount_minor(revenue) or 0) < 0 else 'total growth'
+            add(top3, f'{who} contributed {contrib} of {movement}.')
+        rev_pct = display_pct(abs(claim_bps(revenue_pct or revenue))) if revenue is not None and claim_bps(revenue_pct or revenue) is not None else None
+        ent_pct_h = display_pct(abs(claim_bps(enterprise))) if enterprise is not None and claim_bps(enterprise) is not None else None
+        if rev_pct and ent_pct_h and share and not offsets and (claim_amount_minor(revenue) or 0) > 0:
             headline = (
                 f'Gross revenue increased {rev_pct}, primarily driven by a {ent_pct_h} increase '
                 f'in enterprise accounts, with three customers accounting for {share} of the increase.'
@@ -309,11 +317,13 @@ def deterministic_template(claims: list[dict]) -> dict:
     if software is not None:
         add(software, f'Software expense changed {display_usd(abs(claim_amount_minor(software) or 0))}. Prior approved ERP context may apply after current-run confirmation.')
     if opex is not None:
-        amount = display_usd(abs(claim_amount_minor(opex) or 0))
+        opex_amount = claim_amount_minor(opex) or 0
+        amount = display_usd(abs(opex_amount))
+        opex_direction = 'increased' if opex_amount > 0 else 'decreased' if opex_amount < 0 else 'was unchanged'
         extras = [claim for claim in claims if str(claim.get('status', '')).lower() == 'unexplained']
         add(
             opex,
-            f'Other Opex increased {amount} through an unmapped clearing batch. '
+            f'Other Opex {opex_direction} {amount} through an unmapped clearing batch. '
             'The amount reconciles to the summary, but the source data does not establish its business cause. '
             'Finance review is required before causal attribution.',
             extras,

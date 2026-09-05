@@ -56,7 +56,7 @@ def narrative_digest(narrative: dict) -> str:
     return _digest(narrative or {})
 
 
-def approved_transcript(narrative: dict, *, periods: dict | None = None) -> str:
+def approved_transcript(narrative: dict, *, periods: dict | None = None, synthetic: bool = True) -> str:
     headline = str(narrative.get('headline') or '').strip()
     body = str(narrative.get('text') or narrative.get('body') or '').strip()
     prior = (periods or {}).get('prior') or ''
@@ -64,7 +64,7 @@ def approved_transcript(narrative: dict, *, periods: dict | None = None) -> str:
     window = f' Periods {prior} to {current}.' if prior and current else ''
     parts = [part for part in (headline, body) if part]
     text = ' '.join(parts) if parts else 'Approved Money Operations memo is empty.'
-    if 'synthetic' not in text.lower():
+    if synthetic and 'synthetic' not in text.lower():
         text = f'{text}{window} {SYNTHETIC_DISCLAIMER}'
     elif window and window.strip() not in text:
         text = f'{text}{window}'
@@ -121,13 +121,14 @@ def _briefing_payload(
     *,
     audio_url=None,
     provider: str = 'none',
+    synthetic: bool = True,
 ) -> dict:
     return {
         'analysis_id': analysis_id,
         'analysis_revision': revision,
         'narrative_digest': digest,
         'status': status,
-        'synthetic': True,
+        'synthetic': synthetic,
         'transcript': transcript,
         'audio_url': audio_url,
         'provider': provider,
@@ -168,6 +169,7 @@ def build_briefing(db, row, body: dict) -> dict:
     analysis_id = row['id']
     revision = int(row['revision'])
     review = _latest_approved_review(db, analysis_id)
+    synthetic = body.get('synthetic') is True
     try:
         approved = assert_approved_memo(row, body, review)
     except MoneyOpsError as exc:
@@ -178,13 +180,16 @@ def build_briefing(db, row, body: dict) -> dict:
                 revision,
                 narrative_digest(narrative),
                 'approval_required',
-                approved_transcript(narrative, periods=body.get('periods')),
+                approved_transcript(narrative, periods=body.get('periods'), synthetic=synthetic),
+                synthetic=synthetic,
             )
         raise
-    transcript = approved_transcript(approved['narrative'], periods=body.get('periods'))
+    transcript = approved_transcript(approved['narrative'], periods=body.get('periods'), synthetic=synthetic)
     digest = approved['narrative_digest']
-    if not audio_enabled() or not audio_configured():
-        return _briefing_payload(analysis_id, revision, digest, 'audio_unavailable', transcript)
+    if not synthetic or not audio_enabled() or not audio_configured():
+        return _briefing_payload(
+            analysis_id, revision, digest, 'audio_unavailable', transcript, synthetic=synthetic,
+        )
     try:
         audio = synthesize_transcript(
             transcript,
@@ -205,9 +210,12 @@ def build_briefing(db, row, body: dict) -> dict:
             transcript,
             audio_url=f'/api/money-operations/analyses/{analysis_id}/briefing/audio',
             provider='elevenlabs',
+            synthetic=synthetic,
         )
     except (httpx.HTTPError, ValueError, TypeError, OSError):
-        return _briefing_payload(analysis_id, revision, digest, 'audio_unavailable', transcript)
+        return _briefing_payload(
+            analysis_id, revision, digest, 'audio_unavailable', transcript, synthetic=synthetic,
+        )
 
 
 def cached_audio(analysis_id: str, revision: int, digest: str) -> bytes | None:

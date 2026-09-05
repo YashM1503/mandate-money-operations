@@ -157,6 +157,72 @@ def test_top_three_customers_are_ranked_instead_of_hardcoded(tmp_path: Path):
     assert top_three['value_json']['delta_minor'] == 43_200_000
 
 
+def test_top_three_customers_follow_a_revenue_decline():
+    result = analyze(FIXTURE, '2026-02', '2026-03')
+    revenue = next(item for item in result['variances'] if item['account_code'] == '4000')
+    top_three = next(item for item in result['claims'] if item['id'] == 'claim-4000-top3-customers')
+    assert revenue['absolute_variance_minor'] < 0
+    assert top_three['value_json']['delta_minor'] < 0
+    assert top_three['value_json']['share_bps'] > 0
+    assert len(top_three['value_json']['customer_ids']) == 3
+    narrative = deterministic_template(result['claims'])
+    assert 'Gross revenue decreased 2.82%, or $125,000.' in narrative['text']
+    assert '65.2% of total decline' in narrative['text']
+    assert 'Other Opex decreased $52,000' in narrative['text']
+    assert 'increased -' not in narrative['text']
+
+
+def test_custom_upload_keeps_real_data_provenance_and_demo_context_separate(setup, monkeypatch):
+    client = setup[0]
+    files = [
+        ('files', (path.name, path.read_bytes(), 'text/csv' if path.suffix == '.csv' else 'application/json'))
+        for path in FIXTURE.iterdir()
+        if path.suffix in {'.csv', '.json'}
+    ]
+    uploaded = client.post(
+        '/api/money-operations/datasets', files=files, headers=_h(setup, 'analyst'),
+    )
+    assert uploaded.status_code == 201, uploaded.text
+    dataset = uploaded.json()
+    assert dataset['synthetic'] is False
+    assert all(source['synthetic'] is False for source in dataset['sources'])
+
+    analysis = _analyze(setup, dataset['dataset_id'])
+    assert analysis['synthetic'] is False
+    assert analysis['entity_name'] == 'yari-retail-us'
+    context = client.get('/api/money-operations/context', headers=_h(setup, 'analyst')).json()['entries']
+    assert not [
+        item for item in context
+        if item.get('analysis_id') == analysis['analysis_id'] and item.get('status') == 'context_suggested'
+    ]
+
+    exported = client.get(
+        f"/api/money-operations/analyses/{analysis['analysis_id']}/export.json",
+        headers=_h(setup, 'auditor'),
+    )
+    assert exported.status_code == 200
+    assert exported.json()['synthetic'] is False
+
+    reviewed = client.post(
+        f"/api/money-operations/analyses/{analysis['analysis_id']}/review",
+        json={'decision': 'approved', 'expected_revision': analysis['revision']},
+        headers=_h(setup, 'controller'),
+    )
+    assert reviewed.status_code == 200, reviewed.text
+    monkeypatch.setenv('MONEY_OPS_AUDIO_ENABLED', 'true')
+    monkeypatch.setenv('ELEVENLABS_API_KEY', 'must-not-be-used')
+    monkeypatch.setenv('ELEVENLABS_VOICE_ID', 'must-not-be-used')
+    briefing = client.post(
+        f"/api/money-operations/analyses/{analysis['analysis_id']}/briefing",
+        headers=_h(setup, 'auditor'),
+    )
+    assert briefing.status_code == 200, briefing.text
+    assert briefing.json()['synthetic'] is False
+    assert briefing.json()['status'] == 'audio_unavailable'
+    assert briefing.json()['provider'] == 'none'
+    assert 'synthetic demonstration' not in briefing.json()['transcript'].lower()
+
+
 @pytest.mark.parametrize(
     ('file_name', 'replace_from', 'replace_to', 'expected_code'),
     [

@@ -762,7 +762,7 @@ def seed_context(db):
                 _dump({'month': month, 'recurrence': recurrence, 'effective_period': period}),
                 0,
                 None,
-                '[]',
+                '["provenance:fixture"]',
             ),
         )
     _set_context_revision(db, 1)
@@ -784,6 +784,11 @@ def _suggest_context_for_analysis(db, store, analysis_id: str, analysis: dict, a
     created = []
     for item in _active_context_rows(db):
         if item['status'] != 'user_confirmed' or item.get('analysis_id'):
+            continue
+        if (
+            analysis.get('synthetic') is not True
+            and 'provenance:fixture' in (item.get('supporting_claim_ids') or [])
+        ):
             continue
         if _is_other_opex(str(item.get('account_code') or '')):
             continue
@@ -831,6 +836,10 @@ def _persist_dataset(db, store, user: dict, package_path: Path, inspect: dict, e
         and package_path.resolve() == FIXTURE_DIR.resolve()
         and inspect.get('synthetic') is True
     )
+    trusted_sources = [
+        {**source, 'synthetic': trusted_synthetic}
+        for source in inspect['sources']
+    ]
     body = {
         'dataset_id': dataset_id,
         'status': inspect['status'],
@@ -838,7 +847,7 @@ def _persist_dataset(db, store, user: dict, package_path: Path, inspect: dict, e
         'entity_id': entity_id,
         'path': str(package_path),
         'fixture': inspect.get('fixture'),
-        'sources': inspect['sources'],
+        'sources': trusted_sources,
         'validation_findings': inspect['validation_findings'],
         'available_periods': inspect['available_periods'],
         'synthetic': trusted_synthetic,
@@ -851,7 +860,7 @@ def _persist_dataset(db, store, user: dict, package_path: Path, inspect: dict, e
         (inspect['status'], 1, entity_id, user['username'], created),
         body,
     )
-    for source in inspect['sources']:
+    for source in trusted_sources:
         logical_source_id = source.get('source_id') or str(uuid.uuid4())
         db.execute(
             'INSERT INTO mo_sources VALUES(?,?,?,?,?,?,?,?)',
@@ -936,6 +945,7 @@ def _analysis_public(row, body: dict, context_rows: list[dict], revision: int | 
         'dataset_id': row['dataset_id'],
         'entity_id': body.get('entity_id') or DEFAULT_ENTITY,
         'entity_name': body.get('entity_name') or 'Yari Technology Retail',
+        'synthetic': body.get('synthetic') is True,
         'status': row['status'],
         'revision': row['revision'] if revision is None else revision,
         'periods': body.get('periods') or {'prior': row['prior_period'], 'current': row['current_period']},
@@ -1343,7 +1353,8 @@ def register_money_operations(app, store, auth):
                 'analysis_id': analysis_id,
                 'dataset_id': body.dataset_id,
                 'entity_id': body.entity_id,
-                'entity_name': 'Yari Technology Retail',
+                'entity_name': body.entity_id,
+                'synthetic': dataset.get('synthetic') is True,
                 'narrative': narrative,
                 'review_status': 'draft',
                 'metrics': {
@@ -1787,7 +1798,7 @@ def register_money_operations(app, store, auth):
         public = _analysis_public(row, body, context)
         return {
             'schema_version': '1.0',
-            'synthetic': True,
+            'synthetic': body.get('synthetic') is True,
             'analysis': public,
             'claims': body.get('claims') or [],
             'variances': body.get('variances') or [],
