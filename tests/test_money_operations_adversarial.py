@@ -457,7 +457,8 @@ def test_correction_history_does_not_change_digest(setup, engine):
 def test_memory_is_entity_scoped(setup, engine):
     client = setup[0]
     ds = _ingest(setup)
-    foreign = _analyze(setup, ds['dataset_id'], entity_id='other-retail-co')
+    foreign_ds = _ingest(setup, entity_id='other-retail-co')
+    foreign = _analyze(setup, foreign_ds['dataset_id'], entity_id='other-retail-co')
     suggested = foreign.get('suggested_context') or []
     assert not any('novaerp' in str(item.get('statement', '')).lower() for item in suggested)
     home = _analyze(setup, ds['dataset_id'], entity_id='yari-retail-us')

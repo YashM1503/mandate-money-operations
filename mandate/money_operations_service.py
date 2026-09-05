@@ -8,6 +8,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import hmac
+import io
 import json
 import os
 import re
@@ -75,6 +76,7 @@ class MoneyOpsError(Exception):
 
 class DatasetSelect(StrictBody):
     fixture: str = Field(pattern=r'^reference$')
+    entity_id: str = Field(default=DEFAULT_ENTITY, min_length=1, max_length=80)
 
 
 class AnalysisCreate(StrictBody):
@@ -157,6 +159,27 @@ def _upload_limits() -> tuple[int, int]:
     except ValueError:
         row_limit = 50_000
     return byte_limit, row_limit
+
+
+def _quota(name: str, default: int) -> int:
+    try:
+        return max(1, int(os.getenv(name, str(default))))
+    except ValueError:
+        return default
+
+
+def _assert_dataset_quota(db, username: str) -> None:
+    count = db.execute('SELECT COUNT(*) AS count FROM mo_datasets WHERE created_by=?', (username,)).fetchone()['count']
+    maximum = _quota('MANDATE_MAX_DATASETS_PER_USER', 50)
+    if count >= maximum:
+        raise MoneyOpsError(429, 'dataset_quota_exceeded', 'Dataset quota reached', {'limit': maximum})
+
+
+def _assert_analysis_quota(db, dataset_id: str) -> None:
+    count = db.execute('SELECT COUNT(*) AS count FROM mo_analyses WHERE dataset_id=?', (dataset_id,)).fetchone()['count']
+    maximum = _quota('MANDATE_MAX_ANALYSES_PER_DATASET', 200)
+    if count >= maximum:
+        raise MoneyOpsError(429, 'analysis_quota_exceeded', 'Analysis quota reached', {'limit': maximum})
 
 
 def _safe_filename(name: str) -> str:
@@ -407,12 +430,17 @@ def inspect_package(path: Path) -> dict:
     if not path.is_dir():
         raise MoneyOpsError(422, 'invalid_dataset', 'Dataset path is not a directory')
     manifest_hashes = {}
+    synthetic = False
     manifest_path = path / 'validation_manifest.json'
     if manifest_path.is_file():
         try:
-            manifest_hashes = json.loads(manifest_path.read_text()).get('source_hashes') or {}
-        except (OSError, json.JSONDecodeError, TypeError):
-            manifest_hashes = {}
+            manifest_body = json.loads(manifest_path.read_text(encoding='utf-8'))
+            if not isinstance(manifest_body, dict):
+                raise ValueError('manifest must be an object')
+            manifest_hashes = manifest_body.get('source_hashes') or {}
+            synthetic = manifest_body.get('synthetic') is True
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError, TypeError, ValueError) as exc:
+            raise MoneyOpsError(422, 'invalid_dataset', 'validation_manifest.json is invalid') from exc
     sources = []
     periods: set[str] = set()
     findings = []
@@ -422,18 +450,23 @@ def inspect_package(path: Path) -> dict:
         if item.name == 'expected_driver_answers.json':
             continue
         data = item.read_bytes()
-        text = data.decode('utf-8-sig')
+        try:
+            text = data.decode('utf-8-sig')
+        except UnicodeDecodeError as exc:
+            raise MoneyOpsError(422, 'invalid_dataset', f'{item.name} is not valid UTF-8') from exc
         rows = 0
         file_periods: list[str] = []
         if item.suffix.lower() == '.csv':
-            lines = [line for line in text.splitlines() if line.strip()]
-            rows = max(0, len(lines) - 1) if lines else 0
-            if item.name == 'monthly_account_summaries.csv' and lines:
-                header = lines[0].split(',')
+            try:
+                parsed = list(csv.reader(io.StringIO(text, newline=''), strict=True))
+            except csv.Error as exc:
+                raise MoneyOpsError(422, 'invalid_dataset', f'{item.name} is not valid CSV') from exc
+            rows = max(0, len(parsed) - 1) if parsed else 0
+            if item.name == 'monthly_account_summaries.csv' and parsed:
+                header = parsed[0]
                 if 'period' in header:
                     idx = header.index('period')
-                    for line in lines[1:]:
-                        cols = line.split(',')
+                    for cols in parsed[1:]:
                         if len(cols) > idx and re.fullmatch(r'\d{4}-\d{2}', cols[idx]):
                             periods.add(cols[idx])
                             file_periods.append(cols[idx])
@@ -451,7 +484,7 @@ def inspect_package(path: Path) -> dict:
             'row_count': rows,
             'schema_version': '1.0',
             'periods': file_periods,
-            'synthetic': True,
+            'synthetic': synthetic,
         })
     if findings:
         raise MoneyOpsError(422, 'invalid_dataset', 'Source integrity check failed', {'findings': findings})
@@ -477,18 +510,34 @@ def inspect_package(path: Path) -> dict:
         'validation_findings': findings,
         'available_periods': sorted(periods) or ['2026-01', '2026-02'],
         'status': 'validated',
+        'synthetic': synthetic,
     }
 
 
-def _assert_stored_sources_intact(db, path: Path, dataset_id: str) -> None:
+def _assert_stored_sources_intact(db, path: Path, dataset_id: str, signed_sources: list[dict]) -> None:
     rows = db.execute(
-        'SELECT file_name, sha256 FROM mo_sources WHERE dataset_id=?',
+        'SELECT file_name,sha256,byte_size,row_count,schema_version FROM mo_sources WHERE dataset_id=?',
         (dataset_id,),
     ).fetchall()
     mismatches = []
+    expected_metadata = {
+        item.get('file_name'): item for item in signed_sources if isinstance(item, dict) and item.get('file_name')
+    }
+    stored_names = {row['file_name'] for row in rows}
+    for name in sorted(set(expected_metadata) ^ stored_names):
+        mismatches.append(name or '<unknown>')
     for row in rows:
         name = row['file_name']
         expected = row['sha256']
+        signed = expected_metadata.get(name)
+        if signed is None or any((
+            signed.get('sha256') != expected,
+            int(signed.get('byte_size') or 0) != row['byte_size'],
+            int(signed.get('row_count') or 0) != row['row_count'],
+            str(signed.get('schema_version') or '1.0') != row['schema_version'],
+        )):
+            mismatches.append(name or '<unknown>')
+            continue
         if not name or not expected:
             continue
         target = path / name
@@ -673,6 +722,15 @@ def _active_context_rows(db):
     return rows
 
 
+def _scoped_context_rows(db, analysis_id: str, entity_id: str) -> list[dict]:
+    """Return only context owned by this entity and applicable to this analysis."""
+    return [
+        item for item in _active_context_rows(db)
+        if item.get('entity_id') == entity_id
+        and item.get('analysis_id') in (None, analysis_id)
+    ]
+
+
 def seed_context(db):
     if db.execute('SELECT 1 FROM mo_context LIMIT 1').fetchone():
         return
@@ -768,6 +826,11 @@ def _suggest_context_for_analysis(db, store, analysis_id: str, analysis: dict, a
 def _persist_dataset(db, store, user: dict, package_path: Path, inspect: dict, entity_id: str) -> dict:
     dataset_id = str(uuid.uuid4())
     created = _now()
+    trusted_synthetic = (
+        inspect.get('fixture') == 'reference'
+        and package_path.resolve() == FIXTURE_DIR.resolve()
+        and inspect.get('synthetic') is True
+    )
     body = {
         'dataset_id': dataset_id,
         'status': inspect['status'],
@@ -778,6 +841,7 @@ def _persist_dataset(db, store, user: dict, package_path: Path, inspect: dict, e
         'sources': inspect['sources'],
         'validation_findings': inspect['validation_findings'],
         'available_periods': inspect['available_periods'],
+        'synthetic': trusted_synthetic,
         'created_by': user['username'],
         'created_at': created,
     }
@@ -788,10 +852,11 @@ def _persist_dataset(db, store, user: dict, package_path: Path, inspect: dict, e
         body,
     )
     for source in inspect['sources']:
+        logical_source_id = source.get('source_id') or str(uuid.uuid4())
         db.execute(
             'INSERT INTO mo_sources VALUES(?,?,?,?,?,?,?,?)',
             (
-                source.get('source_id') or str(uuid.uuid4()),
+                f'{dataset_id}:{logical_source_id}',
                 dataset_id,
                 source.get('file_name') or '',
                 source.get('sha256') or '',
@@ -814,6 +879,7 @@ def _dataset_response(body: dict) -> dict:
         'sources': body.get('sources') or [],
         'validation_findings': body.get('validation_findings') or [],
         'available_periods': body.get('available_periods') or [],
+        'synthetic': body.get('synthetic') is True,
     }
 
 
@@ -1161,22 +1227,35 @@ def register_money_operations(app, store, auth):
 
     @app.post('/api/money-operations/datasets')
     async def create_dataset(request: Request, user=Depends(write_user)):
-        content_type = (request.headers.get('content-type') or '').lower()
+        with store.connect() as db:
+            _assert_dataset_quota(db, user['username'])
+        content_type = request.headers.get('content-type') or ''
         byte_limit, row_limit = _upload_limits()
-        if 'multipart/form-data' in content_type:
+        if 'multipart/form-data' in content_type.lower():
             uploads = parse_multipart_files(content_type, await request.body())
             dest = store.path.parent / 'mo-uploads' / str(uuid.uuid4())
             dest.mkdir(parents=True, exist_ok=True)
             total_bytes = 0
+            seen_names: set[str] = set()
             try:
                 for filename, data in uploads:
                     name = _safe_filename(filename)
+                    if name in seen_names:
+                        raise MoneyOpsError(422, 'invalid_upload', 'Duplicate uploaded file name', {'file_name': name})
+                    seen_names.add(name)
                     total_bytes += len(data)
                     if total_bytes > byte_limit:
                         raise MoneyOpsError(413, 'upload_too_large', 'Upload exceeds the configured byte limit')
-                    text = data.decode('utf-8-sig')
+                    try:
+                        text = data.decode('utf-8-sig')
+                    except UnicodeDecodeError as exc:
+                        raise MoneyOpsError(422, 'invalid_encoding', f'{name} is not valid UTF-8') from exc
                     if name.endswith('.csv'):
-                        rows = max(0, len([line for line in text.splitlines() if line.strip()]) - 1)
+                        try:
+                            parsed_rows = list(csv.reader(io.StringIO(text, newline=''), strict=True))
+                        except csv.Error as exc:
+                            raise MoneyOpsError(422, 'invalid_csv', f'{name} is not valid CSV') from exc
+                        rows = max(0, len(parsed_rows) - 1)
                         if rows > row_limit:
                             raise MoneyOpsError(422, 'upload_too_many_rows', 'Upload exceeds the configured row limit', {'rows': rows})
                     (dest / name).write_bytes(data)
@@ -1188,31 +1267,41 @@ def register_money_operations(app, store, auth):
             except MoneyOpsError:
                 shutil.rmtree(dest, ignore_errors=True)
                 raise
+            except Exception as exc:
+                shutil.rmtree(dest, ignore_errors=True)
+                raise MoneyOpsError(422, 'invalid_upload', 'Uploaded dataset could not be processed', {
+                    'reason': type(exc).__name__,
+                }) from exc
         try:
             payload = await request.json()
         except Exception as exc:
             raise MoneyOpsError(422, 'invalid_request', 'JSON or multipart dataset request required') from exc
         try:
-            DatasetSelect.model_validate(payload)
+            selection = DatasetSelect.model_validate(payload)
         except ValidationError as exc:
             raise MoneyOpsError(422, 'invalid_request', 'fixture must be reference', {'errors': exc.errors()}) from exc
         inspect = inspect_package(FIXTURE_DIR)
         inspect['fixture'] = 'reference'
         with store.transaction() as db:
-            body = _persist_dataset(db, store, user, FIXTURE_DIR, inspect, DEFAULT_ENTITY)
+            body = _persist_dataset(db, store, user, FIXTURE_DIR, inspect, selection.entity_id)
         return JSONResponse(_dataset_response(body), status_code=201)
 
     @app.post('/api/money-operations/analyses')
     def create_analysis(body: AnalysisCreate, user=Depends(write_user)):
         with store.transaction() as db:
             dataset_row, dataset = _load_dataset(db, store, body.dataset_id)
+            _assert_analysis_quota(db, body.dataset_id)
+            if body.entity_id != dataset_row['entity_id'] or body.entity_id != dataset.get('entity_id'):
+                raise MoneyOpsError(422, 'entity_mismatch', 'Analysis entity must match the dataset entity', {
+                    'dataset_entity_id': dataset_row['entity_id'],
+                })
             if body.expected_revision is not None and body.expected_revision != dataset_row['revision']:
                 raise MoneyOpsError(409, 'stale_revision', 'Dataset changed; refresh before analyzing', {
                     'actual_revision': dataset_row['revision'],
                     'expected_revision': body.expected_revision,
                 })
             path = Path(dataset.get('path') or FIXTURE_DIR)
-            _assert_stored_sources_intact(db, path, body.dataset_id)
+            _assert_stored_sources_intact(db, path, body.dataset_id, dataset.get('sources') or [])
             computed = _run_analyze(path, body.prior_period, body.current_period, body.entity_id)
             analysis_id = str(uuid.uuid4())
             try:
@@ -1231,22 +1320,23 @@ def register_money_operations(app, store, auth):
                     'mode': 'deterministic_template',
                     'model_error': 'template_validation_failed',
                 }
-            _observe_narrative(
-                analysis_id,
-                narrative,
-                [],
-                prior_period=body.prior_period,
-                current_period=body.current_period,
-                calculation_digest=computed.get('calculation_digest'),
-                unexplained_item_count=sum(
-                    1 for claim in computed['claims']
-                    if str(claim.get('status', '')).lower() == 'unexplained'
-                ),
-                reconciliation_status='conflict' if computed.get('conflicts') else 'reconciled',
-                numeric_validation='pass',
-                citation_validation='pass' if not narrative.get('model_error') else 'reject',
-                fallback=bool(narrative.get('model_error')),
-            )
+            if dataset.get('synthetic') is True:
+                _observe_narrative(
+                    analysis_id,
+                    narrative,
+                    [],
+                    prior_period=body.prior_period,
+                    current_period=body.current_period,
+                    calculation_digest=computed.get('calculation_digest'),
+                    unexplained_item_count=sum(
+                        1 for claim in computed['claims']
+                        if str(claim.get('status', '')).lower() == 'unexplained'
+                    ),
+                    reconciliation_status='conflict' if computed.get('conflicts') else 'reconciled',
+                    numeric_validation='pass',
+                    citation_validation='pass' if not narrative.get('model_error') else 'reject',
+                    fallback=bool(narrative.get('model_error')),
+                )
             created = _now()
             stored = {
                 **computed,
@@ -1323,14 +1413,47 @@ def register_money_operations(app, store, auth):
             return payload
 
     @app.get('/api/money-operations/claims/{claim_id}/evidence')
-    def claim_evidence(claim_id: str, limit: int = 20, cursor: int = 0, user=Depends(auth)):
+    def claim_evidence(
+        claim_id: str,
+        analysis_id: str | None = None,
+        limit: int = 20,
+        cursor: int = 0,
+        user=Depends(auth),
+    ):
         with store.connect() as db:
-            row = db.execute('SELECT * FROM mo_claims WHERE original_id=? OR id=?', (claim_id, claim_id)).fetchone()
-            if row is None and ':' not in claim_id:
-                row = db.execute('SELECT * FROM mo_claims WHERE original_id=? ORDER BY analysis_id DESC', (claim_id,)).fetchone()
+            if ':' in claim_id:
+                row = db.execute('SELECT * FROM mo_claims WHERE id=?', (claim_id,)).fetchone()
+            elif analysis_id:
+                row = db.execute(
+                    'SELECT * FROM mo_claims WHERE original_id=? AND analysis_id=?',
+                    (claim_id, analysis_id),
+                ).fetchone()
+            else:
+                matches = db.execute(
+                    'SELECT * FROM mo_claims WHERE original_id=? ORDER BY rowid DESC LIMIT 2',
+                    (claim_id,),
+                ).fetchall()
+                if len(matches) > 1:
+                    raise MoneyOpsError(409, 'ambiguous_claim', 'Claim exists in multiple analyses; provide analysis_id')
+                row = matches[0] if matches else None
             if row is None:
                 raise MoneyOpsError(404, 'not_found', 'Claim not found', {'claim_id': claim_id})
-            rows = json.loads(row['source_rows_json'] or '[]')
+            _, analysis_body = _load_analysis(db, store, row['analysis_id'])
+            canonical = next(
+                (item for item in analysis_body.get('claims') or [] if item.get('id') == row['original_id']),
+                None,
+            )
+            if canonical is None:
+                raise MoneyOpsError(409, 'integrity_failure', 'Claim is absent from its signed analysis')
+            expected_value = {key: canonical[key] for key in canonical if key != 'source_rows'}
+            if (
+                row['value_json'] != _dump(expected_value)
+                or row['formula'] != str(canonical.get('formula') or '')
+                or row['source_ids_json'] != _dump(canonical.get('source_ids') or [])
+                or row['source_rows_json'] != _dump(canonical.get('source_rows') or [])
+            ):
+                raise MoneyOpsError(409, 'integrity_failure', 'Stored claim evidence differs from its signed analysis')
+            rows = canonical.get('source_rows') or []
             if not isinstance(rows, list):
                 rows = []
             cursor = max(0, cursor)
@@ -1659,7 +1782,7 @@ def register_money_operations(app, store, auth):
         with store.connect() as db:
             row, body = _load_analysis(db, store, analysis_id)
             sources = [dict(item) for item in db.execute('SELECT file_name,sha256,byte_size,row_count,schema_version FROM mo_sources WHERE dataset_id=?', (row['dataset_id'],))]
-            context = [item for item in _active_context_rows(db) if item.get('analysis_id') in (analysis_id, None) or True]
+            context = _scoped_context_rows(db, analysis_id, body.get('entity_id') or DEFAULT_ENTITY)
             reviews = [dict(item) for item in db.execute('SELECT decision,actor,created_at,analysis_revision,narrative_digest,calculation_digest FROM mo_reviews WHERE analysis_id=?', (analysis_id,))]
         public = _analysis_public(row, body, context)
         return {
@@ -1682,7 +1805,7 @@ def register_money_operations(app, store, auth):
     def export_csv(analysis_id: str, user=Depends(auth)):
         with store.connect() as db:
             row, body = _load_analysis(db, store, analysis_id)
-            context = _active_context_rows(db)
+            context = _scoped_context_rows(db, analysis_id, body.get('entity_id') or DEFAULT_ENTITY)
         rows = []
         for claim in (body.get('variances') or []) + (body.get('claims') or []):
             if not isinstance(claim, dict):
@@ -1719,7 +1842,7 @@ def register_money_operations(app, store, auth):
         with store.connect() as db:
             row, body = _load_analysis(db, store, analysis_id)
             sources = [dict(item) for item in db.execute('SELECT file_name,sha256,row_count FROM mo_sources WHERE dataset_id=?', (row['dataset_id'],))]
-            context = _active_context_rows(db)
+            context = _scoped_context_rows(db, analysis_id, body.get('entity_id') or DEFAULT_ENTITY)
         public = _analysis_public(row, body, context)
         html = render_memo_html(public, body.get('narrative') or {}, sources, context)
         return Response(html, media_type='text/html')

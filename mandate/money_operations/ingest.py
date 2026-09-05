@@ -3,8 +3,10 @@ from __future__ import annotations
 
 import csv
 import hashlib
+import io
 import json
 from dataclasses import dataclass, field
+from datetime import date
 from pathlib import Path
 
 from .config import (
@@ -17,6 +19,7 @@ from .config import (
     REQUIRED_SUMMARY_COLUMNS,
     SCHEMA_VERSION,
     UNCLASSIFIED,
+    default_config,
     load_config,
 )
 from .integer import DATE_RE, PERIOD_RE, MoneyParseError, parse_int, parse_whole_dollars_to_minor
@@ -56,7 +59,7 @@ def _member(value: str | None) -> str:
 def _read_csv_bytes(path: Path) -> tuple[bytes, list[dict], list[str]]:
     data = path.read_bytes()
     text = data.decode('utf-8-sig')
-    reader = csv.DictReader(text.splitlines())
+    reader = csv.DictReader(io.StringIO(text, newline=''), strict=True)
     fieldnames = list(reader.fieldnames or [])
     rows = [{k: (v if v is not None else '') for k, v in row.items()} for row in reader]
     return data, rows, fieldnames
@@ -67,11 +70,71 @@ def _missing_columns(fieldnames: list[str], required: tuple[str, ...]) -> list[s
     return [name for name in required if name not in present]
 
 
-def _load_dimension_ids(path: Path, key: str) -> set[str]:
+def _duplicate_columns(fieldnames: list[str]) -> list[str]:
+    return sorted({name for name in fieldnames if fieldnames.count(name) > 1})
+
+
+def _unexpected_columns(fieldnames: list[str], required: tuple[str, ...]) -> list[str]:
+    allowed = set(required)
+    return sorted(name for name in fieldnames if name not in allowed)
+
+
+def _valid_period(value: str) -> bool:
+    if not PERIOD_RE.fullmatch(value):
+        return False
+    try:
+        year, month = map(int, value.split('-'))
+        date(year, month, 1)
+    except ValueError:
+        return False
+    return True
+
+
+def _valid_date_in_period(value: str, period: str) -> bool:
+    if not DATE_RE.fullmatch(value) or not _valid_period(period):
+        return False
+    try:
+        parsed = date.fromisoformat(value)
+    except ValueError:
+        return False
+    return parsed.strftime('%Y-%m') == period
+
+
+def _load_dimension_ids(path: Path, key: str, dataset) -> set[str]:
     if not path.is_file():
         return set()
-    _, rows, _ = _read_csv_bytes(path)
-    return {_member(row.get(key)) for row in rows if _member(row.get(key)) != UNCLASSIFIED}
+    try:
+        _, rows, fieldnames = _read_csv_bytes(path)
+    except (UnicodeDecodeError, csv.Error, OSError) as exc:
+        dataset.findings.append(_finding(
+            'invalid_encoding' if isinstance(exc, UnicodeDecodeError) else 'invalid_csv',
+            'error', f'could not parse {path.name}', source_id=_source_id(path.name),
+        ))
+        return set()
+    if key not in fieldnames:
+        dataset.findings.append(_finding(
+            'invalid_schema', 'error', f'{path.name} missing key column {key}',
+            source_id=_source_id(path.name),
+        ))
+        return set()
+    duplicates = _duplicate_columns(fieldnames)
+    if duplicates:
+        dataset.findings.append(_finding(
+            'duplicate_csv_header', 'error', f'{path.name} contains duplicate columns: {duplicates}',
+            source_id=_source_id(path.name),
+        ))
+    values: set[str] = set()
+    for index, row in enumerate(rows, start=2):
+        value = _member(row.get(key))
+        if value == UNCLASSIFIED:
+            continue
+        if value in values:
+            dataset.findings.append(_finding(
+                'duplicate_dimension_key', 'error', f'{path.name} contains duplicate {key} {value}',
+                source_id=_source_id(path.name), details={'row': index, key: value},
+            ))
+        values.add(value)
+    return values
 
 
 @dataclass
@@ -104,7 +167,20 @@ class LoadedDataset:
 
 def load_dataset(path: str | Path, *, enforce_manifest_hashes: bool = True) -> LoadedDataset:
     root = Path(path).resolve()
-    dataset = LoadedDataset(root=root, config=load_config(root / 'account_configuration.json'))
+    config_error = None
+    try:
+        config = load_config(root / 'account_configuration.json')
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError, TypeError, ValueError) as exc:
+        config = default_config()
+        config_error = type(exc).__name__
+    dataset = LoadedDataset(root=root, config=config)
+    if config_error:
+        dataset.findings.append(_finding(
+            'invalid_account_configuration', 'error',
+            'account_configuration.json failed strict validation',
+            source_id=_source_id('account_configuration.json'),
+            details={'reason': config_error},
+        ))
     if not root.is_dir():
         dataset.findings.append(_finding(
             'missing_file', 'error', f'dataset path is not a directory: {root}',
@@ -113,22 +189,32 @@ def load_dataset(path: str | Path, *, enforce_manifest_hashes: bool = True) -> L
 
     manifest_path = root / 'validation_manifest.json'
     if manifest_path.is_file():
-        dataset.manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
-        dataset.synthetic = bool(dataset.manifest.get('synthetic'))
-        if dataset.synthetic:
+        try:
+            manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+            if not isinstance(manifest, dict):
+                raise ValueError('manifest must be an object')
+            dataset.manifest = manifest
+            dataset.synthetic = manifest.get('synthetic') is True
+            if dataset.synthetic:
+                dataset.findings.append(_finding(
+                    'synthetic_dataset',
+                    'info',
+                    'Dataset is labeled synthetic and is safe only for demonstration.',
+                    source_id=_source_id('validation_manifest.json'),
+                    details={'dataset_id': manifest.get('dataset_id')},
+                ))
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
             dataset.findings.append(_finding(
-                'synthetic_dataset',
-                'info',
-                'Dataset is labeled synthetic and is safe only for demonstration.',
+                'invalid_manifest', 'error', 'validation_manifest.json is invalid',
                 source_id=_source_id('validation_manifest.json'),
-                details={'dataset_id': dataset.manifest.get('dataset_id')},
+                details={'reason': type(exc).__name__},
             ))
 
     expected_hashes = (dataset.manifest or {}).get('source_hashes') or {}
     currencies: set[str] = set()
     transaction_ids: dict[str, str] = {}
-    customer_ids = _load_dimension_ids(root / 'customer_dimension.csv', 'customer_id')
-    vendor_ids = _load_dimension_ids(root / 'vendor_dimension.csv', 'vendor_id')
+    customer_ids = _load_dimension_ids(root / 'customer_dimension.csv', 'customer_id', dataset)
+    vendor_ids = _load_dimension_ids(root / 'vendor_dimension.csv', 'vendor_id', dataset)
 
     for file_name in PACKAGE_FILES:
         file_path = root / file_name
@@ -161,8 +247,33 @@ def load_dataset(path: str | Path, *, enforce_manifest_hashes: bool = True) -> L
             'synthetic': dataset.synthetic,
         }
         if file_name.endswith('.csv'):
-            _, rows, fieldnames = _read_csv_bytes(file_path)
+            try:
+                _, rows, fieldnames = _read_csv_bytes(file_path)
+            except (UnicodeDecodeError, csv.Error, OSError) as exc:
+                dataset.findings.append(_finding(
+                    'invalid_encoding' if isinstance(exc, UnicodeDecodeError) else 'invalid_csv',
+                    'error', f'could not parse {file_name}', source_id=source['source_id'],
+                    details={'reason': type(exc).__name__},
+                ))
+                dataset.sources.append(source)
+                continue
             source['row_count'] = len(rows)
+            duplicates = _duplicate_columns(fieldnames)
+            if duplicates:
+                dataset.findings.append(_finding(
+                    'duplicate_csv_header', 'error',
+                    f'{file_name} contains duplicate columns: {duplicates}',
+                    source_id=source['source_id'],
+                ))
+                dataset.sources.append(source)
+                continue
+            if any(None in row for row in rows):
+                dataset.findings.append(_finding(
+                    'invalid_csv', 'error', f'{file_name} contains rows wider than its header',
+                    source_id=source['source_id'],
+                ))
+                dataset.sources.append(source)
+                continue
             if file_name == 'monthly_account_summaries.csv':
                 _ingest_summaries(dataset, source, rows, fieldnames, currencies)
             elif file_name == 'revenue_transactions.csv':
@@ -202,6 +313,14 @@ def _ingest_summaries(dataset: LoadedDataset, source: dict, rows: list[dict],
             source_id=source['source_id'],
         ))
         return
+    extra = _unexpected_columns(fieldnames, REQUIRED_SUMMARY_COLUMNS)
+    if extra:
+        dataset.findings.append(_finding(
+            'unexpected_column', 'error',
+            f'monthly_account_summaries.csv contains unexpected columns: {extra}',
+            source_id=source['source_id'],
+        ))
+        return
     periods: list[str] = []
     money_fields = [
         name for name in REQUIRED_SUMMARY_COLUMNS
@@ -209,14 +328,14 @@ def _ingest_summaries(dataset: LoadedDataset, source: dict, rows: list[dict],
     ]
     for index, row in enumerate(rows, start=2):
         period = (row.get('period') or '').strip()
-        if not PERIOD_RE.match(period):
+        if not _valid_period(period):
             dataset.findings.append(_finding(
                 'invalid_period', 'error', f'invalid summary period at row {index}',
                 source_id=source['source_id'], details={'row': index, 'period': period},
             ))
             continue
         period_end = (row.get('period_end') or '').strip()
-        if not DATE_RE.match(period_end) or period_end[:7] != period:
+        if not _valid_date_in_period(period_end, period):
             dataset.findings.append(_finding(
                 'invalid_date', 'error', f'summary period_end does not fall in period at row {index}',
                 source_id=source['source_id'], details={'row': index},
@@ -241,6 +360,30 @@ def _ingest_summaries(dataset: LoadedDataset, source: dict, rows: list[dict],
                 source_id=source['source_id'], details={'row': index, 'period': period},
             ))
             continue
+        equations = {
+            'net_revenue': amounts['gross_revenue'] - amounts['refunds'],
+            'gross_profit': amounts['net_revenue'] - amounts['cogs'],
+            'total_opex': sum(amounts[name] for name in (
+                'software_expense', 'logistics_expense', 'payroll_expense',
+                'marketing_expense', 'other_opex',
+            )),
+            'operating_profit': amounts['gross_profit'] - amounts['total_opex'],
+        }
+        for field_name, calculated in equations.items():
+            if amounts[field_name] != calculated:
+                dataset.findings.append(_finding(
+                    'summary_equation', 'error',
+                    f'{field_name} does not satisfy its accounting identity at row {index}',
+                    source_id=source['source_id'],
+                    details={
+                        'row': index,
+                        'period': period,
+                        'field': field_name,
+                        'reported_minor': amounts[field_name],
+                        'calculated_minor': calculated,
+                        'difference_minor': amounts[field_name] - calculated,
+                    },
+                ))
         dataset.summaries[period] = {
             'period': period,
             'period_end': period_end,
@@ -266,6 +409,14 @@ def _ingest_revenue(dataset: LoadedDataset, source: dict, rows: list[dict],
             source_id=source['source_id'],
         ))
         return
+    extra = _unexpected_columns(fieldnames, REQUIRED_REVENUE_COLUMNS)
+    if extra:
+        dataset.findings.append(_finding(
+            'unexpected_column', 'error',
+            f'revenue_transactions.csv contains unexpected columns: {extra}',
+            source_id=source['source_id'],
+        ))
+        return
     periods: list[str] = []
     for index, row in enumerate(rows, start=2):
         txn_id = (row.get('transaction_id') or '').strip()
@@ -286,9 +437,16 @@ def _ingest_revenue(dataset: LoadedDataset, source: dict, rows: list[dict],
         transaction_ids[txn_id] = source['source_id']
         period = (row.get('period') or '').strip()
         posted = (row.get('date') or '').strip()
-        if not PERIOD_RE.match(period) or not DATE_RE.match(posted) or posted[:7] != period:
+        if not _valid_date_in_period(posted, period):
             dataset.findings.append(_finding(
                 'invalid_date', 'error', f'revenue date/period mismatch at row {index}',
+                source_id=source['source_id'], details={'transaction_id': txn_id},
+            ))
+            continue
+        invoice_id = (row.get('invoice_id') or '').strip()
+        if not invoice_id:
+            dataset.findings.append(_finding(
+                'invalid_schema', 'error', f'missing invoice_id at row {index}',
                 source_id=source['source_id'], details={'transaction_id': txn_id},
             ))
             continue
@@ -346,7 +504,7 @@ def _ingest_revenue(dataset: LoadedDataset, source: dict, rows: list[dict],
             'currency': dataset.config.get('currency', 'USD'),
             'source_id': source['source_id'],
             'source_row_number': index,
-            'invoice_id': row.get('invoice_id', ''),
+            'invoice_id': invoice_id,
             'transaction_type': txn_type,
             'dimensions': dimensions,
             'headcount_effect': 0,
@@ -363,6 +521,14 @@ def _ingest_expenses(dataset: LoadedDataset, source: dict, rows: list[dict],
         dataset.findings.append(_finding(
             'invalid_schema', 'error',
             f'expense_transactions.csv missing columns: {missing}',
+            source_id=source['source_id'],
+        ))
+        return
+    extra = _unexpected_columns(fieldnames, REQUIRED_EXPENSE_COLUMNS)
+    if extra:
+        dataset.findings.append(_finding(
+            'unexpected_column', 'error',
+            f'expense_transactions.csv contains unexpected columns: {extra}',
             source_id=source['source_id'],
         ))
         return
@@ -386,9 +552,16 @@ def _ingest_expenses(dataset: LoadedDataset, source: dict, rows: list[dict],
         transaction_ids[txn_id] = source['source_id']
         period = (row.get('period') or '').strip()
         posted = (row.get('date') or '').strip()
-        if not PERIOD_RE.match(period) or not DATE_RE.match(posted) or posted[:7] != period:
+        if not _valid_date_in_period(posted, period):
             dataset.findings.append(_finding(
                 'invalid_date', 'error', f'expense date/period mismatch at row {index}',
+                source_id=source['source_id'], details={'transaction_id': txn_id},
+            ))
+            continue
+        invoice_id = (row.get('invoice_id') or '').strip()
+        if not invoice_id:
+            dataset.findings.append(_finding(
+                'invalid_schema', 'error', f'missing invoice_id at row {index}',
                 source_id=source['source_id'], details={'transaction_id': txn_id},
             ))
             continue
@@ -437,7 +610,7 @@ def _ingest_expenses(dataset: LoadedDataset, source: dict, rows: list[dict],
             'currency': dataset.config.get('currency', 'USD'),
             'source_id': source['source_id'],
             'source_row_number': index,
-            'invoice_id': row.get('invoice_id', ''),
+            'invoice_id': invoice_id,
             'transaction_type': 'Expense',
             'dimensions': dimensions,
             'headcount_effect': headcount_effect,
@@ -450,7 +623,7 @@ def _ingest_expenses(dataset: LoadedDataset, source: dict, rows: list[dict],
 def _ingest_context(dataset: LoadedDataset, source: dict, raw: bytes) -> None:
     try:
         payload = json.loads(raw.decode('utf-8'))
-    except json.JSONDecodeError:
+    except (UnicodeDecodeError, json.JSONDecodeError):
         dataset.findings.append(_finding(
             'invalid_schema', 'error', 'business_context_history.json is not valid JSON',
             source_id=source['source_id'],

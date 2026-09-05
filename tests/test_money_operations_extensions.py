@@ -143,7 +143,8 @@ def test_prior_context_false_amount_is_recalculated_not_trusted(setup, engine):
 def test_wrong_entity_or_account_context_is_not_an_explanation(setup, engine):
     client = setup[0]
     ds = _ingest(setup)
-    foreign = _analyze(setup, ds['dataset_id'], entity_id='other-retail-co')
+    foreign_ds = _ingest(setup, entity_id='other-retail-co')
+    foreign = _analyze(setup, foreign_ds['dataset_id'], entity_id='other-retail-co')
     suggested = foreign.get('suggested_context') or []
     assert not any('novaerp' in str(item.get('statement', '')).lower() for item in suggested)
     home = _analyze(setup, ds['dataset_id'], entity_id='yari-retail-us')

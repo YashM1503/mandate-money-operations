@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import os
 import threading
+from collections import OrderedDict
 from urllib.parse import urlsplit
 
 import httpx
@@ -18,7 +19,14 @@ SYNTHETIC_DISCLAIMER = (
     'It is not production financial advice and does not move funds.'
 )
 _CACHE_LOCK = threading.Lock()
-_AUDIO_CACHE: dict[tuple[str, int, str], bytes] = {}
+_AUDIO_CACHE: OrderedDict[tuple[str, int, str], bytes] = OrderedDict()
+
+
+def _cache_limit() -> int:
+    try:
+        return max(1, int(os.getenv('MONEY_OPS_AUDIO_CACHE_ENTRIES', '32')))
+    except ValueError:
+        return 32
 
 
 def reset_audio_cache() -> None:
@@ -186,6 +194,9 @@ def build_briefing(db, row, body: dict) -> dict:
         cache_key = (analysis_id, revision, digest)
         with _CACHE_LOCK:
             _AUDIO_CACHE[cache_key] = audio
+            _AUDIO_CACHE.move_to_end(cache_key)
+            while len(_AUDIO_CACHE) > _cache_limit():
+                _AUDIO_CACHE.popitem(last=False)
         return _briefing_payload(
             analysis_id,
             revision,
@@ -201,4 +212,8 @@ def build_briefing(db, row, body: dict) -> dict:
 
 def cached_audio(analysis_id: str, revision: int, digest: str) -> bytes | None:
     with _CACHE_LOCK:
-        return _AUDIO_CACHE.get((analysis_id, revision, digest))
+        key = (analysis_id, revision, digest)
+        audio = _AUDIO_CACHE.get(key)
+        if audio is not None:
+            _AUDIO_CACHE.move_to_end(key)
+        return audio

@@ -1,7 +1,7 @@
 """Authenticated synthetic AP API. No route can initiate a real bank payment."""
 from datetime import datetime,UTC,timedelta
 from pathlib import Path
-import hashlib,hmac,json,os,secrets,time,uuid
+import base64,hashlib,hmac,json,os,re,secrets,time,uuid
 from contextlib import asynccontextmanager
 from fastapi import FastAPI,HTTPException,Depends,Request
 from fastapi.responses import FileResponse,JSONResponse
@@ -14,6 +14,15 @@ from .controls import evaluate
 from .core.approval import create_approval_for_decision,approval_from_dict,validate_approval,consume_approval
 
 ROOT=Path(__file__).resolve().parent.parent
+
+def _script_csp(path:Path)->str:
+    """Allow only the exact inline scripts shipped in a static page."""
+    text=path.read_text(encoding='utf-8')
+    hashes=[]
+    for script in re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',text,flags=re.I|re.S):
+        digest=base64.b64encode(hashlib.sha256(script.encode()).digest()).decode()
+        hashes.append(f"'sha256-{digest}'")
+    return ' '.join(hashes) or "'none'"
 
 class StrictBody(BaseModel): model_config=ConfigDict(extra='forbid',strict=True)
 class Login(StrictBody):
@@ -50,6 +59,10 @@ def create_app(store=None,users=None):
         data,key,users=load_config(); store=Store(data/'mandate.sqlite3',key)
     app=FastAPI(title='Mandate Trust and Risk API',version='1.0.0',docs_url='/docs',redoc_url=None)
     app.state.store=store; app.state.users=users
+    page_script_csp={
+        '/':_script_csp(ROOT/'static/index.html'),
+        '/money-operations':_script_csp(ROOT/'static/money-operations.html'),
+    }
     allowed=os.getenv('MANDATE_ALLOWED_HOSTS','localhost,127.0.0.1,testserver').split(',')
     app.add_middleware(TrustedHostMiddleware,allowed_hosts=allowed)
     @app.middleware('http')
@@ -72,8 +85,7 @@ def create_app(store=None,users=None):
         response=await call_next(request)
         response.headers.update({'X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Referrer-Policy':'no-referrer','Cache-Control':'no-store','Permissions-Policy':'camera=(), microphone=(), geolocation=()'})
         if request.url.path in ('/','/money-operations'):
-            # Unified artifact requires inline script and style; no third-party resources.
-            response.headers['Content-Security-Policy']="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; media-src 'self' blob:; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
+            response.headers['Content-Security-Policy']=f"default-src 'none'; script-src {page_script_csp[request.url.path]}; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; media-src 'self' blob:; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
         return response
     security=HTTPBearer(auto_error=False)
     def auth(credentials:HTTPAuthorizationCredentials|None=Depends(security)):
@@ -116,19 +128,25 @@ def create_app(store=None,users=None):
     @app.post('/api/login')
     def login(body:Login,request:Request):
         client=request.client.host if request.client else 'unknown'
+        limiter_key=f'{client}:{body.username.casefold()}'
         with store.transaction() as db:
-            row=db.execute('SELECT * FROM login_attempts WHERE client=?',(client,)).fetchone();now=time.time()
+            row=db.execute('SELECT * FROM login_attempts WHERE client=?',(limiter_key,)).fetchone();now=time.time()
             count=row['count'] if row and now-row['started']<60 else 0
             if count>=10: raise HTTPException(429,'Too many attempts; retry in one minute')
-            started=row['started'] if count else now
-            db.execute('INSERT INTO login_attempts VALUES(?,?,?) ON CONFLICT(client) DO UPDATE SET count=excluded.count,started=excluded.started',(client,started,count+1))
         u=users.get(body.username)
         # Constant-work dummy credential for unknown usernames.
         salt=u['salt'] if u else '0'*32
         actual=hashlib.pbkdf2_hmac('sha256',body.password.encode(),bytes.fromhex(salt),600000).hex()
-        if not u or not hmac.compare_digest(actual,u['hash']): raise HTTPException(401,'Invalid credentials')
+        if not u or not hmac.compare_digest(actual,u['hash']):
+            with store.transaction() as db:
+                row=db.execute('SELECT * FROM login_attempts WHERE client=?',(limiter_key,)).fetchone();now=time.time()
+                count=row['count'] if row and now-row['started']<60 else 0
+                started=row['started'] if count else now
+                db.execute('INSERT INTO login_attempts VALUES(?,?,?) ON CONFLICT(client) DO UPDATE SET count=excluded.count,started=excluded.started',(limiter_key,started,count+1))
+            raise HTTPException(401,'Invalid credentials')
         token=secrets.token_urlsafe(32)
         with store.transaction() as db:
+            db.execute('DELETE FROM login_attempts WHERE client=?',(limiter_key,))
             db.execute('DELETE FROM sessions WHERE expires<?',(time.time(),))
             db.execute('INSERT INTO sessions VALUES(?,?,?,?)',(hashlib.sha256(token.encode()).hexdigest(),body.username,u['role'],time.time()+3600))
         return dict(token=token,user=dict(username=body.username,role=u['role']))
