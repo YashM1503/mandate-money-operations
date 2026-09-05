@@ -225,17 +225,17 @@ def deterministic_template(claims: list[dict]) -> dict:
         or _match_claim(claims, accounts=('6200', 'software'), types=('absolute_variance', 'variance'))
         or _match_claim(claims, accounts=('6200', 'software'))
     )
-    sentences: list[str] = []
-    cited: list[str] = []
+    sentences: list[dict] = []
     headline = 'Period comparison drafted from deterministic claims.'
 
     def add(claim: dict | None, text: str, extra: list[dict] | None = None):
         if claim is None and not extra:
             return
-        sentences.append(text)
+        claim_ids = []
         for item in [claim, *(extra or [])]:
-            if item is not None and item.get('id'):
-                cited.append(item['id'])
+            if item is not None and item.get('id') and item['id'] not in claim_ids:
+                claim_ids.append(item['id'])
+        sentences.append({'text': text, 'claim_ids': claim_ids})
 
     if revenue is not None:
         amount = display_usd(abs(claim_amount_minor(revenue) or 0))
@@ -253,6 +253,8 @@ def deterministic_template(claims: list[dict]) -> dict:
     offsets = [
         claim for claim in claims
         if str(claim_value(claim).get('classification') or claim.get('classification') or '').lower() == 'offset'
+        and str(claim.get('account_code') or '') == '4000'
+        and 'driver-segment-' in str(claim.get('id') or '')
     ]
     if enterprise is not None:
         ent_share = claim_value(enterprise).get('share_bps')
@@ -306,14 +308,16 @@ def deterministic_template(claims: list[dict]) -> dict:
         if 'conflict' not in headline.lower():
             headline = headline.rstrip('.') + '; conflicts remain visible.'
 
-    unique_cited = list(dict.fromkeys(cited))
-    body = ' '.join(sentences) if sentences else 'No material claims were available to phrase.'
+    unique_cited = list(dict.fromkeys(
+        claim_id for sentence in sentences for claim_id in sentence['claim_ids']
+    ))
+    body = ' '.join(sentence['text'] for sentence in sentences) if sentences else 'No material claims were available to phrase.'
     package = {
         'headline': headline,
         'text': body,
         'body': body,
         'cited_claim_ids': unique_cited,
-        'why': [{'text': sentences[i], 'claim_ids': [unique_cited[i]]} for i in range(min(len(sentences), len(unique_cited)))] if unique_cited else [],
+        'why': sentences,
         'offsets': [],
         'context': [],
         'unexplained_residual_minor': claim_amount_minor(opex) if opex is not None else 0,

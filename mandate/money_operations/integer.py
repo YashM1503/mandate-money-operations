@@ -6,6 +6,8 @@ import re
 WHOLE_DOLLAR_RE = re.compile(r'^-?\d+$')
 PERIOD_RE = re.compile(r'^\d{4}-\d{2}$')
 DATE_RE = re.compile(r'^\d{4}-\d{2}-\d{2}$')
+MAX_SQLITE_MINOR = 2**63 - 1
+MAX_WHOLE_DOLLARS = MAX_SQLITE_MINOR // 100
 
 
 class MoneyParseError(ValueError):
@@ -14,17 +16,26 @@ class MoneyParseError(ValueError):
 
 def parse_whole_dollars_to_minor(raw: str, *, field: str) -> int:
     """Convert a whole-dollar token to integer minor units (dollars * 100)."""
-    text = (raw or '').strip()
-    if not WHOLE_DOLLAR_RE.match(text):
+    text = str(raw or '').strip()
+    if not WHOLE_DOLLAR_RE.fullmatch(text) or len(text.lstrip('-')) > len(str(MAX_WHOLE_DOLLARS)):
         raise MoneyParseError(f'{field} is not a whole-dollar integer: {raw!r}')
-    return int(text) * 100
+    try:
+        dollars = int(text)
+    except (ValueError, OverflowError) as exc:
+        raise MoneyParseError(f'{field} is not a whole-dollar integer: {raw!r}') from exc
+    if abs(dollars) > MAX_WHOLE_DOLLARS:
+        raise MoneyParseError(f'{field} exceeds the supported money range')
+    return dollars * 100
 
 
 def parse_int(raw: str, *, field: str) -> int:
-    text = (raw or '').strip()
-    if not WHOLE_DOLLAR_RE.match(text):
+    text = str(raw or '').strip()
+    if not WHOLE_DOLLAR_RE.fullmatch(text) or len(text.lstrip('-')) > 18:
         raise MoneyParseError(f'{field} is not an integer: {raw!r}')
-    return int(text)
+    try:
+        return int(text)
+    except (ValueError, OverflowError) as exc:
+        raise MoneyParseError(f'{field} is not an integer: {raw!r}') from exc
 
 
 def minor_to_usd(amount_minor: int) -> int:

@@ -123,9 +123,11 @@ def _h(setup, role):
     return setup[2][role]
 
 
-def _ingest(setup, role='analyst'):
+def _ingest(setup, role='analyst', entity_id='yari-retail-us'):
     client = setup[0]
-    res = client.post('/api/money-operations/datasets', json={'fixture': 'reference'}, headers=_h(setup, role))
+    res = client.post('/api/money-operations/datasets', json={
+        'fixture': 'reference', 'entity_id': entity_id,
+    }, headers=_h(setup, role))
     assert res.status_code == 201, res.text
     return res.json()
 
