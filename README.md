@@ -112,3 +112,11 @@ These are in the same service. They are not Megan’s close.
 python -m pytest -q
 python scripts/check_integrations.py
 ```
+
+## License and contributing
+
+Apache License 2.0. See `LICENSE` and `NOTICE`.
+
+How to contribute: `CONTRIBUTING.md`. Conduct: `CODE_OF_CONDUCT.md`.
+Security reports: `SECURITY.md`. Support: `SUPPORT.md`. Third-party
+attribution: `THIRD_PARTY_NOTICES.md`.

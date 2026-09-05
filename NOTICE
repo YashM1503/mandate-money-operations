@@ -1,0 +1,12 @@
+Mandate
+Copyright 2026 Mandate contributors
+
+This product is licensed under the Apache License, Version 2.0.
+See the LICENSE file in the project root.
+
+This product includes software developed for a synthetic Money Operations
+hackathon demonstration. It is not a bank, ERP, or payment rail.
+
+This product includes software copied from Resolve under the Apache
+License, Version 2.0. See THIRD_PARTY_NOTICES.md and
+THIRD_PARTY_LICENSES/Resolve-LICENSE.

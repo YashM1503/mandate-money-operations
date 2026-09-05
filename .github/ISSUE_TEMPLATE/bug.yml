@@ -1,0 +1,41 @@
+name: Bug report
+description: Report a defect in the synthetic Money Operations demo
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Do not attach credentials, `.env` files, or real financial data.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you saw versus what you expected.
+    validations:
+      required: true
+  - type: dropdown
+    id: path
+    attributes:
+      label: Path
+      options:
+        - demo.html standalone
+        - Connected API
+        - Tests or evaluation
+        - Docs
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce
+      description: Steps using synthetic data only.
+    validations:
+      required: true
+  - type: checkboxes
+    id: honesty
+    attributes:
+      label: Checks
+      options:
+        - label: This report uses only synthetic or public demo data
+          required: true
+        - label: I did not include secrets or local `data/` files
+          required: true

@@ -2,6 +2,7 @@
 name = "mandate-risk-mvp"
 version = "1.0.0"
 description = "Synthetic accounts payable authority and provenance demo"
+license = {text = "Apache-2.0"}
 requires-python = ">=3.12"
 dependencies = ["fastapi==0.141.1", "uvicorn==0.52.4", "httpx==0.28.1", "prismtrace-sdk==0.4.2", "python-dotenv==1.1.1"]
 [tool.pytest.ini_options]
