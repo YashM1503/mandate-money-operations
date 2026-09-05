@@ -622,12 +622,13 @@ def _build_claims(dataset: LoadedDataset, account_cfg: dict, variance: dict, pri
     if code == '4000':
         customer_dim = next((block for block in [primary, *alternatives] if block['dimension'] == 'customer_id'), None)
         if customer_dim:
+            direction = 1 if variance['absolute_variance_minor'] >= 0 else -1
             chosen = sorted(
                 (
                     row for row in customer_dim['members']
-                    if row['member'] != UNCLASSIFIED and row['delta_minor'] > 0
+                    if row['member'] != UNCLASSIFIED and row['delta_minor'] * direction > 0
                 ),
-                key=lambda item: (-item['delta_minor'], item['member']),
+                key=lambda item: (-item['delta_minor'] * direction, item['member']),
             )[:3]
             delta = sum(row['delta_minor'] for row in chosen)
             customer_ids = [row['member'] for row in chosen]
@@ -640,7 +641,7 @@ def _build_claims(dataset: LoadedDataset, account_cfg: dict, variance: dict, pri
                     'delta_usd': minor_to_usd(delta),
                     'share_bps': share_bps(delta, variance['absolute_variance_minor']),
                 },
-                'top3_delta = sum(three largest positive customer deltas); share_bps = top3_delta * 10000 / revenue_absolute_variance',
+                'top3_delta = sum(three largest customer deltas in the direction of net revenue variance); share_bps = top3_delta * 10000 / revenue_absolute_variance',
                 txn_sources,
                 sorted((row for member in chosen for row in member['source_rows']),
                        key=lambda item: (item['period'], item['transaction_id'])),
