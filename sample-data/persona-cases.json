@@ -1,0 +1,433 @@
+{
+  "synthetic": true,
+  "cases": [
+    {
+      "id": "northstar",
+      "vendor": "Northstar Packaging",
+      "amount_minor": 824000,
+      "currency": "USD",
+      "invoice_id": "INV-NORTHSTAR-026",
+      "destination": "bank:4831",
+      "original_destination": "bank:4831",
+      "version": 1,
+      "evidence": [
+        {
+          "id": "invoice",
+          "label": "Supplier invoice",
+          "kind": "invoice",
+          "content": {
+            "invoice_id": "INV-NORTHSTAR-026",
+            "amount_minor": 824000,
+            "currency": "USD"
+          },
+          "parents": [],
+          "actor": "importer",
+          "source": "fixture:erp",
+          "created_at": "2026-09-05T06:21:28.403470+00:00",
+          "sha256": "4f34b794050b4726d31d4033e00638e9aec414bd7ffa31595c04e6a28ddbd236"
+        },
+        {
+          "id": "po",
+          "label": "Approved purchase order",
+          "kind": "purchase_order",
+          "content": {
+            "amount_minor": 824000,
+            "currency": "USD"
+          },
+          "parents": [],
+          "actor": "importer",
+          "source": "fixture:procurement",
+          "created_at": "2026-09-05T06:21:28.403470+00:00",
+          "sha256": "aa3209830c0973c13271b1450c379ac892c19369f1d1fe7599b87fbafd75e45f"
+        },
+        {
+          "id": "receipt",
+          "label": "Goods or services accepted",
+          "kind": "delivery",
+          "content": {
+            "accepted": true
+          },
+          "parents": [],
+          "actor": "importer",
+          "source": "fixture:receiving",
+          "created_at": "2026-09-05T06:21:28.403470+00:00",
+          "sha256": "451e6df76621a4c7e399cbbd62052f65838236d03a10e309e60b37584bd907e6"
+        },
+        {
+          "id": "onboarding",
+          "label": "Approved supplier onboarding",
+          "kind": "trusted_onboarding",
+          "content": {
+            "destination": "bank:4831"
+          },
+          "parents": [],
+          "actor": "prior-controller",
+          "source": "fixture:signed-onboarding",
+          "created_at": "2026-09-05T06:21:28.403470+00:00",
+          "sha256": "6e7f504ca5fde66e04d42796d5c3a4c3635453bc8b5f0a5e6094b05eec348c10"
+        }
+      ],
+      "bank_evidence_ids": [
+        "onboarding"
+      ],
+      "state": "review",
+      "verification": null,
+      "approval": null,
+      "ledger": null,
+      "trusted_contact": {
+        "id": "trusted-northstar",
+        "label": "Northstar Packaging \u00b7 established supplier contact",
+        "channel": "Synthetic callback to contact from approved onboarding"
+      },
+      "investigation": null,
+      "created_at": "2026-09-05T06:21:28.403470+00:00"
+    },
+    {
+      "id": "atlas",
+      "vendor": "Atlas Maintenance",
+      "amount_minor": 4785000,
+      "currency": "USD",
+      "invoice_id": "INV-ATLAS-026",
+      "destination": "bank:9924",
+      "original_destination": "bank:4831",
+      "version": 1,
+      "evidence": [
+        {
+          "id": "invoice",
+          "label": "Supplier invoice",
+          "kind": "invoice",
+          "content": {
+            "invoice_id": "INV-ATLAS-026",
+            "amount_minor": 4785000,
+            "currency": "USD"
+          },
+          "parents": [],
+          "actor": "importer",
+          "source": "fixture:erp",
+          "created_at": "2026-09-05T06:21:28.403470+00:00",
+          "sha256": "3144e408d2d3a000c0d93ead7e6dfb0e5fbc9782cb2db7b5ba95155187460175"
+        },
+        {
+          "id": "po",
+          "label": "Approved purchase order",
+          "kind": "purchase_order",
+          "content": {
+            "amount_minor": 4785000,
+            "currency": "USD"
+          },
+          "parents": [],
+          "actor": "importer",
+          "source": "fixture:procurement",
+          "created_at": "2026-09-05T06:21:28.403470+00:00",
+          "sha256": "c1be2937ffbec24236931c8368400201ff0bc3310963d8b0cde98b251d6160cc"
+        },
+        {
+          "id": "receipt",
+          "label": "Goods or services accepted",
+          "kind": "delivery",
+          "content": {
+            "accepted": true
+          },
+          "parents": [],
+          "actor": "importer",
+          "source": "fixture:receiving",
+          "created_at": "2026-09-05T06:21:28.403470+00:00",
+          "sha256": "451e6df76621a4c7e399cbbd62052f65838236d03a10e309e60b37584bd907e6"
+        },
+        {
+          "id": "onboarding",
+          "label": "Approved supplier onboarding",
+          "kind": "trusted_onboarding",
+          "content": {
+            "destination": "bank:4831"
+          },
+          "parents": [],
+          "actor": "prior-controller",
+          "source": "fixture:signed-onboarding",
+          "created_at": "2026-09-05T06:21:28.403470+00:00",
+          "sha256": "6e7f504ca5fde66e04d42796d5c3a4c3635453bc8b5f0a5e6094b05eec348c10"
+        },
+        {
+          "id": "request",
+          "label": "Unverified bank change request",
+          "kind": "untrusted_request",
+          "content": {
+            "destination": "bank:9924",
+            "text": "Use the updated bank details for this invoice."
+          },
+          "parents": [],
+          "actor": "importer",
+          "source": "fixture:supplier-email",
+          "created_at": "2026-09-05T06:21:28.403470+00:00",
+          "sha256": "46129da6502dad00fd3c2addfd8891260dd1107f75bd40e744b39bf7114431d2"
+        },
+        {
+          "id": "extract",
+          "label": "Agent extracted bank details",
+          "kind": "derived",
+          "content": {
+            "destination": "bank:9924"
+          },
+          "parents": [
+            "request"
+          ],
+          "actor": "agent",
+          "source": "fixture:erp",
+          "created_at": "2026-09-05T06:21:28.403470+00:00",
+          "sha256": "a69d173d6e56e184a6bcca0528c4aca79f8e7f84bb27a0238b62712f3aa4acad"
+        },
+        {
+          "id": "master",
+          "label": "Vendor master updated by agent",
+          "kind": "derived",
+          "content": {
+            "destination": "bank:9924"
+          },
+          "parents": [
+            "extract"
+          ],
+          "actor": "agent",
+          "source": "fixture:erp",
+          "created_at": "2026-09-05T06:21:28.403470+00:00",
+          "sha256": "048b7c9ad8e937c4510bc4ce6845a9f17408f679aaca2db60f1993e92ecdf110"
+        }
+      ],
+      "bank_evidence_ids": [
+        "master"
+      ],
+      "state": "review",
+      "verification": null,
+      "approval": null,
+      "ledger": null,
+      "trusted_contact": {
+        "id": "trusted-atlas",
+        "label": "Atlas Maintenance \u00b7 established supplier contact",
+        "channel": "Synthetic callback to contact from approved onboarding"
+      },
+      "investigation": null,
+      "created_at": "2026-09-05T06:21:28.403470+00:00"
+    },
+    {
+      "id": "forma",
+      "vendor": "Forma Fixtures",
+      "amount_minor": 1850000,
+      "currency": "USD",
+      "invoice_id": "INV-FORMA-026",
+      "destination": "bank:2218",
+      "original_destination": "bank:4831",
+      "version": 1,
+      "evidence": [
+        {
+          "id": "invoice",
+          "label": "Supplier invoice",
+          "kind": "invoice",
+          "content": {
+            "invoice_id": "INV-FORMA-026",
+            "amount_minor": 1850000,
+            "currency": "USD"
+          },
+          "parents": [],
+          "actor": "importer",
+          "source": "fixture:erp",
+          "created_at": "2026-09-05T06:21:28.403470+00:00",
+          "sha256": "fcad6b0b2e005e2df71b01d31559d620371e37fd1afceb02a84ac75b4aab0277"
+        },
+        {
+          "id": "po",
+          "label": "Approved purchase order",
+          "kind": "purchase_order",
+          "content": {
+            "amount_minor": 1850000,
+            "currency": "USD"
+          },
+          "parents": [],
+          "actor": "importer",
+          "source": "fixture:procurement",
+          "created_at": "2026-09-05T06:21:28.403470+00:00",
+          "sha256": "956b5e65363f541345670ce86e3bb06790dce4c131904e23c37039a3d1d950e8"
+        },
+        {
+          "id": "receipt",
+          "label": "Goods or services accepted",
+          "kind": "delivery",
+          "content": {
+            "accepted": true
+          },
+          "parents": [],
+          "actor": "importer",
+          "source": "fixture:receiving",
+          "created_at": "2026-09-05T06:21:28.403470+00:00",
+          "sha256": "451e6df76621a4c7e399cbbd62052f65838236d03a10e309e60b37584bd907e6"
+        },
+        {
+          "id": "onboarding",
+          "label": "Approved supplier onboarding",
+          "kind": "trusted_onboarding",
+          "content": {
+            "destination": "bank:4831"
+          },
+          "parents": [],
+          "actor": "prior-controller",
+          "source": "fixture:signed-onboarding",
+          "created_at": "2026-09-05T06:21:28.403470+00:00",
+          "sha256": "6e7f504ca5fde66e04d42796d5c3a4c3635453bc8b5f0a5e6094b05eec348c10"
+        },
+        {
+          "id": "request",
+          "label": "Unverified bank change request",
+          "kind": "untrusted_request",
+          "content": {
+            "destination": "bank:2218",
+            "text": "Use the updated bank details for this invoice."
+          },
+          "parents": [],
+          "actor": "importer",
+          "source": "fixture:supplier-email",
+          "created_at": "2026-09-05T06:21:28.403470+00:00",
+          "sha256": "0e8b7a58d8776db756ed6b7192454f8f0620cc20da38683185027dddfc94e394"
+        },
+        {
+          "id": "extract",
+          "label": "Agent extracted bank details",
+          "kind": "derived",
+          "content": {
+            "destination": "bank:2218"
+          },
+          "parents": [
+            "request"
+          ],
+          "actor": "agent",
+          "source": "fixture:erp",
+          "created_at": "2026-09-05T06:21:28.403470+00:00",
+          "sha256": "630d5e1ceab713783b3d224abc1c44787e60243e952fe4c112430a611f22e308"
+        },
+        {
+          "id": "master",
+          "label": "Vendor master updated by agent",
+          "kind": "derived",
+          "content": {
+            "destination": "bank:2218"
+          },
+          "parents": [
+            "extract"
+          ],
+          "actor": "agent",
+          "source": "fixture:erp",
+          "created_at": "2026-09-05T06:21:28.403470+00:00",
+          "sha256": "f5de3d32021c1ae89332e5eac46c1f744a831a046b38c5635d1fd873b8722264"
+        },
+        {
+          "id": "copy",
+          "label": "Forwarded confirmation",
+          "kind": "derived",
+          "content": {
+            "destination": "bank:2218"
+          },
+          "parents": [
+            "request"
+          ],
+          "actor": "agent",
+          "source": "fixture:erp",
+          "created_at": "2026-09-05T06:21:28.403470+00:00",
+          "sha256": "61917ec03be075fc211281ccdad00355ef5a685c0be1c08186d89847319d6373"
+        }
+      ],
+      "bank_evidence_ids": [
+        "master",
+        "copy"
+      ],
+      "state": "review",
+      "verification": null,
+      "approval": null,
+      "ledger": null,
+      "trusted_contact": {
+        "id": "trusted-forma",
+        "label": "Forma Fixtures \u00b7 established supplier contact",
+        "channel": "Synthetic callback to contact from approved onboarding"
+      },
+      "investigation": null,
+      "created_at": "2026-09-05T06:21:28.403470+00:00"
+    },
+    {
+      "id": "kite",
+      "vendor": "Kite Logistics",
+      "amount_minor": 480000,
+      "currency": "USD",
+      "invoice_id": "INV-KITE-026",
+      "destination": "bank:6002",
+      "original_destination": "bank:6002",
+      "version": 1,
+      "evidence": [
+        {
+          "id": "invoice",
+          "label": "Supplier invoice",
+          "kind": "invoice",
+          "content": {
+            "invoice_id": "INV-KITE-026",
+            "amount_minor": 480000,
+            "currency": "USD"
+          },
+          "parents": [],
+          "actor": "importer",
+          "source": "fixture:erp",
+          "created_at": "2026-09-05T06:21:28.403470+00:00",
+          "sha256": "ae5d1887026d176a2a26f272ce992596e14fefafe1192aa3e8fde737eb292b5e"
+        },
+        {
+          "id": "po",
+          "label": "Approved purchase order",
+          "kind": "purchase_order",
+          "content": {
+            "amount_minor": 480000,
+            "currency": "USD"
+          },
+          "parents": [],
+          "actor": "importer",
+          "source": "fixture:procurement",
+          "created_at": "2026-09-05T06:21:28.403470+00:00",
+          "sha256": "4aeb51c0b394bfd10de8375b84a38cfb86d64095336a55a86c043f0b4befb0a1"
+        },
+        {
+          "id": "receipt",
+          "label": "Goods or services accepted",
+          "kind": "delivery",
+          "content": {
+            "accepted": true
+          },
+          "parents": [],
+          "actor": "importer",
+          "source": "fixture:receiving",
+          "created_at": "2026-09-05T06:21:28.403470+00:00",
+          "sha256": "451e6df76621a4c7e399cbbd62052f65838236d03a10e309e60b37584bd907e6"
+        },
+        {
+          "id": "onboarding",
+          "label": "Approved supplier onboarding",
+          "kind": "trusted_onboarding",
+          "content": {
+            "destination": "bank:6002"
+          },
+          "parents": [],
+          "actor": "prior-controller",
+          "source": "fixture:signed-onboarding",
+          "created_at": "2026-09-05T06:21:28.403470+00:00",
+          "sha256": "0cff9fbf9b985c34b15a505b381dcde851c9529319d19a6bbe38b55d832081ef"
+        }
+      ],
+      "bank_evidence_ids": [
+        "onboarding"
+      ],
+      "state": "review",
+      "verification": null,
+      "approval": null,
+      "ledger": null,
+      "trusted_contact": {
+        "id": "trusted-kite",
+        "label": "Kite Logistics \u00b7 established supplier contact",
+        "channel": "Synthetic callback to contact from approved onboarding"
+      },
+      "investigation": null,
+      "created_at": "2026-09-05T06:21:28.403470+00:00"
+    }
+  ]
+}

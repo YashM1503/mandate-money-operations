@@ -1,0 +1,50 @@
+# Local and cloud deployment
+
+## Tested local path
+
+Python 3.12 or newer is required. From the repository root:
+
+```sh
+python3.12 -m venv .venv
+. .venv/bin/activate
+python -m pip install -r requirements-dev.txt
+python scripts/bootstrap.py
+python -m pytest -q
+uvicorn mandate.api:create_app --factory --host 127.0.0.1 --port 8000 --workers 1 --no-proxy-headers
+```
+
+Open http://127.0.0.1:8000. Read `data/demo-credentials.txt` privately for the analyst, controller and auditor passwords. Credentials are generated, never hardcoded. Bootstrap refuses to overwrite existing configuration. The database is seeded on first startup with fresh dates. Secrets, sessions and SQLite data must not enter Git or the package archive.
+
+Use a new `MANDATE_DATA_DIR` to start a fresh demo; never reset a database while the service is running. The test suite uses isolated temporary databases. Cash snapshots older than 24 hours and changed-beneficiary attestations older than 24 hours stop authorization intentionally. This MVP has no cash-import endpoint; a fresh synthetic dataset is the demo reset procedure.
+
+## Container path prepared for verification
+
+A Dockerfile, localhost-bound Compose service and CI container-build step are included. The local machine had a Docker client but no running engine; the image was not built here. Do not describe container deployment as tested until these commands pass:
+
+```sh
+docker compose build
+docker compose run --rm mandate python scripts/bootstrap.py
+docker compose up -d
+```
+
+The bootstrap command creates credentials in the persistent volume. Retrieve the credentials privately through an authorized container shell. Never paste them into a public README, screenshot or CI log. Check health, login, held Atlas, independent verification, separate approval, release, restart persistence and idempotent retry. The service runs as UID 10001 with a read-only root filesystem, writable data volume, no Linux capabilities and one worker.
+
+## Cloud API and web service
+
+Use a platform supporting a Docker web service and a persistent disk. Mount `/data` writable by UID 10001. Set `PORT` to the platform port and `MANDATE_ALLOWED_HOSTS` to the exact deployment hostname plus `127.0.0.1` for health checks. Use HTTPS ingress and platform access restrictions for a private synthetic demo. Keep one instance and one worker. Do not use a sleeping ephemeral function or horizontally scaled replicas with local SQLite.
+
+Provision secrets with the platform secret manager. Either persist bootstrap's configuration securely on the volume or supply `MANDATE_SIGNING_KEY` and `MANDATE_USERS_JSON`; the latter is the salted PBKDF2 user map from generated config, not plaintext passwords. No default credentials exist. Set the model and PRISM variables only when ready to allow synthetic outbound metadata. Start command is `scripts/entrypoint.sh`.
+
+A cloud provider, account, region and URL have not been selected; no hosted deployment was performed. Cloud release remains conditional on a real image build, vulnerability scan, runtime health check, persistent-volume restart test, HTTPS and authentication tests, outbound provider/PRISM tests and private access review. Record the release commit and results in QA_REPORT.md.
+
+## Before any real financial data or payment rail
+
+Replace demo identities with individual SSO/MFA and managed roles; implement organization isolation and access reviews. Use a transactional managed database for concurrency requirements and a separate protected audit-anchor destination. Define retention, deletion, encryption, incident response, provider data processing and jurisdiction with the customer. Replace fictional vendor-contact attestations with independently evidenced enterprise workflows. Add ERP/API connectors, real account validation where applicable, payment-provider idempotency, asynchronous settlement reconciliation and failure recovery. An actual bank transfer is not generally reversible like this simulated ledger.
+
+Public deployment of this hackathon service is not approval for real funds or sensitive customer data. These are scoped system gaps, not assertions that a particular regulation applies to every retailer.
+
+## Failure handling
+
+401: sign in again. 403: use the assigned role. 409: refresh and review the current decision; integrity failures require operator investigation. 422: correct the validated input. 429: wait one minute before retrying login. Provider failure: local deterministic assessment stays authoritative and the UI labels replay or an integration error. PRISM failure: retain actual trace ID and diagnostics; no payment authority is granted by PRISM status. Backend unexpected errors must not be reported as successful release.
+
+Back up the SQLite database using SQLite's online backup facility or after stopping the service, together with protected configuration. Restore to a separate environment and verify all journals and ledger reconciliation. Losing the signing key makes historical verification impossible. Copying both the data and its same-database anchors cannot prove absence of whole-database rollback; keep exported anchors independently if that matters.

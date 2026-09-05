@@ -1,0 +1,20 @@
+services:
+  mandate:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      MANDATE_DATA_DIR: /data
+      MANDATE_ALLOWED_HOSTS: localhost,127.0.0.1
+    volumes:
+      - mandate_data:/data
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped
+volumes:
+  mandate_data:

@@ -1,0 +1,5 @@
+id,vendor,invoice_id,amount_minor,currency,destination,original_destination
+northstar,Northstar Packaging,INV-NORTHSTAR-026,824000,USD,bank:4831,bank:4831
+atlas,Atlas Maintenance,INV-ATLAS-026,4785000,USD,bank:9924,bank:4831
+forma,Forma Fixtures,INV-FORMA-026,1850000,USD,bank:2218,bank:4831
+kite,Kite Logistics,INV-KITE-026,480000,USD,bank:6002,bank:6002

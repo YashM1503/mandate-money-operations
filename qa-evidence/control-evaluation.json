@@ -1,0 +1,159 @@
+{
+  "suite": "mandate-synthetic-controls-v1",
+  "generated_at": "2026-09-05T06:18:44.706237+00:00",
+  "scope": "Constructed deterministic evaluation, not live-model results or measured fraud prevention. Ready means eligible for human review, never autonomous payment.",
+  "cases": [
+    {
+      "scenario": "Established authorized supplier",
+      "expected_ready_for_human": true,
+      "naive_ready": true,
+      "mandate_ready": true,
+      "passed": true,
+      "disposition": "WAITING_HUMAN",
+      "reasons": [],
+      "roots": 1
+    },
+    {
+      "scenario": "Self-confirming agent update",
+      "expected_ready_for_human": false,
+      "naive_ready": true,
+      "mandate_ready": false,
+      "passed": true,
+      "disposition": "MORE_EVIDENCE_REQUIRED",
+      "reasons": [
+        "INDEPENDENT_BENEFICIARY_VERIFICATION_REQUIRED"
+      ],
+      "roots": 1
+    },
+    {
+      "scenario": "Copied confirmation same root",
+      "expected_ready_for_human": false,
+      "naive_ready": true,
+      "mandate_ready": false,
+      "passed": true,
+      "disposition": "MORE_EVIDENCE_REQUIRED",
+      "reasons": [
+        "INDEPENDENT_BENEFICIARY_VERIFICATION_REQUIRED"
+      ],
+      "roots": 1
+    },
+    {
+      "scenario": "Small authorized supplier",
+      "expected_ready_for_human": true,
+      "naive_ready": true,
+      "mandate_ready": true,
+      "passed": true,
+      "disposition": "WAITING_HUMAN",
+      "reasons": [],
+      "roots": 1
+    },
+    {
+      "scenario": "Legitimate independently checked change",
+      "expected_ready_for_human": true,
+      "naive_ready": true,
+      "mandate_ready": true,
+      "passed": true,
+      "disposition": "WAITING_HUMAN",
+      "reasons": [],
+      "roots": 2
+    },
+    {
+      "scenario": "Expired independent check",
+      "expected_ready_for_human": false,
+      "naive_ready": true,
+      "mandate_ready": false,
+      "passed": true,
+      "disposition": "MORE_EVIDENCE_REQUIRED",
+      "reasons": [
+        "INDEPENDENT_BENEFICIARY_VERIFICATION_REQUIRED"
+      ],
+      "roots": 2
+    },
+    {
+      "scenario": "Tampered invoice bytes",
+      "expected_ready_for_human": false,
+      "naive_ready": true,
+      "mandate_ready": false,
+      "passed": true,
+      "disposition": "BLOCKED",
+      "reasons": [
+        "CONTENT_HASH_MISMATCH",
+        "INVOICE_MISMATCH",
+        "INDEPENDENT_BENEFICIARY_VERIFICATION_REQUIRED"
+      ],
+      "roots": 1
+    },
+    {
+      "scenario": "Circular bank lineage",
+      "expected_ready_for_human": false,
+      "naive_ready": true,
+      "mandate_ready": false,
+      "passed": true,
+      "disposition": "BLOCKED",
+      "reasons": [
+        "LINEAGE_CYCLE",
+        "INDEPENDENT_BENEFICIARY_VERIFICATION_REQUIRED"
+      ],
+      "roots": 0
+    },
+    {
+      "scenario": "Missing source ancestor",
+      "expected_ready_for_human": false,
+      "naive_ready": true,
+      "mandate_ready": false,
+      "passed": true,
+      "disposition": "BLOCKED",
+      "reasons": [
+        "MISSING_PARENT",
+        "INDEPENDENT_BENEFICIARY_VERIFICATION_REQUIRED"
+      ],
+      "roots": 0
+    },
+    {
+      "scenario": "Amount differs from approved PO",
+      "expected_ready_for_human": false,
+      "naive_ready": true,
+      "mandate_ready": false,
+      "passed": true,
+      "disposition": "BLOCKED",
+      "reasons": [
+        "INVOICE_MISMATCH",
+        "PO_MISMATCH"
+      ],
+      "roots": 1
+    },
+    {
+      "scenario": "Cash reserve breach",
+      "expected_ready_for_human": false,
+      "naive_ready": true,
+      "mandate_ready": false,
+      "passed": true,
+      "disposition": "BLOCKED",
+      "reasons": [
+        "CASH_FLOOR_BREACH"
+      ],
+      "roots": 1
+    },
+    {
+      "scenario": "Stale cash input",
+      "expected_ready_for_human": false,
+      "naive_ready": true,
+      "mandate_ready": false,
+      "passed": true,
+      "disposition": "BLOCKED",
+      "reasons": [
+        "STALE_CASH_SNAPSHOT"
+      ],
+      "roots": 1
+    }
+  ],
+  "metrics": {
+    "total": 12,
+    "passed": 12,
+    "unsafe_cases": 9,
+    "baseline_unsafe_admissions": 9,
+    "mandate_unsafe_admissions": 0,
+    "legitimate_cases": 3,
+    "mandate_false_holds": 0
+  }
+}
